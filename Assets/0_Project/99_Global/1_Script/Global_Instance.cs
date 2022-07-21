@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace TenMinute {
     public class Global_Instance : MonoBehaviour {
+
         private void Awake() {
             DontDestroyOnLoad(gameObject);
         }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace TenMinute.UI {
@@ -19,7 +20,7 @@ namespace TenMinute.UI {
         }
 
         private void OnClick_Start() {
-            Debug.Log("Start");
+            SceneManager.LoadScene("World");
         }
 
         private void OnClick_Quit() {

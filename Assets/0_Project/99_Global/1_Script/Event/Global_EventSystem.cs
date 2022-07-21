@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using TenMinute.UI;
+using UnityEngine;
 
 namespace TenMinute.Event {
     public static class Global_EventSystem {
@@ -185,33 +186,19 @@ namespace TenMinute.Event {
             }
         }
 
-        public static class Input {
-            public delegate void OnInputByClass(PlayerInput data);
-            public delegate void OnInputByContext(InputAction.CallbackContext data);
+        public static class Game {
+            public delegate void VoidEvent();
+            public delegate void BoolEvent(bool state);
 
-            public static OnInputByClass onDeviceLost;
-            public static OnInputByClass onDeviceRegained;
-            public static OnInputByContext onInput;
+            public static BoolEvent onGameStateChanged;
 
-            public static bool inputState;
+            public static bool GameState { get; private set; }
 
-            public static PlayerInput playerInput { get; private set; }
-
-            public static void SetInput(PlayerInput target) {
-                inputState = true;
-                playerInput = target;
-                playerInput.onActionTriggered += CallOnInput;
-                playerInput.onDeviceLost += CallOnDeviceLost;
-                playerInput.onDeviceRegained += CallOnDeviceRegained;
+            public static void CallOnGameStateChanged(bool state) {
+                GameState = state;
+                Time.timeScale = GameState ? 1f : 0;
+                onGameStateChanged?.Invoke(state);
             }
-
-            public static void CallOnInput(InputAction.CallbackContext data) {
-                if (inputState) {
-                    onInput?.Invoke(data);
-                }
-            }
-            public static void CallOnDeviceLost(PlayerInput data) { onDeviceLost?.Invoke(data); }
-            public static void CallOnDeviceRegained(PlayerInput data) { onDeviceRegained?.Invoke(data); }
         }
     }
 }
