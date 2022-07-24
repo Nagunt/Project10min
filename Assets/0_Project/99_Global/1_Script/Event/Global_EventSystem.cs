@@ -192,11 +192,7 @@ namespace TenMinute.Event {
 
             public static BoolEvent onGameStateChanged;
 
-            public static bool GameState { get; private set; }
-
             public static void CallOnGameStateChanged(bool state) {
-                GameState = state;
-                Time.timeScale = GameState ? 1f : 0;
                 onGameStateChanged?.Invoke(state);
             }
         }
