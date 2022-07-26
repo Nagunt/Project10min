@@ -189,11 +189,33 @@ namespace TenMinute.Event {
         public static class Game {
             public delegate void VoidEvent();
             public delegate void BoolEvent(bool state);
+            public delegate void IntEvent(int value);
 
+
+            public static IntEvent onRoomStarted;
+            public static IntEvent onRoomCleared;
+            public static IntEvent onStageStarted;
+            public static IntEvent onStageCleared;
             public static BoolEvent onGameStateChanged;
-
+            public static IntEvent onPortalArrived;
+            
+            public static void CallOnRoomStarted(int index) {
+                onRoomStarted?.Invoke(index);
+            }
+            public static void CallOnRoomCleared(int index) {
+                onRoomCleared?.Invoke(index);
+            }
+            public static void CallOnStageStarted(int index) {
+                onStageStarted?.Invoke(index);
+            }
+            public static void CallOnStageCleared(int index) {
+                onStageCleared?.Invoke(index);
+            }
             public static void CallOnGameStateChanged(bool state) {
                 onGameStateChanged?.Invoke(state);
+            }
+            public static void CallOnPortalArrived(int value) {
+                onPortalArrived?.Invoke(value);
             }
         }
     }
