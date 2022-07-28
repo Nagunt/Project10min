@@ -18,7 +18,7 @@ namespace TenMinute {
 
         private int nextRoomIndex = 0;
 
-        private void Start() {
+        public void Init() {
             StartCoroutine(StageRoutine());
         }
 
@@ -27,8 +27,6 @@ namespace TenMinute {
         }
 
         IEnumerator StageRoutine() {
-            yield return new WaitForEndOfFrame();
-
             Global_EventSystem.Game.CallOnStageStarted(stageIndex);
 
             Global_EventSystem.Game.onPortalArrived += OnPortalArrived;

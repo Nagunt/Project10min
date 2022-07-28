@@ -4160,7 +4160,7 @@ GameObject:
   - component: {fileID: 4725323710675436773}
   - component: {fileID: 1478273228099060247}
   - component: {fileID: 7879153636874435678}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tilemap_Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6289,7 +6289,7 @@ GameObject:
   - component: {fileID: 1572930673206297403}
   - component: {fileID: 1572166927634729948}
   - component: {fileID: 416984479161088117}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tilemap_Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7364,10 +7364,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8176242866441461962}
     m_Modifications:
-    - target: {fileID: 1328217493393491221, guid: 02374726881a8f240a248b005ecb17f9, type: 3}
-      propertyPath: portalIndex
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7929595120037767970, guid: 02374726881a8f240a248b005ecb17f9, type: 3}
       propertyPath: m_Name
       value: Portal
@@ -7430,10 +7426,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8176242866441461962}
     m_Modifications:
-    - target: {fileID: 1328217493393491221, guid: 02374726881a8f240a248b005ecb17f9, type: 3}
-      propertyPath: portalIndex
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 7929595120037767970, guid: 02374726881a8f240a248b005ecb17f9, type: 3}
       propertyPath: m_Name
       value: Portal (1)
@@ -7496,10 +7488,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8176242866441461962}
     m_Modifications:
-    - target: {fileID: 1328217493393491221, guid: 02374726881a8f240a248b005ecb17f9, type: 3}
-      propertyPath: portalIndex
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 7929595120037767970, guid: 02374726881a8f240a248b005ecb17f9, type: 3}
       propertyPath: m_Name
       value: Portal (2)
