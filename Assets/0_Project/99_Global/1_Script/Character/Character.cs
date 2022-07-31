@@ -10,6 +10,14 @@ namespace TenMinute {
 
         #region Status
 
+        public virtual int HP {
+            get {
+                return _HP;
+            }
+            set {
+                _HP = Mathf.Clamp(value, 0, MaxHP);
+            }
+        }
         public int MaxHP {
             get {
                 int 증감수치 = 0;
@@ -128,6 +136,7 @@ namespace TenMinute {
         // 모든 계산식의 원본이 되는 수치. 
         // 이 수치는 게임 상에서 다른 증감수치에 의해서 변동되선 안된다.
 
+        protected int _HP;
         protected int 스텟HP;
         protected int 스텟ATK;
         protected int 스텟DEF;
@@ -151,6 +160,17 @@ namespace TenMinute {
         public Func<float> onCalcPoise비율;
         public Func<float> onCalcWeight비율;
 
+        // DataEntity에서 사용하는 Callback
+
+        public On이벤트 on피해예정;
+        public On이벤트 on피해;
+
+        public On이벤트 on추가피해예정;
+        public On이벤트 on추가피해;
+
+        public On이벤트 onHP회복예정;
+        public On이벤트 onHP회복;
+
         #endregion
 
         public bool IsAlive => IsInit && IsDead == false && IsDispose == false;
@@ -164,6 +184,14 @@ namespace TenMinute {
 
         public virtual void Dispose() {
             IsDispose = true;
+        }
+
+        public virtual void Heal(int value) {
+            HP += value;
+        }
+
+        public virtual void Damage(int value, float 경직 = 0f, float 넉백 = 0f) {
+            HP -= value;
         }
     }
 }
