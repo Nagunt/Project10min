@@ -171,6 +171,16 @@ namespace TenMinute {
         public On이벤트 onHP회복예정;
         public On이벤트 onHP회복;
 
+        // Physicx에서 사용하는 Callback
+
+        public Action<Collision2D> onHitboxCollisionEnter;
+        public Action<Collision2D> onHitboxCollisionStay;
+        public Action<Collision2D> onHitboxCollisionExit;
+
+        public Action<Collider2D> onHitboxTriggerEnter;
+        public Action<Collider2D> onHitboxTriggerStay;
+        public Action<Collider2D> onHitboxTriggerExit;
+
         #endregion
 
         public bool IsAlive => IsInit && IsDead == false && IsDispose == false;
@@ -178,8 +188,18 @@ namespace TenMinute {
         public bool IsDead { get; protected set; }
         public bool IsDispose { get; protected set; }
 
+        private void Awake() {
+            if (IsInit == false) {
+                Init();
+            }
+        }
+
         public virtual void Init() {
             IsInit = true;
+        }
+
+        public virtual void Dead() {
+            IsDead = true;
         }
 
         public virtual void Dispose() {
