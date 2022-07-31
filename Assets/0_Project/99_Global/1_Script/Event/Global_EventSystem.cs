@@ -190,6 +190,7 @@ namespace TenMinute.Event {
             public delegate void VoidEvent();
             public delegate void BoolEvent(bool state);
             public delegate void IntEvent(int value);
+            public delegate void CharEvent(Character target);
 
 
             public static IntEvent onRoomStarted;
@@ -198,6 +199,9 @@ namespace TenMinute.Event {
             public static IntEvent onStageCleared;
             public static BoolEvent onGameStateChanged;
             public static IntEvent onPortalArrived;
+            public static CharEvent onEnemySpawned;
+            public static CharEvent onEnemyDead;
+            public static CharEvent onEnemyDisposed;
             
             public static void CallOnRoomStarted(int index) {
                 onRoomStarted?.Invoke(index);
@@ -216,6 +220,15 @@ namespace TenMinute.Event {
             }
             public static void CallOnPortalArrived(int value) {
                 onPortalArrived?.Invoke(value);
+            }
+            public static void CallOnEnemySpawned(Character target) {
+                onEnemySpawned?.Invoke(target);
+            }
+            public static void CallOnEnemyDead(Character target) {
+                onEnemyDead?.Invoke(target);
+            }
+            public static void CallOnEnemyDisposed(Character target) {
+                onEnemyDisposed?.Invoke(target);
             }
         }
     }

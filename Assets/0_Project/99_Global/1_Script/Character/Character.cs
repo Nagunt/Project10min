@@ -188,7 +188,7 @@ namespace TenMinute {
         public bool IsDead { get; protected set; }
         public bool IsDispose { get; protected set; }
 
-        private void Awake() {
+        private void Start() {
             if (IsInit == false) {
                 Init();
             }

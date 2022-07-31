@@ -6,8 +6,17 @@ using System.Collections.ObjectModel;
 
 namespace TenMinute {
     public class Master_World : MonoBehaviour {
-
+        public static Master_World Instance { get; private set; }
         public static bool GameState { get; private set; }
+
+        public static int EnemyCount {
+            get {
+                if (Instance.enemyData == null) {
+                    return 0;
+                }
+                return Instance.enemyData.Count;
+            }
+        }
 
         private bool isRoomClear = false;
         private bool isStageClear = false;
@@ -17,6 +26,19 @@ namespace TenMinute {
 
         private WaitUntil waitForStageClear;
         private ReadOnlyDictionary<int, Stage> StageData => StageLoader.Data;
+
+        private HashSet<Character> enemyData;
+
+        private void Awake() {
+            if (Instance == null) {
+                Instance = this;
+            }
+            Global_EventSystem.Game.onGameStateChanged += OnGameStateChanged;
+            Global_EventSystem.Game.onRoomCleared += OnRoomCleared;
+            Global_EventSystem.Game.onStageCleared += OnStageCleared;
+            Global_EventSystem.Game.onEnemySpawned += OnEnemySpawned;
+            Global_EventSystem.Game.onEnemyDead += OnEnemyDead;
+        }
 
         private void Start() {
             StartCoroutine(Routine());
@@ -30,13 +52,6 @@ namespace TenMinute {
 
         IEnumerator Routine() {
             yield return new WaitForEndOfFrame();
-
-            // 콜백 등록
-
-            Global_EventSystem.Game.onGameStateChanged += OnGameStateChanged;
-            Global_EventSystem.Game.onRoomCleared += OnRoomCleared;
-            Global_EventSystem.Game.onStageCleared += OnStageCleared;
-
             // 콜백 호출
 
             Global_EventSystem.Game.CallOnGameStateChanged(true);
@@ -83,6 +98,19 @@ namespace TenMinute {
 
         private void OnStageCleared(int index) {
             isStageClear = true;
+        }
+
+        private void OnEnemySpawned(Character target) {
+            if (enemyData == null) {
+                enemyData = new HashSet<Character>();
+            }
+            enemyData.Add(target);
+        }
+
+        private void OnEnemyDead(Character target) {
+            if (enemyData != null) {
+                enemyData.Remove(target);
+            }
         }
 
         #endregion
