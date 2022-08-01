@@ -47,9 +47,6 @@ namespace TenMinute.UI {
             for (int i = mapLayer_Block.childCount - 1; i >= 0; i--) {
                 Destroy(mapLayer_Block.GetChild(i).gameObject);
             }
-            for (int i = mapLayer_Object.childCount - 1; i >= 0; i--) {
-                Destroy(mapLayer_Object.GetChild(i).gameObject);
-            }
             int xMin = (int)room.Area.xMin;
             int xMax = (int)room.Area.xMax;
             int yMin = (int)room.Area.yMin;
@@ -79,9 +76,17 @@ namespace TenMinute.UI {
                 }
                 else {
                     Image newDot = Instantiate(dot, mapLayer_Object);
-                    newDot.color = Color.red;           // 이부분에서 유닛에 따라 색깔 다르게 하자.
+                    switch (target.tag) {
+                        case "Player":
+                            newDot.color = Color.green;
+                            break;
+                        case "Enemy":
+                            newDot.color = Color.red;
+                            break;
+                    }
                     newDot.rectTransform.localPosition = new Vector2(target.localPosition.x * dotSize.x, target.localPosition.y * dotSize.y);
                     newDot.gameObject.SetActive(true);
+                    dotObject.Add(target, newDot);
                 }
             }
             else {
