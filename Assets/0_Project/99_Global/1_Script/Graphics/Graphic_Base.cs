@@ -8,8 +8,5 @@ namespace TenMinute.Graphics {
         [SerializeField]
         private new Renderer renderer;
 
-        private void Update() {
-            renderer.sortingOrder = (int)(-transform.position.y * 10f);
-        }
     }
 }

@@ -424,6 +424,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 535706506}
     m_Modifications:
+    - target: {fileID: 707127706394172725, guid: d41292ee7fe5b3a4a98cc7f48834e6f7, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 707127706394172725, guid: d41292ee7fe5b3a4a98cc7f48834e6f7, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 707127706394172725, guid: d41292ee7fe5b3a4a98cc7f48834e6f7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 707127706394172725, guid: d41292ee7fe5b3a4a98cc7f48834e6f7, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 707127706394172726, guid: d41292ee7fe5b3a4a98cc7f48834e6f7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 707127707235303698, guid: d41292ee7fe5b3a4a98cc7f48834e6f7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

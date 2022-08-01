@@ -84,6 +84,7 @@ namespace TenMinute.UI {
                             newDot.color = Color.red;
                             break;
                     }
+                    newDot.rectTransform.pivot = new Vector2(0.5f, newDot.rectTransform.pivot.y);
                     newDot.rectTransform.localPosition = new Vector2(target.localPosition.x * dotSize.x, target.localPosition.y * dotSize.y);
                     newDot.gameObject.SetActive(true);
                     dotObject.Add(target, newDot);

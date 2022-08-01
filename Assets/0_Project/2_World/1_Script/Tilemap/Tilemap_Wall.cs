@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using TenMinute.Event;
 
 namespace TenMinute {
     public class Tilemap_Wall : MonoBehaviour {
@@ -9,8 +10,7 @@ namespace TenMinute {
         private Tilemap tilemap;
         [SerializeField]
         private TilemapRenderer tilemapRenderer;
-        private void OnTriggerEnter2D(Collider2D collision) {
-            Debug.Log(collision);
-        }
+        [SerializeField]
+        private CompositeCollider2D col2D;
     }
 }
