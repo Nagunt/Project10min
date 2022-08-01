@@ -184,7 +184,7 @@ namespace TenMinute {
         #endregion
 
         public bool IsAlive => IsInit && IsDead == false && IsDispose == false;
-        public bool IsInit { get; protected set; }
+        public bool IsInit { get; protected set; } = false;
         public bool IsDead { get; protected set; }
         public bool IsDispose { get; protected set; }
 

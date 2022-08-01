@@ -22,7 +22,7 @@ namespace TenMinute {
         private bool isStageClear = false;
 
         private int roomIndex = 0;
-        private int stageIndex = 0;
+        private int stageIndex = 1;
 
         private WaitUntil waitForStageClear;
         private ReadOnlyDictionary<int, Stage> StageData => StageLoader.Data;

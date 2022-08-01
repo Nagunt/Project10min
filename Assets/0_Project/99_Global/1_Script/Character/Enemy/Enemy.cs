@@ -8,7 +8,9 @@ namespace TenMinute {
 
         public override void Init() {
             base.Init();
+            Debug.Log("적 Init");
             Global_EventSystem.Game.CallOnEnemySpawned(this);
+            StartCoroutine(UpdateRoutine());
         }
 
         public override void Dead() {
@@ -21,5 +23,13 @@ namespace TenMinute {
             Global_EventSystem.Game.CallOnEnemyDisposed(this);
         }
 
+        private IEnumerator UpdateRoutine() {
+            WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
+            while (IsAlive) {
+                Global_EventSystem.UI.Call(UI.UIEventID.World_InGameUIMap업데이트, transform, true);
+                yield return waitForFixedUpdate;
+            }
+            Global_EventSystem.UI.Call(UI.UIEventID.World_InGameUIMap업데이트, transform, false);
+        }
     }
 }

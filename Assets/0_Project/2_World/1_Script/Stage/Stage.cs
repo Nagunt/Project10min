@@ -32,8 +32,9 @@ namespace TenMinute {
             Global_EventSystem.Game.onPortalArrived += OnPortalArrived;
 
             while (roomIndex < maxRoomIndex) {
-                if (Current.gameObject != null) {
+                if (Current != null) {
                     Destroy(Current.gameObject);
+                    Current = null;
                 }
                 roomIndex++;
                 Current = Instantiate(rooms[nextRoomIndex == 0 ? Random.Range(0, rooms.Length) : nextRoomIndex - 1], transform);
