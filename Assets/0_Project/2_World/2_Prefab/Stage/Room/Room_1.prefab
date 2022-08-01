@@ -4158,8 +4158,7 @@ GameObject:
   - component: {fileID: 4401409098382525341}
   - component: {fileID: 496168917212843835}
   - component: {fileID: 4725323710675436773}
-  - component: {fileID: 1478273228099060247}
-  - component: {fileID: 7879153636874435678}
+  - component: {fileID: 7118516647393677151}
   - component: {fileID: 7042510646489259978}
   m_Layer: 9
   m_Name: Tilemap_Wall
@@ -5919,7 +5918,7 @@ Tilemap:
     e20: 0
     e21: 0
     e22: 1
-    e23: 0
+    e23: 90
     e30: 0
     e31: 0
     e32: 0
@@ -5961,8 +5960,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -386715369
-  m_SortingLayer: 2
+  m_SortingLayerID: 337013447
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -5982,61 +5981,13 @@ TilemapCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0.00001
---- !u!66 &1478273228099060247
-CompositeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3700703467421393006}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_GeometryType: 1
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 4725323710675436773}
-    m_ColliderPaths:
-    - - X: 110000000
-        Y: 130000000
-      - X: -110000000
-        Y: 130000000
-      - X: -110000000
-        Y: -110000000
-      - X: 110000000
-        Y: -110000000
-    - - X: -100000000
-        Y: -80000000
-      - X: -100000000
-        Y: 100000000
-      - X: 100000000
-        Y: 100000000
-      - X: 100000000
-        Y: -80000000
-  m_CompositePaths:
-    m_Paths:
-    - - {x: 10.99997, y: -11}
-      - {x: 10.99997, y: 13}
-      - {x: -11, y: 12.99997}
-      - {x: -10.99997, y: -11}
-    - - {x: 10, y: -7.9999704}
-      - {x: -10, y: -7.9999704}
-      - {x: -9.99997, y: 10}
-      - {x: 10, y: 9.99997}
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
---- !u!50 &7879153636874435678
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0.00001
+--- !u!50 &7118516647393677151
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -6056,7 +6007,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 0
 --- !u!114 &7042510646489259978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6071,7 +6022,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 4401409098382525341}
   tilemapRenderer: {fileID: 496168917212843835}
-  col2D: {fileID: 1478273228099060247}
+  col2D: {fileID: 4725323710675436773}
 --- !u!1 &3905635614461434902
 GameObject:
   m_ObjectHideFlags: 0
