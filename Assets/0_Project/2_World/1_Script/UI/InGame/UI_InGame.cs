@@ -27,8 +27,8 @@ namespace TenMinute.UI {
         private Vector2 dotSize;
         private Dictionary<Transform, Image> dotObject;
 
-        protected override void Start() {
-            base.Start();
+        protected override void Awake() {
+            base.Awake();
             dotSize = dot.rectTransform.sizeDelta;
             dotObject = new Dictionary<Transform, Image>();
         }
