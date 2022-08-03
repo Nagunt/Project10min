@@ -16,27 +16,17 @@ namespace TenMinute {
         [SerializeField]
         private Grid grid;
         [SerializeField]
-        private GameObject portal;
+        private PortalController portalController;
         public Grid Grid => grid;
-
         public bool IsCleared { get; protected set; }
-
         public Rect Area { get; protected set; }
         public Tilemap Tilemap_Floor => tilemap_Floor;
         public Tilemap Tilemap_Block => tilemap_Block;
+        public PortalController PortalController => portalController;
         public virtual void Init() {
             IsCleared = false;
             Area = new Rect(area.localPosition - area.localScale * .5f, area.localScale);
-            portal.SetActive(false);
             Global_EventSystem.UI.Call(UI.UIEventID.World_InGameUIMap¼³Á¤, this);
-            Global_EventSystem.Game.onRoomCleared += OnRoomCleared;
-        }
-
-        protected virtual void OnRoomCleared(int index) {
-            portal.SetActive(true);
-        }
-        private void OnDestroy() {
-            Global_EventSystem.Game.onRoomCleared -= OnRoomCleared;
         }
     }
 }

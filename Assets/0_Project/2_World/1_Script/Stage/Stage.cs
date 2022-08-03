@@ -46,12 +46,27 @@ namespace TenMinute {
 
                 yield return new WaitUntil(() => Current.IsCleared);
 
+                MakePortal();
+  
                 Global_EventSystem.Game.CallOnRoomCleared(roomIndex);
 
                 yield return new WaitUntil(() => nextRoomIndex > 0);
             }
 
             Global_EventSystem.Game.CallOnStageCleared(stageIndex);
+
+            void MakePortal() {
+                int value = Random.Range(0, 100);
+                List<int> index = new List<int>();
+                index.Add(1);
+                if (value < 25) {
+                    index.Add(1);
+                }
+                if (value < 75) {
+                    index.Add(1);
+                }
+                Current.PortalController.MakePortal(index.ToArray());
+            }
         }
 
         private void OnDestroy() {

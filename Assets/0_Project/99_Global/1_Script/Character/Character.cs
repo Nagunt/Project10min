@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Linq;
+using TenMinute.Event;
 using UnityEngine;
 
 namespace TenMinute {
@@ -16,6 +18,9 @@ namespace TenMinute {
             }
             set {
                 _HP = Mathf.Clamp(value, 0, MaxHP);
+                if (_HP <= 0) {
+                    Dead();
+                }
             }
         }
         public int MaxHP {
@@ -196,6 +201,7 @@ namespace TenMinute {
 
         public virtual void Init() {
             IsInit = true;
+            StartCoroutine(MapRoutine());
         }
 
         public virtual void Dead() {
@@ -212,6 +218,15 @@ namespace TenMinute {
 
         public virtual void Damage(int value, float 경직 = 0f, float 넉백 = 0f) {
             HP -= value;
+        }
+
+        protected virtual IEnumerator MapRoutine() {
+            WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
+            while (IsAlive) {
+                Global_EventSystem.UI.Call(UI.UIEventID.World_InGameUIMap업데이트, transform, true);
+                yield return waitForFixedUpdate;
+            }
+            Global_EventSystem.UI.Call(UI.UIEventID.World_InGameUIMap업데이트, transform, false);
         }
     }
 }
