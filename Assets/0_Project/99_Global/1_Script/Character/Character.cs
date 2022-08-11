@@ -137,6 +137,25 @@ namespace TenMinute {
                 return Mathf.RoundToInt(스텟Weight * 증감비율 + 증감수치);
             }
         }
+        public float ATKSpeed {
+            get {
+                float 증감수치 = 0;
+                float 증감비율 = 1.0f;
+                if (onCalcATKSpeed수치 != null) {
+                    foreach (var f in onCalcATKSpeed수치.GetInvocationList().Cast<Func<float>>()) {
+                        증감수치 += f();
+                    }
+                }
+                if (onCalcATKSpeed비율 != null) {
+                    foreach (var f in onCalcATKSpeed비율.GetInvocationList().Cast<Func<float>>()) {
+                        float 값 = f();
+                        if (값 <= 0) continue;
+                        증감비율 *= 값;
+                    }
+                }
+                return Mathf.RoundToInt(스텟ATKSpeed * 증감비율 + 증감수치);
+            }
+        }
 
         // 모든 계산식의 원본이 되는 수치. 
         // 이 수치는 게임 상에서 다른 증감수치에 의해서 변동되선 안된다.
@@ -148,6 +167,7 @@ namespace TenMinute {
         protected float 스텟Speed;
         protected float 스텟Poise;
         protected float 스텟Weight;
+        protected float 스텟ATKSpeed;
 
         // 스텟의 값을 결정하는데 사용될 추가 요소들.
 
@@ -157,6 +177,7 @@ namespace TenMinute {
         public Func<float> onCalcSpeed수치;
         public Func<float> onCalcPoise수치;
         public Func<float> onCalcWeight수치;
+        public Func<float> onCalcATKSpeed수치;
 
         public Func<float> onCalcMaxHP비율;
         public Func<float> onCalcATK비율;
@@ -164,6 +185,7 @@ namespace TenMinute {
         public Func<float> onCalcSpeed비율;
         public Func<float> onCalcPoise비율;
         public Func<float> onCalcWeight비율;
+        public Func<float> onCalcATKSpeed비율;
 
         // DataEntity에서 사용하는 Callback
 
@@ -175,16 +197,6 @@ namespace TenMinute {
 
         public On이벤트 onHP회복예정;
         public On이벤트 onHP회복;
-
-        // Physicx에서 사용하는 Callback
-
-        public Action<Collision2D> onHitboxCollisionEnter;
-        public Action<Collision2D> onHitboxCollisionStay;
-        public Action<Collision2D> onHitboxCollisionExit;
-
-        public Action<Collider2D> onHitboxTriggerEnter;
-        public Action<Collider2D> onHitboxTriggerStay;
-        public Action<Collider2D> onHitboxTriggerExit;
 
         #endregion
 
@@ -199,9 +211,16 @@ namespace TenMinute {
             }
         }
 
+        public virtual void Move(Vector2 dir) {
+            rb2D.velocity = dir.normalized * Speed;
+        }
+
+        public virtual void Stop() {
+            rb2D.velocity = Vector2.zero;
+        }
+
         public virtual void Init() {
             IsInit = true;
-            StartCoroutine(MapRoutine());
         }
 
         public virtual void Dead() {
@@ -218,15 +237,6 @@ namespace TenMinute {
 
         public virtual void Damage(int value, float 경직 = 0f, float 넉백 = 0f) {
             HP -= value;
-        }
-
-        protected virtual IEnumerator MapRoutine() {
-            WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
-            while (IsAlive) {
-                Global_EventSystem.UI.Call(UI.UIEventID.World_InGameUIMap업데이트, transform, true);
-                yield return waitForFixedUpdate;
-            }
-            Global_EventSystem.UI.Call(UI.UIEventID.World_InGameUIMap업데이트, transform, false);
         }
     }
 }

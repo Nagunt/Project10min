@@ -16,7 +16,7 @@ TagManager:
   - Location
   - Object
   - Hitbox
-  - 
+  - MapObject
   - 
   - 
   - 
@@ -41,13 +41,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Floor
-    uniqueID: 1837348841
-    locked: 0
-  - name: Wall
-    uniqueID: 337013447
-    locked: 0
-  - name: Object
-    uniqueID: 3908251927
     locked: 0
