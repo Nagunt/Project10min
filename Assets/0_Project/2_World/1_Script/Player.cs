@@ -24,6 +24,14 @@ namespace TenMinute {
         [SerializeField]
         float PlayerSpeed;
 
+
+        #region 임시 변수
+        [SerializeField]
+        GameObject tempPointerObject;
+        [SerializeField]
+        float tempFireRange;
+
+        #endregion
         private void Start() 
         {
             _actionSet = new Dictionary<ActionType, InputAction>();
@@ -58,13 +66,17 @@ namespace TenMinute {
                     move = obj.ReadValue<Vector2>();
                     break;
                 case ActionType.Look:
-                    look = obj.ReadValue<Vector2>();
+                    
+                    look = Camera.main.ScreenToWorldPoint( obj.ReadValue<Vector2>());
+                    tempPointerObject.transform.position = look;
+
                     break;
                 case ActionType.Fire:
                     if(obj.action.phase == InputActionPhase.Started)
                     {
                         Debug.Log("Attack");
                         fire = true;
+                        playerFire();
                     }
                     else
                     {
@@ -91,6 +103,19 @@ namespace TenMinute {
                 return type;
             }
             return ActionType.None;
+        }
+
+        void playerFire()
+        {
+
+            Collider2D[] inHitBox = Physics2D.OverlapCircleAll(transform.position, tempFireRange);
+
+            foreach (Collider2D t in inHitBox)
+            {
+                Debug.LogWarning("Hit!");
+                t.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                
+            }
         }
 
     }
