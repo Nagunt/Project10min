@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 628666475195640530}
   - component: {fileID: 628666475195640529}
   - component: {fileID: 628666475195640528}
+  - component: {fileID: 5300002533097415361}
   m_Layer: 9
   m_Name: Hitbox
   m_TagString: Enemy
@@ -79,6 +80,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 7
+--- !u!114 &5300002533097415361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628666475195640531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55ea8af0785fc1145a012a0c30aae96d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb2D: {fileID: 628666475195640528}
+  character: {fileID: 3086916682209849657}
 --- !u!1 &3086916682209849656
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,6 +316,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3086916683825065009}
   - component: {fileID: 3086916683825065021}
+  - component: {fileID: 3163912047026465152}
   m_Layer: 8
   m_Name: PhysicsCollider
   m_TagString: Enemy
@@ -348,6 +364,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.01}
   m_EdgeRadius: 0.25
+--- !u!114 &3163912047026465152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3086916683825065022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff3a14dc8e4538a46bd6c7744b3353de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  col: {fileID: 3086916683825065021}
+  character: {fileID: 3086916682209849657}
 --- !u!1 &5500128805848264086
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,6 +597,7 @@ GameObject:
   m_Component:
   - component: {fileID: 818707655191265808}
   - component: {fileID: 3761193535767155254}
+  - component: {fileID: 2442325331017373991}
   m_Layer: 8
   m_Name: Attack
   m_TagString: Untagged
@@ -610,6 +641,20 @@ MonoBehaviour:
   _obstacleMask:
     serializedVersion: 2
     m_Bits: 0
+--- !u!114 &2442325331017373991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8624946212082689694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca010abc4de0e3747838b24e2cb8706a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isArc: 1
+  arc2D: {fileID: 3761193535767155254}
 --- !u!1 &8992920948381750944
 GameObject:
   m_ObjectHideFlags: 0

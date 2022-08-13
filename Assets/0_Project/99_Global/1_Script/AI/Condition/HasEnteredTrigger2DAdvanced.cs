@@ -3,6 +3,7 @@ using BehaviorDesigner.Runtime.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TenMinute.Physics;
 using TooltipAttribute = BehaviorDesigner.Runtime.Tasks.TooltipAttribute;
 
 namespace TenMinute.AI
@@ -17,17 +18,19 @@ namespace TenMinute.AI
         [Tooltip("The tag of the GameObject to check for a trigger against")]
         public SharedString tag = "";
         [Tooltip("The object that entered the trigger")]
-        public SharedGameObject otherGameObject;
+        public SharedCharacter otherCharacter;
+
+        private List<Collider2D> resultContainer = new List<Collider2D>();
 
         public override TaskStatus OnUpdate()
         {
-            List<Collider2D> results = new List<Collider2D>();
-            if (area.Value.OverlapCollider(filter, results) > 0)
+            resultContainer.Clear();
+            if (area.Value.OverlapCollider(filter, resultContainer) > 0)
             {
-                results = results.Where(c => c.CompareTag(tag.Value)).ToList();
-                if (results.Count > 0)
+                resultContainer = resultContainer.Where(c => c.CompareTag(tag.Value)).ToList();
+                if (resultContainer.Count > 0)
                 {
-                    otherGameObject.SetValue(results[0].gameObject);
+                    otherCharacter.SetValue(PhysicsCollider2D.GetData(resultContainer[0]));
                     return TaskStatus.Success;
                 }
             }
@@ -39,7 +42,7 @@ namespace TenMinute.AI
             tag = "";
             area = null;
             filter = default;
-            otherGameObject = null;
+            otherCharacter = null;
         }
     }
 }
