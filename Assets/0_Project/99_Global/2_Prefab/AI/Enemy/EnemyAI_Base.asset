@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23f08d2ae4cba14087c1ed36193d82b, type: 3}
+  m_Name: EnemyAI_Base
+  m_EditorClassIdentifier: 
+  mBehaviorSource:
+    behaviorName: EnemyAI_Base
+    behaviorDescription: 
+    mTaskData:
+      types: []
+      parentIndex: 
+      startIndex: 
+      variableStartIndex: 
+      JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(187,-14)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.SelectorEvaluator","NodeData":{"Offset":"(1.62963867,168.222168)"},"ID":1,"Name":"Selector
+        Evaluator","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.SelectorEvaluator","NodeData":{"Offset":"(-450,200)"},"ID":2,"Name":"Combat
+        State","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-188.518417,143.227463)"},"ID":3,"Name":"Attack
+        Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"TenMinute.AI.HasEnteredTrigger2DAdvanced","NodeData":{"Offset":"(-100.96312,138.1038)"},"ID":4,"Name":"\ub300\uc0c1\uc774
+        \uacf5\uaca9\ubc94\uc704 \uc548\uc5d0 \uc788\ub294\uc9c0?","Instant":true,"SharedCollider2Darea":{"Type":"TenMinute.AI.SharedCollider2D","Name":"AttackCheckArea","IsShared":true},"ContactFilter2Dfilter":{"BooleanuseTriggers":true,"BooleanuseLayerMask":true,"BooleanuseDepth":false,"BooleanuseOutsideDepth":false,"BooleanuseNormalAngle":false,"BooleanuseOutsideNormalAngle":false,"LayerMasklayerMask":256,"SingleminDepth":0,"SinglemaxDepth":0,"SingleminNormalAngle":0,"SinglemaxNormalAngle":0},"SharedStringtag":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"Player"},"SharedGameObjectotherGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"IsDynamic":true}},{"Type":"TenMinute.AI.Attack","NodeData":{"Offset":"(114.904015,136.2135)"},"ID":5,"Name":"Attack","Instant":true,"SharedCharactercharacter":{"Type":"TenMinute.AI.SharedCharacter","Name":"Owner","IsShared":true,"Tooltip":"AI\uc758
+        \uc18c\uc720\uc790"},"SharedGameObjecttarget":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"IsDynamic":true}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(203.0728,142.458237)"},"ID":6,"Name":"MoveToSequence","Instant":true,"AbortTypeabortType":"Self","Children":[{"Type":"TenMinute.AI.HasEnteredTrigger2DAdvanced","NodeData":{"Offset":"(-103.703766,128.147949)"},"ID":7,"Name":"\ub300\uc0c1\uc774
+        \ubc94\uc704\uc548\uc5d0 \uc788\ub294\uc9c0?","Instant":true,"SharedCollider2Darea":{"Type":"TenMinute.AI.SharedCollider2D","Name":"ChaseCheckArea","IsShared":true},"ContactFilter2Dfilter":{"BooleanuseTriggers":true,"BooleanuseLayerMask":true,"BooleanuseDepth":false,"BooleanuseOutsideDepth":false,"BooleanuseNormalAngle":false,"BooleanuseOutsideNormalAngle":false,"LayerMasklayerMask":256,"SingleminDepth":0,"SinglemaxDepth":0,"SingleminNormalAngle":0,"SinglemaxNormalAngle":0},"SharedStringtag":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"Player"},"SharedGameObjectotherGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"IsDynamic":true}},{"Type":"TenMinute.AI.MoveToTarget","NodeData":{"Offset":"(84.81479,128.147949)"},"ID":8,"Name":"Move
+        To Target","Instant":true,"SharedCharactercharacter":{"Type":"TenMinute.AI.SharedCharacter","Name":"Owner","IsShared":true,"Tooltip":"AI\uc758
+        \uc18c\uc720\uc790"},"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"IsDynamic":true},"SingleminDistance":0.01}]}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(100,190)"},"ID":9,"Name":"Patrol
+        Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-3.8195343,251.736038)"},"ID":10,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":2},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}},{"Type":"TenMinute.AI.Wondering","NodeData":{"Offset":"(155.90036,248.673248)"},"ID":11,"Name":"Wondering","Instant":true,"SharedCharactercharacter":{"Type":"TenMinute.AI.SharedCharacter","Name":"Owner","IsShared":true,"Tooltip":"AI\uc758
+        \uc18c\uc720\uc790"}}]}]},"Variables":[{"Type":"TenMinute.AI.SharedCharacter","Name":"Owner","IsShared":true,"Tooltip":"AI\uc758
+        \uc18c\uc720\uc790"},{"Type":"TenMinute.AI.SharedCollider2D","Name":"ChaseCheckArea","IsShared":true},{"Type":"TenMinute.AI.SharedCollider2D","Name":"AttackCheckArea","IsShared":true}]}'
+      fieldSerializationData:
+        typeName: []
+        fieldNameHash: 
+        startIndex: 
+        dataPosition: 
+        unityObjects: []
+        byteData: 
+        byteDataArray: 
+      Version: 1.7.3

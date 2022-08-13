@@ -96,7 +96,7 @@ namespace TenMinute {
                         증감비율 *= 값;
                     }
                 }
-                return Mathf.RoundToInt(스텟Speed * 증감비율 + 증감수치);
+                return 스텟Speed * 증감비율 + 증감수치;
             }
         }
         public float Poise {
@@ -115,7 +115,7 @@ namespace TenMinute {
                         증감비율 *= 값;
                     }
                 }
-                return Mathf.RoundToInt(스텟Poise * 증감비율 + 증감수치);
+                return 스텟Poise * 증감비율 + 증감수치;
             }
         }
         public float Weight {
@@ -134,7 +134,7 @@ namespace TenMinute {
                         증감비율 *= 값;
                     }
                 }
-                return Mathf.RoundToInt(스텟Weight * 증감비율 + 증감수치);
+                return 스텟Weight * 증감비율 + 증감수치;
             }
         }
         public float ATKSpeed {
@@ -153,7 +153,7 @@ namespace TenMinute {
                         증감비율 *= 값;
                     }
                 }
-                return Mathf.RoundToInt(스텟ATKSpeed * 증감비율 + 증감수치);
+                return 스텟ATKSpeed * 증감비율 + 증감수치;
             }
         }
 
@@ -203,6 +203,7 @@ namespace TenMinute {
         public bool IsAlive => IsInit && IsDead == false && IsDispose == false;
         public bool IsInit { get; protected set; } = false;
         public bool IsDead { get; protected set; }
+        public bool IsAttack { get; protected set; }
         public bool IsDispose { get; protected set; }
 
         private void Start() {
@@ -225,6 +226,11 @@ namespace TenMinute {
 
         public virtual void Dead() {
             IsDead = true;
+        }
+
+        public virtual void Attack(Character target)
+        {
+            IsAttack = true;
         }
 
         public virtual void Dispose() {
