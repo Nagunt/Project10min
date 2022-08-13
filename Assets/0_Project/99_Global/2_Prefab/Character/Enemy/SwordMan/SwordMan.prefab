@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 3086916682209849658}
   - component: {fileID: 3086916682209849661}
   - component: {fileID: 3086916682209849657}
+  - component: {fileID: 3128570676208629541}
   m_Layer: 8
   m_Name: SwordMan
   m_TagString: Enemy
@@ -150,7 +151,62 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb2D: {fileID: 3086916682209849661}
-  machine: {fileID: 8343707887077469858}
+--- !u!114 &3128570676208629541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3086916682209849656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d7b55c7ecdb49a4a89fa5e6f9022861, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startWhenEnabled: 1
+  asynchronousLoad: 0
+  pauseWhenDisabled: 0
+  restartWhenComplete: 1
+  logTaskChanges: 0
+  group: 0
+  resetValuesOnRestart: 0
+  externalBehavior: {fileID: 0}
+  mBehaviorSource:
+    behaviorName: SwordMan
+    behaviorDescription: 
+    mTaskData:
+      types: []
+      parentIndex: 
+      startIndex: 
+      variableStartIndex: 
+      JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(187,-14)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.SelectorEvaluator","NodeData":{"Offset":"(1.62963867,168.222168)"},"ID":1,"Name":"Selector
+        Evaluator","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.SelectorEvaluator","NodeData":{"Offset":"(-450,200)"},"ID":2,"Name":"Combat
+        State","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-188.518417,143.227463)"},"ID":3,"Name":"Attack
+        Sequence","Instant":true,"AbortTypeabortType":"Self","Children":[{"Type":"TenMinute.AI.HasEnteredTrigger2DAdvanced","NodeData":{"Offset":"(-68.70506,138.1038)"},"ID":4,"Name":"\ub300\uc0c1\uc774
+        \uacf5\uaca9\ubc94\uc704 \uc548\uc5d0 \uc788\ub294\uc9c0?","Instant":true,"SharedCollider2Darea":{"Type":"TenMinute.AI.SharedCollider2D","Name":null,"Collider2DmValue":0},"ContactFilter2Dfilter":{"BooleanuseTriggers":true,"BooleanuseLayerMask":true,"BooleanuseDepth":false,"BooleanuseOutsideDepth":false,"BooleanuseNormalAngle":false,"BooleanuseOutsideNormalAngle":false,"LayerMasklayerMask":256,"SingleminDepth":0,"SinglemaxDepth":0,"SingleminNormalAngle":0,"SinglemaxNormalAngle":0},"SharedStringtag":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"Player"},"SharedGameObjectotherGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"IsDynamic":true}},{"Type":"BehaviorDesigner.Runtime.Tasks.Log","NodeData":{"Offset":"(127.919006,127.460693)"},"ID":5,"Name":"Attack
+        Log","Instant":true,"SharedStringtext":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"Attack!!!"},"SharedBoollogError":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedBoollogTime":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(219.201828,143.8814)"},"ID":6,"Name":"MoveToSequence","Instant":true,"AbortTypeabortType":"Self","Children":[{"Type":"TenMinute.AI.HasEnteredTrigger2DAdvanced","NodeData":{"Offset":"(-103.703766,128.147949)"},"ID":7,"Name":"\ub300\uc0c1\uc774
+        \ubc94\uc704\uc548\uc5d0 \uc788\ub294\uc9c0?","Instant":true,"SharedCollider2Darea":{"Type":"TenMinute.AI.SharedCollider2D","Name":null,"Collider2DmValue":1},"ContactFilter2Dfilter":{"BooleanuseTriggers":true,"BooleanuseLayerMask":true,"BooleanuseDepth":false,"BooleanuseOutsideDepth":false,"BooleanuseNormalAngle":false,"BooleanuseOutsideNormalAngle":false,"LayerMasklayerMask":256,"SingleminDepth":0,"SinglemaxDepth":0,"SingleminNormalAngle":0,"SinglemaxNormalAngle":0},"SharedStringtag":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"Player"},"SharedGameObjectotherGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"IsDynamic":true}},{"Type":"TenMinute.AI.MoveToTarget","NodeData":{"Offset":"(84.81479,128.147949)"},"ID":8,"Name":"Move
+        To Target","Instant":true,"SharedCharactercharacter":{"Type":"TenMinute.AI.SharedCharacter","Name":"Owner","IsShared":true,"Tooltip":"AI\uc758
+        \uc18c\uc720\uc790","CharactermValue":2},"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"IsDynamic":true},"SingleminDistance":0.01}]}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(100,190)"},"ID":9,"Name":"Patrol
+        Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-114.930573,140.625)"},"ID":10,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}},{"Type":"TenMinute.AI.Wondering","NodeData":{"Offset":"(81.8263245,137.5622)"},"ID":11,"Name":"Wondering","Instant":true,"SharedCharactercharacter":{"Type":"TenMinute.AI.SharedCharacter","Name":"Owner","IsShared":true,"Tooltip":"AI\uc758
+        \uc18c\uc720\uc790","CharactermValue":3}}]}]},"Variables":[{"Type":"TenMinute.AI.SharedCharacter","Name":"Owner","IsShared":true,"Tooltip":"AI\uc758
+        \uc18c\uc720\uc790","CharactermValue":4},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"IsDynamic":true}]}'
+      fieldSerializationData:
+        typeName: []
+        fieldNameHash: 
+        startIndex: 
+        dataPosition: 
+        unityObjects:
+        - {fileID: 8343707887494953818}
+        - {fileID: 8343707887117969040}
+        - {fileID: 3086916682209849657}
+        - {fileID: 3086916682209849657}
+        - {fileID: 3086916682209849657}
+        byteData: 
+        byteDataArray: 
+      Version: 1.7.3
+  gizmoViewMode: 2
+  showBehaviorDesignerGizmo: 1
 --- !u!1 &3086916683266835079
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,13 +369,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8343707887077469861}
-  - component: {fileID: 8343707887077469858}
-  - component: {fileID: 8343707887077469859}
-  - component: {fileID: 8343707887077469886}
-  - component: {fileID: 8343707887077469857}
-  - component: {fileID: 8343707887077469856}
   m_Layer: 8
-  m_Name: AI
+  m_Name: Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -341,139 +392,6 @@ Transform:
   m_Father: {fileID: 3086916682209849658}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8343707887077469858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8343707887077469860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9895b2e5561960c4d873444d2d2d00d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultKey: Loiter
-  stateData:
-  - key: Loiter
-    state: {fileID: 8343707887077469859}
-    isWaitForEnd: 0
-    conditions:
-    - target: Move
-      checker: Check_5
-      value: 1
-    - target: Attack
-      checker: Check_2
-      value: 1
-  - key: Move
-    state: {fileID: 8343707887077469886}
-    isWaitForEnd: 0
-    conditions:
-    - target: Loiter
-      checker: Check_5
-      value: 0
-    - target: Attack
-      checker: Check_2
-      value: 1
-  - key: Attack
-    state: {fileID: 8343707887077469859}
-    isWaitForEnd: 1
-    conditions:
-    - target: Loiter
-      checker: Check_5
-      value: 0
-    - target: Move
-      checker: Check_2
-      value: 0
-  <CurrentData>k__BackingField:
-    key: 
-    state: {fileID: 0}
-    isWaitForEnd: 0
-    conditions: []
-  <Target>k__BackingField: {fileID: 0}
---- !u!114 &8343707887077469859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8343707887077469860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7206699e0f2e1144a8921cfd87618d76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8343707887077469886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8343707887077469860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25de64c0599c21e4390cefe8ae63cf19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minDistance: 0.01
---- !u!114 &8343707887077469857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8343707887077469860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aab125019a291704aaa9baa468684159, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Key>k__BackingField: Check_2
-  area: {fileID: 8343707887494953818}
-  filter:
-    useTriggers: 1
-    useLayerMask: 1
-    useDepth: 0
-    useOutsideDepth: 0
-    useNormalAngle: 0
-    useOutsideNormalAngle: 0
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 256
-    minDepth: 0
-    maxDepth: 0
-    minNormalAngle: 0
-    maxNormalAngle: 0
-  targetTag: Player
---- !u!114 &8343707887077469856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8343707887077469860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aab125019a291704aaa9baa468684159, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Key>k__BackingField: Check_5
-  area: {fileID: 8343707887117969040}
-  filter:
-    useTriggers: 1
-    useLayerMask: 1
-    useDepth: 0
-    useOutsideDepth: 0
-    useNormalAngle: 0
-    useOutsideNormalAngle: 0
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 256
-    minDepth: 0
-    maxDepth: 0
-    minNormalAngle: 0
-    maxNormalAngle: 0
-  targetTag: Player
 --- !u!1 &8343707887117969042
 GameObject:
   m_ObjectHideFlags: 0
