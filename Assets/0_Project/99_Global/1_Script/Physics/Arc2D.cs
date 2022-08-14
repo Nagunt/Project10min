@@ -16,52 +16,42 @@ namespace TenMinute.Physics
 
         private float _horizontalViewHalfAngle = 0f;
 
-        private List<Collider2D> hitedTargetContainer = new List<Collider2D>();
+        private List<Collider2D> container = new List<Collider2D>();
 
         private void Awake()
         {
             _horizontalViewHalfAngle = _horizontalViewAngle * 0.5f;
         }
 
-        private Vector3 AngleToDirZ(float angleInDegree)
-        {
-            float radian = (angleInDegree - transform.eulerAngles.z) * Mathf.Deg2Rad;
-            return new Vector3(Mathf.Sin(radian), Mathf.Cos(radian), 0f);
-        }
-
         public Collider2D[] GetTargets()
         {
-            hitedTargetContainer.Clear();
+            container.Clear();
 
             Vector2 originPos = transform.position;
-            Collider2D[] hitedTargets = Physics2D.OverlapCircleAll(originPos, _viewRadius, _targetMask);
+            Collider2D[] cols = Physics2D.OverlapCircleAll(originPos, _viewRadius, _targetMask);
             
-            foreach (Collider2D hitedTarget in hitedTargets)
+            foreach (Collider2D col in cols)
             {
-                float lookAngle = transform.localRotation.eulerAngles.z * Mathf.Deg2Rad;
-                Vector2 targetPos = hitedTarget.transform.position;
+                float lookAngle = transform.eulerAngles.z;
+                float lookRadian = lookAngle * Mathf.Deg2Rad;
+                Vector2 lookDir = new Vector2(Mathf.Cos(lookRadian), Mathf.Sin(lookRadian));
+                Vector2 targetPos = col.transform.position;
                 Vector2 dir = (targetPos - originPos).normalized;
-                Vector2 lookDir = new Vector2(Mathf.Cos(lookAngle), Mathf.Sin(lookAngle));
 
-                Debug.Log(lookDir);
-                // float angle = Vector3.Angle(lookDir, dir)
-                // 아래 두 줄은 위의 코드와 동일하게 동작함. 내부 구현도 동일
-                float dot = Vector2.Dot(lookDir, dir);
-                float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
-
+                float angle = Vector2.Angle(lookDir, dir);
 
                 if (angle <= _horizontalViewHalfAngle)
                 {
                     RaycastHit2D rayHitedTarget = Physics2D.Raycast(originPos, dir, _viewRadius, _obstacleMask);
                     if (!rayHitedTarget)
                     {
-                        hitedTargetContainer.Add(hitedTarget);
+                        container.Add(col);
                     }
                 }
             }
 
-            if (hitedTargetContainer.Count > 0)
-                return hitedTargetContainer.ToArray();
+            if (container.Count > 0)
+                return container.ToArray();
             else
                 return null;
         }
@@ -77,8 +67,14 @@ namespace TenMinute.Physics
 
                 Gizmos.DrawWireSphere(originPos, _viewRadius);
 
-                Vector3 horizontalRightDir = AngleToDirZ(-_horizontalViewHalfAngle);
-                Vector3 horizontalLeftDir = AngleToDirZ(_horizontalViewHalfAngle);
+                float angle = transform.eulerAngles.z;
+                float leftAngle = angle + _horizontalViewHalfAngle;
+                float rightAngle = angle - _horizontalViewHalfAngle;
+                float leftRadian = leftAngle * Mathf.Deg2Rad;
+                float rightRadian = rightAngle * Mathf.Deg2Rad;
+
+                Vector3 horizontalLeftDir = new Vector3(Mathf.Cos(leftRadian), Mathf.Sin(leftRadian), 0);
+                Vector3 horizontalRightDir = new Vector3(Mathf.Cos(rightRadian), Mathf.Sin(rightRadian), 0);
 
                 Debug.DrawRay(originPos, horizontalLeftDir * _viewRadius, Color.cyan);
                 Debug.DrawRay(originPos, horizontalRightDir * _viewRadius, Color.cyan);

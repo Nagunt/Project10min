@@ -34,7 +34,7 @@ namespace TenMinute {
             IEnumerator Routine()
             {
                 Vector2 direction = (target.transform.position - transform.position).normalized;
-                float angle = Vector2.Angle(Vector2.up, direction) + (direction.x > 0 ? 90f : 0f) + (direction.x > 0 && direction.y > 0 ? 180f : 0f);
+                float angle = Vector2.Angle(Vector2.right, direction) * (direction.y > 0 ? 1f : -1f);
                 attack.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
                 Debug.Log($"¼±µô·¹ÀÌ {(1 / ATKSpeed) * 0.125f}");
                 float deltaTime = 0;
@@ -50,9 +50,9 @@ namespace TenMinute {
                 attackSequence.
                     AppendInterval(0.5f).
                     AppendCallback(() => {
-                        attack.SetActive(false);
                         attack.onTriggerEnter2D -= OnHit;
-                        }).
+                        attack.SetActive(false);
+                    }).
                     Play();
 
                 Sequence moveSequence = DOTween.Sequence();
@@ -85,9 +85,9 @@ namespace TenMinute {
 
         private void OnHit(Collider2D col)
         {
-            Debug.Log(col.name);
             Character target = Hitbox2D.GetData(col.attachedRigidbody);
-            if (target != null)
+            if (target != null &&
+                target.CompareTag("Player"))
             {
                 Debug.Log($"target : {target.name}");
             }
