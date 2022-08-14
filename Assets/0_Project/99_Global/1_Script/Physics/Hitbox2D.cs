@@ -7,7 +7,7 @@ namespace TenMinute.Physics
     [RequireComponent(typeof(Rigidbody2D))]
     public class Hitbox2D : MonoBehaviour
     {
-        public static Dictionary<Rigidbody2D, Character> data = new Dictionary<Rigidbody2D, Character>();
+        private static Dictionary<Rigidbody2D, Character> data = new Dictionary<Rigidbody2D, Character>();
 
         public static Character GetData(Rigidbody2D key)
         {

@@ -34,18 +34,21 @@ namespace TenMinute.Physics
             hitedTargetContainer.Clear();
 
             Vector2 originPos = transform.position;
-            Collider2D[] hitedTargets = Physics2D.OverlapCircleAll(originPos, _viewRadius);
-
+            Collider2D[] hitedTargets = Physics2D.OverlapCircleAll(originPos, _viewRadius, _targetMask);
+            
             foreach (Collider2D hitedTarget in hitedTargets)
             {
+                float lookAngle = transform.localRotation.eulerAngles.z * Mathf.Deg2Rad;
                 Vector2 targetPos = hitedTarget.transform.position;
                 Vector2 dir = (targetPos - originPos).normalized;
-                Vector2 lookDir = Vector2.up;
+                Vector2 lookDir = new Vector2(Mathf.Cos(lookAngle), Mathf.Sin(lookAngle));
 
+                Debug.Log(lookDir);
                 // float angle = Vector3.Angle(lookDir, dir)
                 // 아래 두 줄은 위의 코드와 동일하게 동작함. 내부 구현도 동일
                 float dot = Vector2.Dot(lookDir, dir);
                 float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
+
 
                 if (angle <= _horizontalViewHalfAngle)
                 {

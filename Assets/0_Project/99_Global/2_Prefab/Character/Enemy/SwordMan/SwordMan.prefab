@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb2D: {fileID: 3086916682209849661}
-  attack: {fileID: 8624946212082689694}
+  attack: {fileID: 2442325331017373991}
 --- !u!114 &788780550750540990
 MonoBehaviour:
   m_ObjectHideFlags: 0

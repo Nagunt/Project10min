@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using TenMinute.Physics;
 
 namespace TenMinute {
     public class Enemy_SwordMan : Enemy {
 
         [SerializeField]
-        private GameObject attack;
+        private Area2D attack;
 
         public override void Init() {
             base.Init();
@@ -44,10 +45,21 @@ namespace TenMinute {
                 }
 
                 attack.SetActive(true);
+                attack.onTriggerEnter2D += OnHit;
                 Sequence attackSequence = DOTween.Sequence();
                 attackSequence.
                     AppendInterval(0.5f).
-                    AppendCallback(() => attack.SetActive(false)).
+                    AppendCallback(() => {
+                        attack.SetActive(false);
+                        attack.onTriggerEnter2D -= OnHit;
+                        }).
+                    Play();
+
+                Sequence moveSequence = DOTween.Sequence();
+                moveSequence.
+                    AppendCallback(() => rb2D.velocity = direction * (1 / ((1 / ATKSpeed) * 0.125f))).
+                    AppendInterval((1 / ATKSpeed) * 0.125f).
+                    AppendCallback(Stop).
                     Play();
 
                 Debug.Log($"공격모션 {(1 / ATKSpeed) * 0.125f}");
@@ -70,5 +82,15 @@ namespace TenMinute {
             }
         }
 
+
+        private void OnHit(Collider2D col)
+        {
+            Debug.Log(col.name);
+            Character target = Hitbox2D.GetData(col.attachedRigidbody);
+            if (target != null)
+            {
+                Debug.Log($"target : {target.name}");
+            }
+        }
     }
 }
