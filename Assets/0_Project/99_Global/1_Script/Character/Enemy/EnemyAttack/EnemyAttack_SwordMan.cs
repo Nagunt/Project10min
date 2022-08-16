@@ -30,9 +30,8 @@ namespace TenMinute {
             SetDirection((_target.transform.position - _owner.transform.position).normalized);
             transform.eulerAngles = new Vector3(0, 0, Vector2.Angle(Vector2.right, _dir) * (_dir.y > 0 ? 1f : -1f));
 
+            _owner.Animator.SetFloat("MotionTime", _owner.ATKSpeed);
             _owner.Animator.SetBool("IsAttack", true);
-            _owner.Animator.SetInteger("AttackPhase", 0);
-            _owner.Animator.SetFloat("MotionTime", 1 / (unitDelay * 0.125f));
 
             yield return waitForDelay;
 
@@ -50,7 +49,7 @@ namespace TenMinute {
                     _collider.gameObject.SetActive(true);
                     _graphic.gameObject.SetActive(true);
                 }).
-                AppendInterval(0.5f).
+                AppendInterval(unitDelay * 0.125f).
                 AppendCallback(() => {
                     _collider.gameObject.SetActive(false);
                     _graphic.gameObject.SetActive(false);
@@ -58,18 +57,12 @@ namespace TenMinute {
                 OnKill(() => attackCheckSequence = null).
                 Play();
 
-            _owner.Animator.SetInteger("AttackPhase", 1);
-            _owner.Animator.SetFloat("MotionTime", 1 / (unitDelay * 0.125f));
 
             yield return waitForDelay;
-
-            _owner.Animator.SetInteger("AttackPhase", 2);
-            _owner.Animator.SetFloat("MotionTime", 1 / (unitDelay * 0.75f));
 
             yield return waitForEndDelay;
 
             _owner.Animator.SetBool("IsAttack", false);
-            _owner.Animator.SetInteger("AttackPhase", 0);
 
             onComplete?.Invoke();
         }
