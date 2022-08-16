@@ -1,12 +1,20 @@
+using BehaviorDesigner.Runtime;
 using System;
+using System.Collections;
 using System.Linq;
+using TenMinute.Data;
+using TenMinute.Event;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace TenMinute {
     public class Character : MonoBehaviour {
-
         [SerializeField]
-        protected Rigidbody2D rb2D;
+        protected CharacterID _id;
+        [SerializeField]
+        protected Animator _animator;
+        [SerializeField]
+        protected Rigidbody2D _rb2D;
 
         #region Status
 
@@ -15,7 +23,9 @@ namespace TenMinute {
                 return _HP;
             }
             set {
+                int prev = _HP;
                 _HP = Mathf.Clamp(value, 0, MaxHP);
+                onHPValueChanged?.Invoke(prev, _HP);
             }
         }
         public int MaxHP {
@@ -91,7 +101,7 @@ namespace TenMinute {
                         증감비율 *= 값;
                     }
                 }
-                return Mathf.RoundToInt(스텟Speed * 증감비율 + 증감수치);
+                return 스텟Speed * 증감비율 + 증감수치;
             }
         }
         public float Poise {
@@ -110,7 +120,7 @@ namespace TenMinute {
                         증감비율 *= 값;
                     }
                 }
-                return Mathf.RoundToInt(스텟Poise * 증감비율 + 증감수치);
+                return 스텟Poise * 증감비율 + 증감수치;
             }
         }
         public float Weight {
@@ -129,7 +139,26 @@ namespace TenMinute {
                         증감비율 *= 값;
                     }
                 }
-                return Mathf.RoundToInt(스텟Weight * 증감비율 + 증감수치);
+                return 스텟Weight * 증감비율 + 증감수치;
+            }
+        }
+        public float ATKSpeed {
+            get {
+                float 증감수치 = 0;
+                float 증감비율 = 1.0f;
+                if (onCalcATKSpeed수치 != null) {
+                    foreach (var f in onCalcATKSpeed수치.GetInvocationList().Cast<Func<float>>()) {
+                        증감수치 += f();
+                    }
+                }
+                if (onCalcATKSpeed비율 != null) {
+                    foreach (var f in onCalcATKSpeed비율.GetInvocationList().Cast<Func<float>>()) {
+                        float 값 = f();
+                        if (값 <= 0) continue;
+                        증감비율 *= 값;
+                    }
+                }
+                return 스텟ATKSpeed * 증감비율 + 증감수치;
             }
         }
 
@@ -137,12 +166,15 @@ namespace TenMinute {
         // 이 수치는 게임 상에서 다른 증감수치에 의해서 변동되선 안된다.
 
         protected int _HP;
-        protected int 스텟HP;
-        protected int 스텟ATK;
-        protected int 스텟DEF;
-        protected float 스텟Speed;
-        protected float 스텟Poise;
-        protected float 스텟Weight;
+        [Header("- Status")]
+        [SerializeField] protected int 스텟HP;
+        [SerializeField] protected int 스텟ATK;
+        [SerializeField] protected int 스텟DEF;
+        [SerializeField] protected float 스텟Speed;
+        [SerializeField] protected float 스텟ATKSpeed;
+        [SerializeField] protected float 스텟Poise;
+        [SerializeField] protected float 스텟Weight;
+        
 
         // 스텟의 값을 결정하는데 사용될 추가 요소들.
 
@@ -152,6 +184,7 @@ namespace TenMinute {
         public Func<float> onCalcSpeed수치;
         public Func<float> onCalcPoise수치;
         public Func<float> onCalcWeight수치;
+        public Func<float> onCalcATKSpeed수치;
 
         public Func<float> onCalcMaxHP비율;
         public Func<float> onCalcATK비율;
@@ -159,6 +192,7 @@ namespace TenMinute {
         public Func<float> onCalcSpeed비율;
         public Func<float> onCalcPoise비율;
         public Func<float> onCalcWeight비율;
+        public Func<float> onCalcATKSpeed비율;
 
         // DataEntity에서 사용하는 Callback
 
@@ -171,35 +205,52 @@ namespace TenMinute {
         public On이벤트 onHP회복예정;
         public On이벤트 onHP회복;
 
-        // Physicx에서 사용하는 Callback
+        // UI등에서 사용할 Callback
 
-        public Action<Collision2D> onHitboxCollisionEnter;
-        public Action<Collision2D> onHitboxCollisionStay;
-        public Action<Collision2D> onHitboxCollisionExit;
-
-        public Action<Collider2D> onHitboxTriggerEnter;
-        public Action<Collider2D> onHitboxTriggerStay;
-        public Action<Collider2D> onHitboxTriggerExit;
+        public Action<int, int> onHPValueChanged;
 
         #endregion
 
+        [Header("- AI")]
+        [SerializeField] protected bool _isNPC;
+        [SerializeField] protected BehaviorTree _behaviorTree;
+
+        public CharacterID ID => _id;
+        public Animator Animator => _animator;
+        public Rigidbody2D RB2D => _rb2D;
         public bool IsAlive => IsInit && IsDead == false && IsDispose == false;
-        public bool IsInit { get; protected set; }
+        public bool IsNPC => _isNPC;
+        public bool IsInit { get; protected set; } = false;
         public bool IsDead { get; protected set; }
         public bool IsDispose { get; protected set; }
 
-        private void Awake() {
+        private void Start() {
             if (IsInit == false) {
                 Init();
             }
         }
 
+        public virtual void Move(Vector2 dir) {
+            RB2D.velocity = dir.normalized * Speed;
+            Animator.SetBool("IsMove", true);
+        }
+
+        public virtual void Stop() {
+            RB2D.velocity = Vector2.zero;
+            Animator.SetBool("IsMove", false);
+        }
+
         public virtual void Init() {
+            HP = MaxHP;
             IsInit = true;
         }
 
         public virtual void Dead() {
             IsDead = true;
+        }
+
+        public virtual void AttackToTarget(Character target, UnityAction onComplete) {
+            onComplete?.Invoke();
         }
 
         public virtual void Dispose() {

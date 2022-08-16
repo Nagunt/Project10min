@@ -5,11 +5,18 @@ using TenMinute.Event;
 
 namespace TenMinute {
     public class Portal : MonoBehaviour {
-        [SerializeField]
-        private int portalIndex;
+
+        private int _index = 0;
+        private bool isInit = false;
+        public void Init(int index) {
+            isInit = true;
+            _index = index;
+        }
         private void OnTriggerEnter2D(Collider2D collision) {
-            if (collision.CompareTag("Player")) {
-                Global_EventSystem.Game.CallOnPortalArrived(portalIndex);
+            if (isInit) {
+                if (collision.CompareTag("Player")) {
+                    Global_EventSystem.Game.CallOnPortalArrived(_index);
+                }
             }
         }
     }

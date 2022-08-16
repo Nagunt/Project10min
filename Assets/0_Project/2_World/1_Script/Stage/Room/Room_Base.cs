@@ -10,21 +10,13 @@ namespace TenMinute {
         [SerializeField]
         private Grid grid;
         [SerializeField]
-        private GameObject portal;
+        private PortalController portalController;
         public Grid Grid => grid;
-
         public bool IsCleared { get; protected set; }
+        public PortalController PortalController => portalController;
         public virtual void Init() {
             IsCleared = false;
-            portal.SetActive(false);
-            Global_EventSystem.Game.onRoomCleared += OnRoomCleared;
-        }
-
-        protected virtual void OnRoomCleared(int index) {
-            portal.SetActive(true);
-        }
-        private void OnDestroy() {
-            Global_EventSystem.Game.onRoomCleared -= OnRoomCleared;
+            Global_EventSystem.UI.Call(UI.UIEventID.World_InGameUIMap¼³Á¤, this);
         }
     }
 }

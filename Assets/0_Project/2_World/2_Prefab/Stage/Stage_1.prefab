@@ -48,5 +48,3 @@ MonoBehaviour:
   maxRoomIndex: 9
   rooms:
   - {fileID: 3244354606750524035, guid: 826ab51ea8da9424b8c1bbdb68d69173, type: 3}
-  - {fileID: 7118041990150458296, guid: ab0555a802275064bbe114a65a03ff32, type: 3}
-  - {fileID: 3731140242539429377, guid: 669068a7d5a38d0489a19e675abe17e9, type: 3}
