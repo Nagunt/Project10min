@@ -219,6 +219,7 @@ namespace TenMinute {
         public Animator Animator => _animator;
         public Rigidbody2D RB2D => _rb2D;
         public bool IsAlive => IsInit && IsDead == false && IsDispose == false;
+        public bool IsNPC => _isNPC;
         public bool IsInit { get; protected set; } = false;
         public bool IsDead { get; protected set; }
         public bool IsDispose { get; protected set; }

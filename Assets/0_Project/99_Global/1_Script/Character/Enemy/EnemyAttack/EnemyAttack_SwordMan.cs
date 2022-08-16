@@ -30,7 +30,7 @@ namespace TenMinute {
             SetDirection((_target.transform.position - _owner.transform.position).normalized);
             transform.eulerAngles = new Vector3(0, 0, Vector2.Angle(Vector2.right, _dir) * (_dir.y > 0 ? 1f : -1f));
 
-            _owner.Animator.SetFloat("MotionTime", _owner.ATKSpeed);
+            _owner.Animator.SetFloat("AttackSpeed", _owner.ATKSpeed);
             _owner.Animator.SetBool("IsAttack", true);
 
             yield return waitForDelay;
@@ -68,7 +68,7 @@ namespace TenMinute {
         }
 
         private void OnHit(Collider2D col) {
-            Character target = Hitbox2D.GetData(col.attachedRigidbody);
+            Character target = PhysicsCollider2D.GetData(col);
             if (target != null &&
                 target.CompareTag("Player")) {
                 Debug.Log("Player Hit");

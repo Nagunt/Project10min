@@ -13,7 +13,6 @@ namespace TenMinute.AI
 
         public override void OnStart()
         {
-            Debug.Log("Attack To Target Ω√¿€");
             isComplete = false;
             character.Value.AttackToTarget(
                 otherCharacter.Value,

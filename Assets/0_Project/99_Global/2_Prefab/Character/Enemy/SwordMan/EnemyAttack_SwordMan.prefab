@@ -206,8 +206,8 @@ GameObject:
   - component: {fileID: 1145174005675711251}
   - component: {fileID: 6271147105407700403}
   - component: {fileID: 6099319377732413249}
-  m_Layer: 9
-  m_Name: Hitbox
+  m_Layer: 7
+  m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -244,7 +244,7 @@ MonoBehaviour:
   _viewRadius: 2
   _targetMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 256
   _obstacleMask:
     serializedVersion: 2
     m_Bits: 0
