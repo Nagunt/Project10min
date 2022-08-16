@@ -23,6 +23,7 @@ namespace TenMinute {
 
         [SerializeField]
         float PlayerSpeed;
+        
 
 
         #region 임시 변수
@@ -30,7 +31,8 @@ namespace TenMinute {
         GameObject tempPointerObject;
         [SerializeField]
         float tempFireRange;
-
+        [SerializeField]
+        float tempPlayerAttackAngle;
         #endregion
         private void Start() 
         {
@@ -76,7 +78,7 @@ namespace TenMinute {
                     {
                         Debug.Log("Attack");
                         fire = true;
-                        playerFire();
+                        PlayerFire();
                     }
                     else
                     {
@@ -105,15 +107,22 @@ namespace TenMinute {
             return ActionType.None;
         }
 
-        void playerFire()
+        void PlayerFire()
         {
 
             Collider2D[] inHitBox = Physics2D.OverlapCircleAll(transform.position, tempFireRange);
+            Vector3 templook = look;
 
             foreach (Collider2D t in inHitBox)
             {
-                Debug.LogWarning("Hit!");
-                t.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                float angle = Vector2.Angle(templook - transform.position, t.transform.position - transform.position);
+                if (angle < tempPlayerAttackAngle / 2)
+                {
+                    Debug.LogWarning("Hit!");
+                    t.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                }
+                
+                
                 
             }
         }
