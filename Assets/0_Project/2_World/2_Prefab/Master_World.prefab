@@ -87,6 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abb69da1c47ac9c4abb8c4513b8a4be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Keys: 01000000
-  m_Values:
-  - {fileID: 115621316503368819, guid: 1aa3c0da462831447aaa41d0c72de22a, type: 3}
+  data:
+    m_keys: 01000000
+    m_values:
+    - {fileID: 115621316503368819, guid: 1aa3c0da462831447aaa41d0c72de22a, type: 3}

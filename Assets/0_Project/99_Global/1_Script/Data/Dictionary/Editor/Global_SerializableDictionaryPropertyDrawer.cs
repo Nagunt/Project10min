@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TenMinute.Data {
 
-    [CustomPropertyDrawer(typeof(AIActionDictionary))]
+    [CustomPropertyDrawer(typeof(StageDataDictionary))]
     public class AnySerializableDictionaryPropertyDrawer : SerializableDictionaryPropertyDrawer { }
 
     public class AnySerializableDictionaryStoragePropertyDrawer : SerializableDictionaryStoragePropertyDrawer { }

@@ -12,6 +12,8 @@ namespace TenMinute {
         [SerializeField]
         protected CharacterID _id;
         [SerializeField]
+        protected Animator _animator;
+        [SerializeField]
         protected Rigidbody2D _rb2D;
 
         #region Status
@@ -214,6 +216,7 @@ namespace TenMinute {
         [SerializeField] protected BehaviorTree _behaviorTree;
 
         public CharacterID ID => _id;
+        public Animator Animator => _animator;
         public Rigidbody2D RB2D => _rb2D;
         public bool IsAlive => IsInit && IsDead == false && IsDispose == false;
         public bool IsInit { get; protected set; } = false;
@@ -227,11 +230,13 @@ namespace TenMinute {
         }
 
         public virtual void Move(Vector2 dir) {
-            _rb2D.velocity = dir.normalized * Speed;
+            RB2D.velocity = dir.normalized * Speed;
+            Animator.SetBool("IsMove", true);
         }
 
         public virtual void Stop() {
-            _rb2D.velocity = Vector2.zero;
+            RB2D.velocity = Vector2.zero;
+            Animator.SetBool("IsMove", false);
         }
 
         public virtual void Init() {

@@ -5,7 +5,4 @@ using UnityEngine;
 
 namespace TenMinute.Data {
 
-    [Serializable]
-    public class AIActionDictionary : SerializableDictionary<string, string> { }
-
 }
