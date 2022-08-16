@@ -1,11 +1,11 @@
 using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
+using TenMinute.AI.SharedVariables;
 using UnityEngine;
 
 namespace TenMinute.AI
 {
-    public class Wondering : Action
-    {
+    public class Wondering : Action {
         private Vector2[] dir = new Vector2[] { Vector2.left, Vector2.right, Vector2.up, Vector2.down };
         private float range;
         private Vector2 direction;

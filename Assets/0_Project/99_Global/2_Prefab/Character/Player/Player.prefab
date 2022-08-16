@@ -151,7 +151,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31037930194b53e4e925755a4df5f5c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb2D: {fileID: 2182647003091478988}
+  _id: 1
+  _rb2D: {fileID: 2182647003091478988}
+  "\uC2A4\uD15FHP": 0
+  "\uC2A4\uD15FATK": 0
+  "\uC2A4\uD15FDEF": 0
+  "\uC2A4\uD15FSpeed": 0
+  "\uC2A4\uD15FATKSpeed": 0
+  "\uC2A4\uD15FPoise": 0
+  "\uC2A4\uD15FWeight": 0
+  _isNPC: 0
+  _behaviorTree: {fileID: 0}
   playerInput: {fileID: 2182647003091478990}
 --- !u!1 &2182647004181961334
 GameObject:

@@ -1,8 +1,7 @@
 using BehaviorDesigner.Runtime;
 using UnityEngine;
 
-namespace TenMinute.AI
-{
+namespace TenMinute.AI.SharedVariables {
     [System.Serializable]
     public class SharedCollider2D : SharedVariable<Collider2D>
     {

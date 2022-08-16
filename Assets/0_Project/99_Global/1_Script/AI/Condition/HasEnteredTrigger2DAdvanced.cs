@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using TenMinute.Physics;
 using TooltipAttribute = BehaviorDesigner.Runtime.Tasks.TooltipAttribute;
+using TenMinute.AI.SharedVariables;
 
 namespace TenMinute.AI
 {

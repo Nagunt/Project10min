@@ -1,11 +1,11 @@
 using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
+using TenMinute.AI.SharedVariables;
 using UnityEngine;
 
 namespace TenMinute.AI
 {
-    public class MoveToTarget : Action
-    {
+    public class MoveToTarget : Action {
         public SharedCharacter character;
         public SharedCharacter otherCharacter;
         public float minDistance = 0.01f;

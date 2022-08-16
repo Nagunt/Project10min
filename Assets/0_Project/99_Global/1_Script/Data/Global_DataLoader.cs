@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
+using UnityEditor;
 
 namespace TenMinute.Data {
     public class Global_DataLoader<K, V> : MonoBehaviour {
@@ -11,6 +12,7 @@ namespace TenMinute.Data {
         [SerializeField]
         private List<V> m_Values;
 
+ 
         protected ReadOnlyDictionary<K, V> m_data;
 
         public ReadOnlyDictionary<K, V> ToData() {

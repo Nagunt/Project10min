@@ -19,6 +19,10 @@ namespace TenMinute.Physics
         public Action<Collider2D> onTriggerStay2D;
         public Action<Collider2D> onTriggerExit2D;
 
+        public Action<Collision2D> onCollisionEnter2D;
+        public Action<Collision2D> onCollisionStay2D;
+        public Action<Collision2D> onCollisionExit2D;
+
         private void FixedUpdate() {
             if (isArc) {
                 Collider2D[] cols = arc2D.GetTargets();
@@ -48,54 +52,16 @@ namespace TenMinute.Physics
             }
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            onTriggerEnter2D?.Invoke(collision);
+        private void OnCollisionEnter2D(Collision2D collision) {
+            onCollisionEnter2D?.Invoke(collision);
         }
 
-        private void OnTriggerStay2D(Collider2D collision)
-        {
-            onTriggerStay2D?.Invoke(collision);
+        private void OnCollisionStay2D(Collision2D collision) {
+            onCollisionStay2D?.Invoke(collision);
         }
 
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            onTriggerExit2D?.Invoke(collision);
-        }
-
-        public void Clear()
-        {
-            checker.Clear();
-            container.Clear();
-            if (onTriggerEnter2D != null)
-            {
-                foreach (Delegate e in onTriggerEnter2D.GetInvocationList())
-                {
-                    onTriggerEnter2D -= (Action<Collider2D>)e;
-                }
-            }
-            if (onTriggerStay2D != null)
-            {
-                foreach (Delegate e in onTriggerStay2D.GetInvocationList())
-                {
-                    onTriggerStay2D -= (Action<Collider2D>)e;
-                }
-            }
-            if (onTriggerExit2D != null)
-            {
-                foreach (Delegate e in onTriggerExit2D.GetInvocationList())
-                {
-                    onTriggerExit2D -= (Action<Collider2D>)e;
-                }
-            }
-        }
-
-        public void SetActive(bool state)
-        {
-            gameObject.SetActive(state);
-            if (!state) {
-                Clear();
-            }
+        private void OnCollisionExit2D(Collision2D collision) {
+            onCollisionExit2D?.Invoke(collision);
         }
     }
 }
