@@ -356,7 +356,7 @@ MonoBehaviour:
   <move>k__BackingField: {x: 0, y: 0}
   <look>k__BackingField: {x: 0, y: 0}
   <fire>k__BackingField: 0
-  PlayerSpeed: 0.1
+  PlayerSpeed: 5
   tempPointerObject: {fileID: 1796732061}
   tempFireRange: 2
   tempPlayerAttackAngle: 120

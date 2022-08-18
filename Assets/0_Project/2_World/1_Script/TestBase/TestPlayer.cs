@@ -31,16 +31,18 @@ namespace TenMinute {
         float tempFireRange;
         [SerializeField]
         float tempPlayerAttackAngle;
-        #endregion
 
-        [Header ("TempAttackEffect")]
+        [Header("TempAttackEffect")]
         [SerializeField]
         LineRenderer tempLineRenderer;
         [SerializeField]
         int LineSegment;
+        #endregion
 
 
-        
+        Rigidbody2D rb2;
+
+
         private void Start() 
         {
             _actionSet = new Dictionary<ActionType, InputAction>();
@@ -62,6 +64,8 @@ namespace TenMinute {
             }
             
             playerInput.onActionTriggered += OnActionTriggered;
+            rb2 = GetComponent<Rigidbody2D>();
+            
         }
 
         private void OnActionTriggered(InputAction.CallbackContext obj) {
@@ -73,6 +77,7 @@ namespace TenMinute {
             {
                 case ActionType.Move:
                     move = obj.ReadValue<Vector2>();
+                    rb2.velocity = (Vector3)move * PlayerSpeed;
                     break;
                 case ActionType.Look:
                     
@@ -100,11 +105,12 @@ namespace TenMinute {
             
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
-            transform.position += (Vector3)move * PlayerSpeed;
+            
             
         }
+        
 
         private ActionType GetActionType(string name)
         {
