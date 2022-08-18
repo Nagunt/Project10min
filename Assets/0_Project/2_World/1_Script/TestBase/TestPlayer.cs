@@ -31,6 +31,12 @@ namespace TenMinute {
         float tempPlayerAttackAngle;
         [SerializeField]
         float tempPlayerATKSpeed = 100;
+        [SerializeField]
+        float tempPlayerDashCoolDown = 0.5f;
+        [SerializeField]
+        float tempPlayerDashTime = 0.3f;
+        [SerializeField]
+        float tempPlayerDistance = 4f;
 
         [Header("TempAttackEffect")]
         [SerializeField]
@@ -47,6 +53,9 @@ namespace TenMinute {
 
         Rigidbody2D RB2D;
         bool isAttack;
+        bool dash;
+        bool isDash;
+        Vector3 DashVector;
 
         private void Start() 
         {
@@ -71,6 +80,7 @@ namespace TenMinute {
             playerInput.onActionTriggered += OnActionTriggered;
             RB2D = GetComponent<Rigidbody2D>();
             StartCoroutine(PlayerFire());
+            StartCoroutine(PlayerDash());
         }
 
         private void OnActionTriggered(InputAction.CallbackContext obj) {
@@ -103,6 +113,15 @@ namespace TenMinute {
                         fire = false;
                     }                    
                     break;
+                case ActionType.Dash:
+                    if(obj.action.phase == InputActionPhase.Started)
+                    {
+                        dash = true;
+                        Debug.Log("Dash");
+                    }
+                    
+                    break;
+                
                 case ActionType.None:
                     //Debug.Log("정의되지 않음");
                     break;
@@ -112,8 +131,14 @@ namespace TenMinute {
 
         private void FixedUpdate()
         {
-            RB2D.velocity = (isAttack || fire) ? Vector3.zero : (Vector3)move * PlayerSpeed;
-
+            if(isDash)
+            {
+                RB2D.velocity = DashVector;
+            }
+            else
+            {
+                RB2D.velocity = (isAttack || fire) ? Vector3.zero : (Vector3)move * PlayerSpeed;
+            }
         }
         
 
@@ -159,6 +184,22 @@ namespace TenMinute {
             }
             
         }
+        IEnumerator PlayerDash()
+        {
+            while (true)
+            {
+                yield return new WaitUntil(() => dash == true);
+                isDash = true;
+                DashVector = move * tempPlayerDistance / tempPlayerDashTime;
+
+
+                yield return new WaitForSeconds(tempPlayerDashTime);
+                isDash = false;
+                yield return new WaitForSeconds(tempPlayerDashCoolDown);
+                dash = false;
+            }
+
+        }
         IEnumerator CreateCircle(float radius, float angle, float angleRange, Vector3 position)
         {
             float x, y;
@@ -187,7 +228,7 @@ namespace TenMinute {
         None = 0,
         Move,
         Look,
-        Fire
-        
+        Fire,
+        Dash
     }
 }
