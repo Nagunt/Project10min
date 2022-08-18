@@ -26,22 +26,27 @@ namespace TenMinute {
         [SerializeField]
         float PlayerSpeed;
         [SerializeField]
-        GameObject tempPointerObject;
-        [SerializeField]
         float tempFireRange;
         [SerializeField]
         float tempPlayerAttackAngle;
+        [SerializeField]
+        float tempPlayerATKSpeed = 100;
 
         [Header("TempAttackEffect")]
         [SerializeField]
         LineRenderer tempLineRenderer;
         [SerializeField]
-        int LineSegment;
+        int tempLineSegment;
+
+        [Header("TempWeaponSetting")]
+        [SerializeField]
+        float tempWeaponATKSpeed;
+
         #endregion
 
 
-        Rigidbody2D rb2;
-
+        Rigidbody2D RB2D;
+        bool isAttack;
 
         private void Start() 
         {
@@ -64,8 +69,8 @@ namespace TenMinute {
             }
             
             playerInput.onActionTriggered += OnActionTriggered;
-            rb2 = GetComponent<Rigidbody2D>();
-            
+            RB2D = GetComponent<Rigidbody2D>();
+            StartCoroutine(PlayerFire());
         }
 
         private void OnActionTriggered(InputAction.CallbackContext obj) {
@@ -77,12 +82,12 @@ namespace TenMinute {
             {
                 case ActionType.Move:
                     move = obj.ReadValue<Vector2>();
-                    rb2.velocity = (Vector3)move * PlayerSpeed;
+                    
                     break;
                 case ActionType.Look:
                     
                     look = Camera.main.ScreenToWorldPoint( obj.ReadValue<Vector2>());
-                    tempPointerObject.transform.position = look;
+                    
 
                     break;
                 case ActionType.Fire:
@@ -90,9 +95,9 @@ namespace TenMinute {
                     {
                         Debug.Log("Attack");
                         fire = true;
-                        PlayerFire();
+                        
                     }
-                    else
+                    else if(obj.action.phase == InputActionPhase.Canceled)
                     {
                         Debug.Log($"Attack {obj.action.phase}");
                         fire = false;
@@ -107,8 +112,8 @@ namespace TenMinute {
 
         private void FixedUpdate()
         {
-            
-            
+            RB2D.velocity = (isAttack || fire) ? Vector3.zero : (Vector3)move * PlayerSpeed;
+
         }
         
 
@@ -123,44 +128,53 @@ namespace TenMinute {
 
         
 
-        void PlayerFire()
+        IEnumerator PlayerFire()
         {
-            Vector3 templook = look;
-            
-
-            Collider2D[] inHitBox = Physics2D.OverlapCircleAll(transform.position, tempFireRange);
-
-            StartCoroutine(CreateCircle(tempFireRange, Mathf.Atan2(look.y - transform.position.y, look.x - transform.position.x) * Mathf.Rad2Deg, tempPlayerAttackAngle, transform.position));
-
-
-            foreach (Collider2D t in inHitBox)
+            while(true)
             {
-                float angle = Vector2.Angle(templook - transform.position, t.transform.position - transform.position);
-                if (angle < tempPlayerAttackAngle / 2 && t.CompareTag("Enemy"))
+                yield return new WaitUntil(() => fire == true);
+                isAttack = true;
+                Vector3 templook = look;
+
+
+                Collider2D[] inHitBox = Physics2D.OverlapCircleAll(transform.position, tempFireRange);
+
+                StartCoroutine(CreateCircle(tempFireRange, Mathf.Atan2(look.y - transform.position.y, look.x - transform.position.x) * Mathf.Rad2Deg, tempPlayerAttackAngle, transform.position));
+
+
+                foreach (Collider2D t in inHitBox)
                 {
-                    t.GetComponent<TestEnemy>().GetDamaged();
+                    float angle = Vector2.Angle(templook - transform.position, t.transform.position - transform.position);
+                    if (angle < tempPlayerAttackAngle / 2 && t.CompareTag("Enemy"))
+                    {
+                        t.GetComponent<TestEnemy>().GetDamaged();
+                    }
+
+
+
                 }
-                
-                
-                
+
+                yield return new WaitForSeconds(tempWeaponATKSpeed * 100 / tempPlayerATKSpeed);
+                isAttack = false;
             }
+            
         }
         IEnumerator CreateCircle(float radius, float angle, float angleRange, Vector3 position)
         {
             float x, y;
             float tempAngle = angle - angleRange/2;
-            tempLineRenderer.positionCount = LineSegment + 1;
+            tempLineRenderer.positionCount = tempLineSegment + 1;
             tempLineRenderer.enabled = true;
 
-            for (int i = 0; i<LineSegment + 1; i++)
+            for (int i = 0; i < tempLineSegment + 1; i++)
             {
                 x = Mathf.Cos(Mathf.Deg2Rad * tempAngle) * radius + position.x;
                 y = Mathf.Sin(Mathf.Deg2Rad * tempAngle) * radius + position.y;
 
                 tempLineRenderer.SetPosition(i, new Vector3(x, y, -5));
-                tempAngle += angleRange / LineSegment;
+                tempAngle += angleRange / tempLineSegment;
             }
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(tempWeaponATKSpeed * 100 / tempPlayerATKSpeed * 0.8f);
             tempLineRenderer.enabled = false;
         }
 
