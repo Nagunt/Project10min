@@ -9,7 +9,5 @@ namespace TenMinute.UI {
     public enum UIEventID {
 
         World_InGameUIHP설정,
-        World_InGameUIMap설정,
-        World_InGameUIMap업데이트,
     }
 }

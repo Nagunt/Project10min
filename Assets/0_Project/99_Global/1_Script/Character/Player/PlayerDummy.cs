@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using TenMinute.Event;
 using UnityEngine;
 
-public class PlayerDummy : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+namespace TenMinute {
+    public class PlayerDummy : Character {
+        public override void Init() {
+            base.Init();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+            Entity.Create(
+                source : null, 
+                target : this).
+                Add효과부여(Data.EffectID.효과1, 1, 5f).
+                Execute();
+
+            onHPValueChanged += OnHPValueChanged;
+        }
+
+        private void OnHPValueChanged(int prev, int current) {
+            Global_EventSystem.UI.Call(UI.UIEventID.World_InGameUIHP설정, current);
+        }
     }
 }

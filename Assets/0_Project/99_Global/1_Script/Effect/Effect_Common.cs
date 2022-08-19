@@ -15,6 +15,7 @@ namespace TenMinute {
 
         public override void OnDisable() {
             Owner.onCalcDEF수치 -= OnCalcDEF수치;
+            Debug.Log("효과1해제");
             base.OnDisable();
         }
 

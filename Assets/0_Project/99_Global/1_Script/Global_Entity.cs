@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TenMinute.Data;
 using UnityEngine;
 
@@ -147,6 +148,13 @@ namespace TenMinute {
             return default;
         }
 
+        public T Get커스텀데이터<T>(EntityDataKey key) {
+            if(_커스텀데이터.TryGetValue(key, out object value)) {
+                return (T)value;
+            }
+            return default;
+        }
+
         public void Set커스텀데이터<T>(EntityDataKey key, T value) {
             if (_커스텀데이터.TryGetValue(key, out _)) {
                 _커스텀데이터[key] = value;
@@ -175,7 +183,7 @@ namespace TenMinute {
         }
 
         public void Execute() {
-            Debug.Log($"Data Entity 실행\n타입:{_type}\n주체:{주체}\n대상:{대상}");
+            Debug.Log($"Data Entity 실행 타입:{_type} 주체:{주체} 대상:{대상}");
             if (대상 == null) {
                 Debug.Log("대상은 null이 될 수 없습니다.");
                 return;
@@ -185,8 +193,25 @@ namespace TenMinute {
                         if (주체 != null) {
                             ExecuteCallback(주체.on피해예정);
                         }
-
                         ExecuteCallback(대상.on피해예정);
+                        float 방어력계산데이터 = 실수데이터 - 대상.DEF;
+
+                        float 증감수치 = 0;
+                        float 증감비율 = 1.0f;
+                        if (onCalc커스텀데이터수치[EntityDataKey.데이터] != null) {
+                            foreach (var f in onCalc커스텀데이터수치[EntityDataKey.데이터].GetInvocationList().Cast<Func<float>>()) {
+                                증감수치 += f();
+                            }
+                        }
+                        if (onCalc커스텀데이터비율[EntityDataKey.데이터] != null) {
+                            foreach (var f in onCalc커스텀데이터비율[EntityDataKey.데이터].GetInvocationList().Cast<Func<float>>()) {
+                                float 값 = f();
+                                if (값 <= 0) continue;
+                                증감비율 *= 값;
+                            }
+                        }
+                        Set커스텀데이터(EntityDataKey.데이터, Mathf.RoundToInt(방어력계산데이터 * 증감비율 + 증감수치));
+
                         if (정수데이터 > 0) {
                             대상.Damage(정수데이터);
                             if (주체 != null) {
@@ -421,13 +446,14 @@ namespace TenMinute {
             return 최상위엔티티;
         }
 
-        public void Execute() {
+        public Entity Execute() {
             for (int i = 0; i < _dataEntity.Count; ++i) {
                 _dataEntity[i].Execute();
             }
             for (int i = 0; i < _하위엔티티.Count; ++i) {
                 _하위엔티티[i].Execute();
             }
+            return this;
         }
     }
 }
