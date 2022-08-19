@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TenMinute.Data;
 using UnityEngine;
 
 namespace TenMinute {
@@ -13,16 +14,19 @@ namespace TenMinute {
             데이터,
             경직,
             넉백,
-            효과
+            효과,
+            지속시간,
+            유물
         }
         public enum DataEntityType {
             None = 0,
             HP회복,
             피해,               // '공격 시', '피격 시' 효과가 발생
             추가피해,           // '공격 시', '피격 시' 효과가 발생하지 않음
-            효과부여,
-            효과회수,
-            효과제거,
+            효과부여,           // 효과를 부여
+            효과회수,           // 효과를 일정 부분 회수
+            효과제거,           // 효과를 아예 제거
+            유물획득,
         }
 
         Entity _parent;
@@ -60,7 +64,6 @@ namespace TenMinute {
                 }
             }
         }
-
         public float 경직 {
             get {
                 try {
@@ -71,7 +74,6 @@ namespace TenMinute {
                 }
             }
         }
-
         public float 넉백 {
             get {
                 try {
@@ -79,6 +81,36 @@ namespace TenMinute {
                 }
                 catch (Exception) {
                     return 0;
+                }
+            }
+        }
+        public EffectID 효과 {
+            get {
+                try {
+                    return (EffectID)Get커스텀데이터(EntityDataKey.효과);
+                }
+                catch (Exception) {
+                    return EffectID.None;
+                }
+            }
+        }
+        public float 지속시간 {
+            get {
+                try {
+                    return Convert.ToSingle(Get커스텀데이터(EntityDataKey.지속시간));
+                }
+                catch (Exception) {
+                    return 0;
+                }
+            }
+        }
+        public ArtifactID 유물 {
+            get {
+                try {
+                    return (ArtifactID)Get커스텀데이터(EntityDataKey.유물);
+                }
+                catch (Exception) {
+                    return ArtifactID.None;
                 }
             }
         }
@@ -202,6 +234,86 @@ namespace TenMinute {
                         }
                     }
                     break;
+                case DataEntityType.유물획득: {
+                        ExecuteCallback(대상.onArtifact획득예정);
+                        if (유물 != ArtifactID.None) {
+                            Artifact newArtifact = Artifact.
+                                Create(유물).
+                                SetOwner(대상);
+                            if (newArtifact != null) {
+                                대상.AddArtifact(newArtifact);
+                            }
+                            ExecuteCallback(대상.onArtifact획득);
+                        }
+                    }
+                    break;
+                case DataEntityType.효과부여: {
+                        if (대상.IsImmune(효과)) return;
+                        if (주체 != null) {
+                            ExecuteCallback(주체.onEffect부여예정);
+                        }
+                        ExecuteCallback(대상.onEffect부여예정);
+                        if (정수데이터 > 0) {
+                            Effect newEffect = Effect.
+                                Create(효과).
+                                SetOwner(대상).
+                                SetValue(정수데이터).
+                                SetDuration(지속시간);
+
+                            if (대상.HasEffect(효과)) {
+                                대상.GetEffect(효과).Merge(newEffect);
+                            }
+                            else {
+                                대상.AddEffect(newEffect);
+                                newEffect.OnEnable();
+                            }
+                            if (주체 != null) {
+                                ExecuteCallback(주체.onEffect부여);
+                            }
+                            ExecuteCallback(대상.onEffect부여);
+                        }
+                    }
+                    break;
+                case DataEntityType.효과회수: {
+                        if (대상.IsImmune(효과)) return;
+                        if (대상.HasEffect(효과) == false) return;
+                        if (주체 != null) {
+                            ExecuteCallback(주체.onEffect회수예정);
+                        }
+                        ExecuteCallback(대상.onEffect회수예정);
+                        if (정수데이터 > 0) {
+                            Effect newEffect = Effect.
+                                Create(효과).
+                                SetOwner(대상).
+                                SetValue(정수데이터).
+                                SetDuration(지속시간);
+
+                            대상.GetEffect(효과).Subtract(newEffect);
+                            if (주체 != null) {
+                                ExecuteCallback(주체.onEffect회수);
+                            }
+                            ExecuteCallback(대상.onEffect회수);
+                        }
+                    }
+                    break;
+                case DataEntityType.효과제거: {
+                        if (대상.IsImmune(효과)) return;
+                        if (대상.HasEffect(효과) == false) return;
+                        if (주체 != null) {
+                            ExecuteCallback(주체.onEffect제거예정);
+                        }
+                        ExecuteCallback(대상.onEffect제거예정);
+                        if (정수데이터 > 0) {
+                            Effect targetEffect = 대상.GetEffect(효과);
+                            targetEffect.OnDisable();
+                            대상.RemoveEffect(효과);
+                            if (주체 != null) {
+                                ExecuteCallback(주체.onEffect제거);
+                            }
+                            ExecuteCallback(대상.onEffect제거);
+                        }
+                    }
+                    break;
             }
 
             void ExecuteCallback(On이벤트 이벤트) {
@@ -270,6 +382,22 @@ namespace TenMinute {
             dataEntity.Set커스텀데이터(DataEntity.EntityDataKey.데이터, value);
             dataEntity.Set커스텀데이터(DataEntity.EntityDataKey.경직, 경직);
             dataEntity.Set커스텀데이터(DataEntity.EntityDataKey.넉백, 넉백);
+            _dataEntity.Add(dataEntity);
+            return this;
+        }
+
+        public Entity Add효과부여(EffectID id, int amount = 1, float duration = 0f) {
+            DataEntity dataEntity = new DataEntity(this, DataEntity.DataEntityType.효과부여, _주체, _대상);
+            dataEntity.Set커스텀데이터(DataEntity.EntityDataKey.효과, id);
+            dataEntity.Set커스텀데이터(DataEntity.EntityDataKey.데이터, amount);
+            dataEntity.Set커스텀데이터(DataEntity.EntityDataKey.지속시간, duration);
+            _dataEntity.Add(dataEntity);
+            return this;
+        }
+
+        public Entity Add유물획득(ArtifactID id) {
+            DataEntity dataEntity = new DataEntity(this, DataEntity.DataEntityType.유물획득, _주체, _대상);
+            dataEntity.Set커스텀데이터(DataEntity.EntityDataKey.유물, id);
             _dataEntity.Add(dataEntity);
             return this;
         }
