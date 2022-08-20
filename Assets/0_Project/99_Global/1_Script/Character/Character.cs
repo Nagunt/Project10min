@@ -1,6 +1,7 @@
 using BehaviorDesigner.Runtime;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TenMinute.Data;
 using TenMinute.Event;
@@ -9,6 +10,7 @@ using UnityEngine.Events;
 
 namespace TenMinute {
     public class Character : MonoBehaviour {
+        [Header("- Base")]
         [SerializeField]
         protected CharacterID _id;
         [SerializeField]
@@ -205,6 +207,20 @@ namespace TenMinute {
         public On이벤트 onHP회복예정;
         public On이벤트 onHP회복;
 
+        public On이벤트 onArtifact획득예정;
+        public On이벤트 onArtifact획득;
+
+        
+
+        public On이벤트 onEffect부여예정;
+        public On이벤트 onEffect부여;
+
+        public On이벤트 onEffect회수예정;
+        public On이벤트 onEffect회수;
+
+        public On이벤트 onEffect제거예정;
+        public On이벤트 onEffect제거;
+
         // UI등에서 사용할 Callback
 
         public Action<int, int> onHPValueChanged;
@@ -230,17 +246,66 @@ namespace TenMinute {
             }
         }
 
+        #region Physics
         public virtual void Move(Vector2 dir) {
             RB2D.velocity = dir.normalized * Speed;
             Animator.SetBool("IsMove", true);
         }
-
         public virtual void Stop() {
             RB2D.velocity = Vector2.zero;
             Animator.SetBool("IsMove", false);
         }
+        #endregion
+
+        #region Artifact, Immune, Effect
+        protected Dictionary<ArtifactID, Artifact> _artifacts;
+        protected Dictionary<EffectID, Effect> _effects;
+        protected HashSet<EffectID> _immunes;
+        public virtual void AddArtifact(Artifact artifact) {
+            _artifacts.Add(artifact.ID, artifact);
+        }
+        public virtual void RemoveArtifact(ArtifactID artifact) {
+            _artifacts.Remove(artifact);
+        }
+        public virtual bool HasArtifact(ArtifactID artifact) {
+            return _artifacts.ContainsKey(artifact);
+        }
+        public virtual Artifact GetArtifact(ArtifactID artifact) {
+            if (_artifacts.TryGetValue(artifact, out Artifact value)) {
+                return value;
+            }
+            return null;
+        }
+        public virtual void AddImmune(EffectID effect) {
+            _immunes.Add(effect);
+        }
+        public virtual void RemoveImmune(EffectID effect) {
+            _immunes.Remove(effect);
+        }
+        public virtual bool IsImmune(EffectID effect) {
+            return _immunes.Contains(effect);
+        }
+        public virtual void AddEffect(Effect effect) {
+            _effects.Add(effect.ID, effect);
+        }
+        public virtual void RemoveEffect(EffectID effect) {
+            _effects.Remove(effect);
+        }
+        public virtual bool HasEffect(EffectID effect) {
+            return _effects.ContainsKey(effect);
+        }
+        public virtual Effect GetEffect(EffectID effect) {
+            if (_effects.TryGetValue(effect, out Effect value)) {
+                return value;
+            }
+            return null;
+        }
+        #endregion
 
         public virtual void Init() {
+            _effects = new Dictionary<EffectID, Effect>();
+            _immunes = new HashSet<EffectID>();
+            _artifacts = new Dictionary<ArtifactID, Artifact>();
             HP = MaxHP;
             IsInit = true;
         }
