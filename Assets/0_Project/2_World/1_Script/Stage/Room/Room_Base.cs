@@ -16,7 +16,6 @@ namespace TenMinute {
         public PortalController PortalController => portalController;
         public virtual void Init() {
             IsCleared = false;
-            Global_EventSystem.UI.Call(UI.UIEventID.World_InGameUIMap¼³Á¤, this);
         }
     }
 }

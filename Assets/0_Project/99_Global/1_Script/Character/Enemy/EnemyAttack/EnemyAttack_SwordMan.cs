@@ -30,7 +30,7 @@ namespace TenMinute {
             SetDirection((_target.transform.position - _owner.transform.position).normalized);
             transform.eulerAngles = new Vector3(0, 0, Vector2.Angle(Vector2.right, _dir) * (_dir.y > 0 ? 1f : -1f));
 
-            _owner.Animator.SetFloat("AttackSpeed", _owner.ATKSpeed);
+            _owner.Animator.SetFloat("AttackSpeed", 1 / (unitDelay * .25f));
             _owner.Animator.SetBool("IsAttack", true);
 
             yield return waitForDelay;
@@ -60,9 +60,9 @@ namespace TenMinute {
 
             yield return waitForDelay;
 
-            yield return waitForEndDelay;
-
             _owner.Animator.SetBool("IsAttack", false);
+
+            yield return waitForEndDelay;
 
             onComplete?.Invoke();
         }
@@ -71,7 +71,11 @@ namespace TenMinute {
             Character target = PhysicsCollider2D.GetData(col);
             if (target != null &&
                 target.CompareTag("Player")) {
-                Debug.Log("Player Hit");
+                Entity.Create(
+                    source: _owner,
+                    target: target).
+                    Add«««ÿ(_owner.ATK).
+                    Execute();
             }
         }
 

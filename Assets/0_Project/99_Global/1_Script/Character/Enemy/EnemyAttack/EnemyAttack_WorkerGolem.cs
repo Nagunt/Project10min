@@ -28,7 +28,7 @@ namespace TenMinute {
 
             SetPosition(_target.transform.position);
 
-            _owner.Animator.SetFloat("AttackSpeed", _owner.ATKSpeed);
+            _owner.Animator.SetFloat("AttackSpeed", 1 / (unitDelay * .4f));
             _owner.Animator.SetBool("IsAttack", true);
 
             yield return waitForDelay;
@@ -51,9 +51,9 @@ namespace TenMinute {
 
             yield return waitForDelay;
 
-            yield return waitForEndDelay;
-
             _owner.Animator.SetBool("IsAttack", false);
+
+            yield return waitForEndDelay;
 
             onComplete?.Invoke();
         }
@@ -62,7 +62,11 @@ namespace TenMinute {
             Character target = PhysicsCollider2D.GetData(col.collider);
             if (target != null &&
                 target.CompareTag("Player")) {
-                Debug.Log("Player Hit");
+                Entity.Create(
+                    source: _owner,
+                    target: target).
+                    Add«««ÿ(_owner.ATK).
+                    Execute();
             }
         }
 
