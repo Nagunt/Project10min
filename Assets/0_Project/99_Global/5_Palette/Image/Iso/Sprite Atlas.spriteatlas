@@ -23,7 +23,7 @@ SpriteAtlas:
     platformSettings: []
     packingSettings:
       serializedVersion: 2
-      padding: 4
+      padding: 8
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 1
@@ -33,6 +33,7 @@ SpriteAtlas:
     packables:
     - {fileID: 102900000, guid: 8a250d18a3526fb45bd9cd3ee229291d, type: 3}
     - {fileID: 102900000, guid: e6fc372f1ca32d349852d11f3458df8b, type: 3}
+    - {fileID: 102900000, guid: c32cd6fac28ace4439aaebd69b81b9e6, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -42,11 +43,15 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3884c36039e0a5f49bd430cddd464c3a, type: 3}
   - {fileID: 21300000, guid: d85230a00b9601148950341ca9cfe623, type: 3}
   - {fileID: 21300000, guid: b1fffca0dacf1794da148b8b761d82a6, type: 3}
+  - {fileID: 21300000, guid: 7b5f76c074dc7844da5124ed55ea74a8, type: 3}
   - {fileID: 21300000, guid: 0d8ac6d023e72924eaa7aff88b38e53b, type: 3}
   - {fileID: 21300000, guid: 05f2a9d02b93d6043aa3ecca00f6a0bb, type: 3}
+  - {fileID: 21300000, guid: aa7bef1106ee7c34ab0550a87d1802c9, type: 3}
   - {fileID: 21300000, guid: 8c99d53128421b244a6d3f49ea08797a, type: 3}
   - {fileID: 21300000, guid: c9d68e41999e3f64dae0e099ef64397c, type: 3}
   - {fileID: 21300000, guid: 176866421d538d44db913165c877e33b, type: 3}
+  - {fileID: 21300000, guid: 22d90b724a449d244b782575f1059966, type: 3}
+  - {fileID: 21300000, guid: 30e35eb28c3d7234fb2fafc7fb5dc554, type: 3}
   - {fileID: 21300000, guid: 598856e2b575322459ad8a24a923c5a9, type: 3}
   - {fileID: 21300000, guid: d31115a32295b43478fa53ac5a4dec48, type: 3}
   - {fileID: 21300000, guid: 4c9403048c2f6e34089a2e4ee0320a5a, type: 3}
@@ -58,15 +63,18 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 2be7cd966e683034595fa0e80cdf98d7, type: 3}
   - {fileID: 21300000, guid: b630aee6c26321346a94bd1bbab22779, type: 3}
   - {fileID: 21300000, guid: c190c2b762efdb04b845c320802c702f, type: 3}
+  - {fileID: 21300000, guid: 31b6593880c96de419aa0900f9feb0b1, type: 3}
   - {fileID: 21300000, guid: 2e64a3889cb1e624e96a592bf06a814d, type: 3}
   - {fileID: 21300000, guid: 44a18f88627579a479988eee6f41695b, type: 3}
   - {fileID: 21300000, guid: 5bbf5aa8b5b67594ca27e3faa51270d7, type: 3}
+  - {fileID: 21300000, guid: 07a86c093cf98ab4892dd1fbf69c02a6, type: 3}
   - {fileID: 21300000, guid: b86aa7d9c0dbfab4c99e4814f6040bea, type: 3}
   - {fileID: 21300000, guid: 2dee0d1b5752c7c43afb36ccda5bfc90, type: 3}
   - {fileID: 21300000, guid: 4163114b7230c3a409aad5438aed8c23, type: 3}
   - {fileID: 21300000, guid: 8630c36bf92cf954ebe38fcaee177ba4, type: 3}
   - {fileID: 21300000, guid: 6912a97bcbd79ea4eb161b81778bbc40, type: 3}
   - {fileID: 21300000, guid: b8590e9c41d32d14c984e6aff2d3485b, type: 3}
+  - {fileID: 21300000, guid: 13d17fade62e02c44aea02b52fe874af, type: 3}
   - {fileID: 21300000, guid: 275705dd5520c34448d0fa6c4ed1db90, type: 3}
   - {fileID: 21300000, guid: 0459489e182da554099029cbd6eada84, type: 3}
   - {fileID: 21300000, guid: e2091ebefd3ff1d469bfe78942eb7960, type: 3}
@@ -79,11 +87,15 @@ SpriteAtlas:
   - base12
   - cube08
   - base00
+  - cave-sliced_41
   - slope2
   - cube03
+  - cave-sliced_43
   - cube11
   - cube10
   - base07
+  - cave-sliced_39
+  - cave-sliced_37
   - cube07
   - base01
   - base10
@@ -95,15 +107,18 @@ SpriteAtlas:
   - base06
   - cube15
   - cube05
+  - cave-sliced_42
   - cube01
   - cube12
   - base13
+  - cave-sliced_38
   - cube16
   - base05
   - base04
   - cube13
   - cube06
   - base08
+  - cave-sliced_40
   - base02
   - slope1
   - base11
@@ -112,5 +127,5 @@ SpriteAtlas:
   - base15
   - base09
   m_RenderDataMap: {}
-  m_Tag: New Sprite Atlas
+  m_Tag: Sprite Atlas
   m_IsVariant: 0
