@@ -12,6 +12,7 @@ namespace TenMinute.Combat {
             _주체효과 = 주체효과;
             _대상캐릭터 = 대상캐릭터;
             _data = new List<DataEntity>();
+            _서브엔티티 = new List<List<Entity>>();
         }
 
         // 주체가 없는 효과 (지형 피해 등)

@@ -26,9 +26,7 @@ namespace TenMinute {
                 return _HP;
             }
             set {
-                int prev = _HP;
-                _HP = Mathf.Clamp(value, 0, MaxHP);
-                onHPValueChanged?.Invoke(prev, _HP);
+                _HP = value;
             }
         }
         public int MaxHP {
@@ -197,31 +195,6 @@ namespace TenMinute {
         public Func<float> onCalcWeight비율;
         public Func<float> onCalcATKSpeed비율;
 
-        // DataEntity에서 사용하는 Callback
-
-        public On이벤트 on피해예정;
-        public On이벤트 on피해;
-
-        public On이벤트 on추가피해예정;
-        public On이벤트 on추가피해;
-
-        public On이벤트 onHP회복예정;
-        public On이벤트 onHP회복;
-
-        public On이벤트 onArtifact획득예정;
-        public On이벤트 onArtifact획득;
-
-        
-
-        public On이벤트 onEffect부여예정;
-        public On이벤트 onEffect부여;
-
-        public On이벤트 onEffect회수예정;
-        public On이벤트 onEffect회수;
-
-        public On이벤트 onEffect제거예정;
-        public On이벤트 onEffect제거;
-
         // UI등에서 사용할 Callback
 
         public Action<int, int> onHPValueChanged;
@@ -258,10 +231,9 @@ namespace TenMinute {
         }
         #endregion
 
-        #region Artifact, Immune, Effect
+        #region Artifact, Effect
         protected Dictionary<ArtifactID, Artifact> _artifacts;
-        protected Dictionary<EffectID, Effect> _effects;
-        protected HashSet<EffectID> _immunes;
+        protected EffectList _effectList;
         public virtual void AddArtifact(Artifact artifact) {
             _artifacts.Add(artifact.ID, artifact);
         }
@@ -277,38 +249,10 @@ namespace TenMinute {
             }
             return null;
         }
-        public virtual void AddImmune(EffectID effect) {
-            _immunes.Add(effect);
-        }
-        public virtual void RemoveImmune(EffectID effect) {
-            _immunes.Remove(effect);
-        }
-        public virtual bool IsImmune(EffectID effect) {
-            return _immunes.Contains(effect);
-        }
-        public virtual void AddEffect(Effect effect) {
-            _effects.Add(effect.ID, effect);
-        }
-        public virtual void RemoveEffect(EffectID effect) {
-            _effects.Remove(effect);
-        }
-        public virtual bool HasEffect(EffectID effect) {
-            return _effects.ContainsKey(effect);
-        }
-        public virtual Effect GetEffect(EffectID effect) {
-            if (_effects.TryGetValue(effect, out Effect value)) {
-                return value;
-            }
-            return null;
-        }
         #endregion
 
-        public OnCalc데이터_2차원 onCalc_피해량;
-        public OnCalc데이터_2차원 onCalc_받는피해량;
-
         public virtual void Init() {
-            _effects = new Dictionary<EffectID, Effect>();
-            _immunes = new HashSet<EffectID>();
+            _effectList = new EffectList(this);
             _artifacts = new Dictionary<ArtifactID, Artifact>();
             HP = MaxHP;
             IsInit = true;
@@ -326,25 +270,14 @@ namespace TenMinute {
             IsDispose = true;
         }
 
-        public virtual void Heal(int value) {
-            HP += value;
-        }
-
-        public virtual void Damage(int value, float 경직 = 0f, float 넉백 = 0f) {
-            HP -= value;
-        }
+        #region Entity 액션
 
         public void Apply피해(Entity 피해Entity, int dataIndex) {
             if (IsDead) return;
 
             Global_EventSystem.Combat.CallOn피해입힐예정(피해Entity, dataIndex);        // 이벤트를 전역으로 두는 이유는, 주체와 대상 말고도 다른 존재가 일련의 행동에 영향을 줄 수 있을 가능성이 있기 때문이다.
                                                                                         // EX) 오라
-
             DataEntity 피해Data = 피해Entity.GetData(dataIndex);
-
-            if (피해Data.Property.HasFlag(EntityProperty.고정수치) == false) {
-                onCalc_받는피해량?.Invoke(피해Entity.주체캐릭터, this, 피해Data);
-            }
 
             if (피해Data.Property.HasFlag(EntityProperty.방어무시) == false) {
                 피해Data.Add추가량(-DEF);
@@ -359,17 +292,108 @@ namespace TenMinute {
 
             HP -= 피해량;
 
-            피해Data.SetResultData_피해(기존HP, HP);
+            if (HP < 0) {
+                HP = 0;
+            }   
+
+            피해Data.SetResultData_HP(기존HP, HP);
 
             if (피해량 > 0) {
                 Global_EventSystem.Combat.CallOn피해입음(피해Entity, dataIndex);
             }
 
             if (HP <= 0 && 피해량 > 0) {
+                Dead();
                 if (IsDead) return;
             }
 
+            if (피해량 > 0) {
+                Global_EventSystem.Combat.CallOn피해입고생존(피해Entity, dataIndex);
+            }
+
         }
+
+        public void Apply경직(Entity 경직Entity, int dataIndex) {
+            DataEntity 경직Data = 경직Entity.GetData(dataIndex);
+
+        }
+
+        public void Apply넉백(Entity 넉백Entity, int dataIndex) {
+            DataEntity 넉백Data = 넉백Entity.GetData(dataIndex);
+        }
+
+        public void Apply효과(Entity 효과Entity, int dataIndex) {
+            DataEntity 효과Data = 효과Entity.GetData(dataIndex);
+
+            int 기존Effect = _effectList.GetEffectValue(효과Data.효과.ID);
+
+            switch (효과Data.Type) {
+                case EntityType.효과부여: {
+                        Global_EventSystem.Combat.CallOn효과부여예정(효과Entity, dataIndex);
+                        if (효과Data.Is효과무효 == false) {
+                            _effectList.Effect부여(효과Data.효과);
+                            Global_EventSystem.Combat.CallOn효과부여(효과Entity, dataIndex);
+                        }
+                    }
+                    break;
+                case EntityType.효과회수: {
+                        Global_EventSystem.Combat.CallOn효과회수예정(효과Entity, dataIndex);
+                        if (효과Data.Is효과무효 == false) {
+                            if (효과Data.효과.Attribute.HasFlag(EffectAttribute.음수가능) == false &&
+                                _effectList.GetEffectValue(효과Data.효과.ID) <= 효과Data.효과.Value) {
+                                Global_EventSystem.Combat.CallOn효과회수후제거(효과Entity, dataIndex);
+                            }
+                            _effectList.Effect회수(효과Data.효과);
+                            Global_EventSystem.Combat.CallOn효과회수(효과Entity, dataIndex);
+                        }
+                    }
+                    break;
+                case EntityType.효과제거: {
+                        if (기존Effect != 0) {
+                            Global_EventSystem.Combat.CallOn효과회수후제거(효과Entity, dataIndex);
+                            _effectList.Effect제거(효과Data.효과.ID);
+                            Global_EventSystem.Combat.CallOn효과제거(효과Entity, dataIndex);
+                        }
+                    }
+                    break;
+            }
+
+            효과Data.SetResultData_Effect(기존Effect, _effectList.GetEffectValue(효과Data.효과.ID));
+        }
+
+        public void ApplyHP지정(Entity entity, int dataIndex) {
+            DataEntity 지정Data = entity.GetData(dataIndex);
+            int 기존HP = HP;
+            HP = 지정Data.데이터;
+            지정Data.SetResultData_HP(기존HP, HP);
+        }
+
+        public void ApplyHP회복(Entity 회복Entity, int dataIndex) {
+            if (IsDead) return;
+
+            Global_EventSystem.Combat.CallOn회복시킬예정(회복Entity, dataIndex);
+            Global_EventSystem.Combat.CallOn회복받을예정(회복Entity, dataIndex);
+
+            DataEntity 회복Data = 회복Entity.GetData(dataIndex);
+            int 회복량 = 회복Data.데이터;
+            if (회복량 < 0) 회복량 = 0;
+
+            int 기존HP = HP;
+
+            HP += 회복량;
+
+            if (HP > MaxHP) {
+                HP = MaxHP;
+            }
+
+            회복Data.SetResultData_HP(기존HP, HP);
+
+            if (회복량 > 0) {
+                Global_EventSystem.Combat.CallOn회복(회복Entity, dataIndex);
+            }
+        }
+
+        #endregion
     }
 }
 

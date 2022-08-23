@@ -9,6 +9,8 @@ namespace TenMinute.Combat {
         HP회복,
         HP지정,
         피해,
+        경직,
+        넉백,
         효과부여,           // 효과를 부여
         효과회수,           // 효과를 일정 부분 회수
         효과제거,           // 효과를 아예 제거
@@ -79,15 +81,25 @@ namespace TenMinute.Combat {
 
         #region 피해
 
-        public void SetResultData_피해(int prev, int next) {
+        public void SetResultData_HP(int prev, int next) {
             Apply이전값_HP = prev;
             Apply이후값_HP = next;
+        }
+
+        public void SetResultData_Effect(int prev, int next) {
+            Apply이전값_Effect = prev;
+            Apply이후값_Effect = next;
         }
 
         public int Apply이전값_HP { get; private set; }
         public int Apply이후값_HP { get; private set; }
 
+        public int Apply이전값_Effect { get; private set; }
+        public int Apply이후값_Effect { get; private set; }
+
         public int 총피해량 => Apply이전값_HP - Apply이후값_HP;
+
+        public int 총회복량 => Apply이후값_HP - Apply이전값_HP;
 
         #endregion
 

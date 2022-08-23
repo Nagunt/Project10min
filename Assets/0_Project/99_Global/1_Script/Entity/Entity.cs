@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using TenMinute.Data;
 using UnityEngine;
 
 namespace TenMinute.Combat {
-
-
 
     public enum EntityID {
         None = 0,
@@ -29,7 +28,7 @@ namespace TenMinute.Combat {
         public Effect 주체효과 => _주체효과;
         public Character 대상캐릭터 => _대상캐릭터;
 
-        public bool IsRoot;
+        public bool IsRoot => _root == null;
 
         private Entity _parent;
         private Entity _root;
@@ -41,23 +40,58 @@ namespace TenMinute.Combat {
 
         private void AddData(DataEntity data) {
             _data.Add(data);
+            _서브엔티티.Add(new List<Entity>());
         }
 
+        private List<List<Entity>> _서브엔티티;
+
         public DataEntity GetData(int index) => _data[index];
+
+        public ReadOnlyCollection<Entity> Get서브엔티티(int index) => _서브엔티티[index].AsReadOnly();
+
+        private void SetRoot(Entity parent) {
+            _parent = parent;
+            _root = parent.IsRoot ? parent : parent.Root;
+        }
+
+        public void Execute() {
+            ExecuteData();
+        }
+
+        private void ExecuteData() {
+            for(int i = 0; i < _data.Count; ++i) {
+                if (_data[i] != null && Has대상) {
+                    ApplyData(i);
+                }
+
+                for(int j = 0; j < _서브엔티티[i].Count; ++j) {
+                    _서브엔티티[i][j].SetRoot(this);
+                    _서브엔티티[i][j].ExecuteData();
+                }
+            }
+        }
 
         private void ApplyData(int index) {
             switch (_data[index].Type) {
                 case EntityType.HP지정:
+                    대상캐릭터.ApplyHP지정(this, index);
                     break;
                 case EntityType.HP회복:
+                    대상캐릭터.ApplyHP회복(this, index);
                     break;
                 case EntityType.피해:
+                    대상캐릭터.Apply피해(this, index);
                     break;
                 case EntityType.효과부여:
-                    break;
                 case EntityType.효과회수:
-                    break;
                 case EntityType.효과제거:
+                    대상캐릭터.Apply효과(this, index);
+                    break;
+                case EntityType.경직:
+                    대상캐릭터.Apply경직(this, index);
+                    break;
+                case EntityType.넉백:
+                    대상캐릭터.Apply넉백(this, index);
                     break;
             }
         }
@@ -78,24 +112,30 @@ namespace TenMinute.Combat {
 
         public Entity Add피해(int 피해량) {
             DataEntity data = DataEntity.피해(피해량);
-            if (Has대상) {
-                if (Has주체) {
-                    주체캐릭터.onCalc_피해량?.Invoke(주체캐릭터, 대상캐릭터, data);
-                }
-                대상캐릭터.onCalc_피해량?.Invoke(주체캐릭터, 대상캐릭터, data);
-            }
             AddData(data);
             return this;
         }
 
-        public Entity Add고정피해(int 고정피해량) {
-            DataEntity data = DataEntity.피해(고정피해량, EntityProperty.고정수치);
+        public Entity Add고정피해(int 피해량) {
+            DataEntity data = DataEntity.피해(피해량, EntityProperty.고정수치);
             AddData(data);
             return this;
         }
 
-        public Entity Add효과부여(EffectID id, int 부여량) {
-            DataEntity data = DataEntity.효과부여(id, 부여량);
+        public Entity Add방어무시피해(int 피해량) {
+            DataEntity data = DataEntity.피해(피해량, EntityProperty.방어무시);
+            AddData(data);
+            return this;
+        }
+
+        public Entity Add방어무시고정피해(int 피해량) {
+            DataEntity data = DataEntity.피해(피해량, EntityProperty.방어무시 | EntityProperty.고정수치);
+            AddData(data);
+            return this;
+        }
+
+        public Entity Add효과부여(EffectID id, int 부여량 = 1, float 지속시간 = 0f) {
+            DataEntity data = DataEntity.효과부여(id, 부여량, 지속시간);
             AddData(data);
             return this;
         }
@@ -112,8 +152,25 @@ namespace TenMinute.Combat {
             return this;
         }
 
+        public Entity Add경직(int 경직도) {
+            DataEntity data = DataEntity.경직(경직도);
+            AddData(data);
+            return this;
+        }
+
+        public Entity Add넉백(int 넉백도) {
+            DataEntity data = DataEntity.넉백(넉백도);
+            AddData(data);
+            return this;
+        }
+
         public Entity Add고유데이터(DataEntity data) {
             AddData(data);
+            return this;
+        }
+
+        public Entity Add서브엔티티(Entity entity, int index = 0) {
+            _서브엔티티[index].Add(entity);
             return this;
         }
 

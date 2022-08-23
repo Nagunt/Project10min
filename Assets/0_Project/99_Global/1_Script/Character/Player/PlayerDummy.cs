@@ -7,13 +7,6 @@ namespace TenMinute {
     public class PlayerDummy : Character {
         public override void Init() {
             base.Init();
-
-            Entity.Create(
-                source : null, 
-                target : this).
-                Add효과부여(Data.EffectID.효과1, 1, 5f).
-                Execute();
-
             onHPValueChanged += OnHPValueChanged;
         }
 
