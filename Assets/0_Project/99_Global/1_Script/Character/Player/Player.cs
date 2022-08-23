@@ -36,20 +36,22 @@ namespace TenMinute {
         [SerializeField]
         float PlayerDashDistance = 4f;
 
+        
+
+        [Header(" - Weapon")]
+        [SerializeField]
+        PlayerAttack playerAttack;
+
         [Header("TempAttackEffect")]
         [SerializeField]
         LineRenderer LineRenderer;
         [SerializeField]
         int LineSegment;
 
-        [Header(" - WeaponSetting")]
-        [SerializeField]
-        float WeaponATKSpeed;
-
         #endregion
 
 
-        
+
         bool isAttack;
         bool dash;
         bool isDash;
@@ -176,7 +178,7 @@ namespace TenMinute {
 
                 }
 
-                yield return new WaitForSeconds(½ºÅÝATKSpeed);
+                yield return new WaitForSeconds(½ºÅÝATKSpeed * (playerAttack.statATKSpeedPercent / 100));
                 isAttack = false;
             }
             
