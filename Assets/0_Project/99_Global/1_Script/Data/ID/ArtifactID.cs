@@ -5,11 +5,6 @@ using UnityEngine;
 namespace TenMinute.Data {
     public enum ArtifactID {
         None = 0,
-        아티1,
-        아티2,
-
-
-
-
+        시간파편,
     }
 }

@@ -13,9 +13,14 @@ namespace TenMinute {
         private ArtifactID _id;
         private ArtifactAttribute _attribute;
         private Character _owner;
+        private int _value;
+        private int[] _artifactValues;
+
         public ArtifactID ID => _id;
         public ArtifactAttribute Attribute => _attribute;
         public Character Owner => _owner;
+        public int Value => _value;
+        public int[] ArtifactValues => _artifactValues;
         protected Artifact(ArtifactID id, ArtifactAttribute attribute = ArtifactAttribute.None) {
             _id = id;
             _attribute = attribute;

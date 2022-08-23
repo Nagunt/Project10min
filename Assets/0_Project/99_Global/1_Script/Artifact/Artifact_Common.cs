@@ -2,43 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TenMinute.Data;
+using System;
+using TenMinute.Physics;
 
 namespace TenMinute {
 
-    public sealed class Artifact_아티1 : Artifact {
-        public Artifact_아티1() :
-            base(ArtifactID.아티1) { }
+    public sealed class Artifact_시간파편 : Artifact {
+        public Artifact_시간파편() :
+            base(ArtifactID.시간파편) { }
 
         public override void OnEnable() {
-            Owner.onCalcSpeed수치 += OnCalcSpeed수치;
+            Owner.on피해 += On피해;
         }
 
         public override void OnDisable() {
-            Owner.onCalcSpeed수치 -= OnCalcSpeed수치;
+            Owner.on피해 -= On피해;
         }
 
-        private float OnCalcSpeed수치() {
-            return 1.5f;
-        }
-    }
-
-    public sealed class Artifact_아티2 : Artifact {
-        public Artifact_아티2() :
-            base(ArtifactID.아티2) { }
-
-        public override void OnEnable() {
-            Owner.onCalcATK수치 += OnCalcATK수치;
-        }
-
-        public override void OnDisable() {
-            Owner.onCalcATK수치 -= OnCalcATK수치;
-        }
-
-        private int OnCalcATK수치() {
-            return 5;
+        private void On피해(DataEntity entity) {
+            if (entity.주체 == Owner) {
+                int targetCount = ArtifactValues[0] + Value * ArtifactValues[1];
+                Collider2D[] cols = Physics2D.OverlapCircleAll(entity.대상.transform.position, 5);
+                foreach (Collider2D col in cols) {
+                    Character target = PhysicsCollider2D.GetData(col);
+                    if (target != null) {
+                        entity.Add하위엔티티(Entity.Create(
+                            source: entity.주체,
+                            target: target).
+                            Add추가피해(ArtifactValues[2] + ((Value / 3) * ArtifactValues[3])));
+                        break;
+                    }
+                }
+            }
         }
     }
-
-
 
 }

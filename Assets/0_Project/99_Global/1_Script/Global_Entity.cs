@@ -5,7 +5,7 @@ using System.Linq;
 using TenMinute.Data;
 using UnityEngine;
 
-namespace TenMinute {
+namespace TenMinute.ASDF {
     public delegate void On이벤트(DataEntity entity);
     public delegate void On이벤트2형식(DataEntity entity, int value);
 

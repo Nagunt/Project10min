@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TenMinute.Data;
 using TenMinute.Event;
+using TenMinute.Combat;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -302,6 +303,9 @@ namespace TenMinute {
         }
         #endregion
 
+        public OnCalc데이터_2차원 onCalc_피해량;
+        public OnCalc데이터_2차원 onCalc_받는피해량;
+
         public virtual void Init() {
             _effects = new Dictionary<EffectID, Effect>();
             _immunes = new HashSet<EffectID>();
@@ -328,6 +332,43 @@ namespace TenMinute {
 
         public virtual void Damage(int value, float 경직 = 0f, float 넉백 = 0f) {
             HP -= value;
+        }
+
+        public void Apply피해(Entity 피해Entity, int dataIndex) {
+            if (IsDead) return;
+
+            Global_EventSystem.Combat.CallOn피해입힐예정(피해Entity, dataIndex);        // 이벤트를 전역으로 두는 이유는, 주체와 대상 말고도 다른 존재가 일련의 행동에 영향을 줄 수 있을 가능성이 있기 때문이다.
+                                                                                        // EX) 오라
+
+            DataEntity 피해Data = 피해Entity.GetData(dataIndex);
+
+            if (피해Data.Property.HasFlag(EntityProperty.고정수치) == false) {
+                onCalc_받는피해량?.Invoke(피해Entity.주체캐릭터, this, 피해Data);
+            }
+
+            if (피해Data.Property.HasFlag(EntityProperty.방어무시) == false) {
+                피해Data.Add추가량(-DEF);
+            }
+
+            Global_EventSystem.Combat.CallOn피해입을예정(피해Entity, dataIndex);
+
+            int 피해량 = 피해Data.데이터;
+            if (피해량 < 0) 피해량 = 0;
+
+            int 기존HP = HP;
+
+            HP -= 피해량;
+
+            피해Data.SetResultData_피해(기존HP, HP);
+
+            if (피해량 > 0) {
+                Global_EventSystem.Combat.CallOn피해입음(피해Entity, dataIndex);
+            }
+
+            if (HP <= 0 && 피해량 > 0) {
+                if (IsDead) return;
+            }
+
         }
     }
 }
