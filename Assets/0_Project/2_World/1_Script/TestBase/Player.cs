@@ -5,7 +5,9 @@ using UnityEngine.InputSystem;
 using System;
 
 namespace TenMinute {
-    public class TestPlayer : MonoBehaviour {
+    public class Player : Character {
+        [Header("- Player")]
+
         [SerializeField]
         private PlayerInput playerInput;
         private Dictionary<ActionType, InputAction> _actionSet;
@@ -22,36 +24,32 @@ namespace TenMinute {
 
 
         #region ÀÓ½Ã º¯¼ö
-        [Header ("TempPlayerSettings")]
+        [Header (" - Player Settings")]
         [SerializeField]
-        float PlayerSpeed;
+        float FireRange;
         [SerializeField]
-        float tempFireRange;
+        float PlayerAttackAngle;
         [SerializeField]
-        float tempPlayerAttackAngle;
+        float PlayerDashCoolDown = 0.5f;
         [SerializeField]
-        float tempPlayerATKSpeed = 100;
+        float PlayerDashTime = 0.3f;
         [SerializeField]
-        float tempPlayerDashCoolDown = 0.5f;
-        [SerializeField]
-        float tempPlayerDashTime = 0.3f;
-        [SerializeField]
-        float tempPlayerDistance = 4f;
+        float PlayerDashDistance = 4f;
 
         [Header("TempAttackEffect")]
         [SerializeField]
-        LineRenderer tempLineRenderer;
+        LineRenderer LineRenderer;
         [SerializeField]
-        int tempLineSegment;
+        int LineSegment;
 
-        [Header("TempWeaponSetting")]
+        [Header(" - WeaponSetting")]
         [SerializeField]
-        float tempWeaponATKSpeed;
+        float WeaponATKSpeed;
 
         #endregion
 
 
-        Rigidbody2D RB2D;
+        
         bool isAttack;
         bool dash;
         bool isDash;
@@ -78,7 +76,6 @@ namespace TenMinute {
             }
             
             playerInput.onActionTriggered += OnActionTriggered;
-            RB2D = GetComponent<Rigidbody2D>();
             StartCoroutine(PlayerFire());
             StartCoroutine(PlayerDash());
         }
@@ -137,7 +134,7 @@ namespace TenMinute {
             }
             else
             {
-                RB2D.velocity = (isAttack || fire) ? Vector3.zero : (Vector3)move * PlayerSpeed;
+                RB2D.velocity = (isAttack || fire) ? Vector3.zero : (Vector3)move * ½ºÅÝSpeed;
             }
         }
         
@@ -162,15 +159,15 @@ namespace TenMinute {
                 Vector3 templook = look;
 
 
-                Collider2D[] inHitBox = Physics2D.OverlapCircleAll(transform.position, tempFireRange);
+                Collider2D[] inHitBox = Physics2D.OverlapCircleAll(transform.position, FireRange);
 
-                StartCoroutine(CreateCircle(tempFireRange, Mathf.Atan2(look.y - transform.position.y, look.x - transform.position.x) * Mathf.Rad2Deg, tempPlayerAttackAngle, transform.position));
+                StartCoroutine(CreateCircle(FireRange, Mathf.Atan2(templook.y - transform.position.y, templook.x - transform.position.x) * Mathf.Rad2Deg, PlayerAttackAngle, transform.position));
 
 
                 foreach (Collider2D t in inHitBox)
                 {
                     float angle = Vector2.Angle(templook - transform.position, t.transform.position - transform.position);
-                    if (angle < tempPlayerAttackAngle / 2 && t.CompareTag("Enemy"))
+                    if (angle < PlayerAttackAngle / 2 && t.CompareTag("Enemy"))
                     {
                         t.GetComponent<TestEnemy>().GetDamaged();
                     }
@@ -179,7 +176,7 @@ namespace TenMinute {
 
                 }
 
-                yield return new WaitForSeconds(tempWeaponATKSpeed * 100 / tempPlayerATKSpeed);
+                yield return new WaitForSeconds(½ºÅÝATKSpeed);
                 isAttack = false;
             }
             
@@ -190,12 +187,12 @@ namespace TenMinute {
             {
                 yield return new WaitUntil(() => dash == true);
                 isDash = true;
-                DashVector = move * tempPlayerDistance / tempPlayerDashTime;
+                DashVector = move * PlayerDashDistance / PlayerDashTime;
 
 
-                yield return new WaitForSeconds(tempPlayerDashTime);
+                yield return new WaitForSeconds(PlayerDashTime);
                 isDash = false;
-                yield return new WaitForSeconds(tempPlayerDashCoolDown);
+                yield return new WaitForSeconds(PlayerDashCoolDown);
                 dash = false;
             }
 
@@ -203,20 +200,20 @@ namespace TenMinute {
         IEnumerator CreateCircle(float radius, float angle, float angleRange, Vector3 position)
         {
             float x, y;
-            float tempAngle = angle - angleRange/2;
-            tempLineRenderer.positionCount = tempLineSegment + 1;
-            tempLineRenderer.enabled = true;
+            float Angle = angle - angleRange/2;
+            LineRenderer.positionCount = LineSegment + 1;
+            LineRenderer.enabled = true;
 
-            for (int i = 0; i < tempLineSegment + 1; i++)
+            for (int i = 0; i < LineSegment + 1; i++)
             {
-                x = Mathf.Cos(Mathf.Deg2Rad * tempAngle) * radius + position.x;
-                y = Mathf.Sin(Mathf.Deg2Rad * tempAngle) * radius + position.y;
+                x = Mathf.Cos(Mathf.Deg2Rad * Angle) * radius + position.x;
+                y = Mathf.Sin(Mathf.Deg2Rad * Angle) * radius + position.y;
 
-                tempLineRenderer.SetPosition(i, new Vector3(x, y, -5));
-                tempAngle += angleRange / tempLineSegment;
+                LineRenderer.SetPosition(i, new Vector3(x, y, -5));
+                Angle += angleRange / LineSegment;
             }
-            yield return new WaitForSeconds(tempWeaponATKSpeed * 100 / tempPlayerATKSpeed * 0.8f);
-            tempLineRenderer.enabled = false;
+            yield return new WaitForSeconds(½ºÅÝATKSpeed * 0.8f);
+            LineRenderer.enabled = false;
         }
 
     }
