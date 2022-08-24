@@ -372,8 +372,6 @@ MonoBehaviour:
   <move>k__BackingField: {x: 0, y: 0}
   <look>k__BackingField: {x: 0, y: 0}
   <fire>k__BackingField: 0
-  FireRange: 1
-  PlayerAttackAngle: 120
   PlayerDashCoolDown: 0.5
   PlayerDashTime: 0.3
   PlayerDashDistance: 4
@@ -423,6 +421,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcb6627430824f44c9c2c9fb5669c6ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Owner: {fileID: 8338477001627625418}
+  FireRange: 1
+  PlayerAttackAngle: 120
   "_stat\uACBD\uC9C1": 0
   "_stat\uB109\uBC31": 0
   _statATKPercent: 100

@@ -25,10 +25,7 @@ namespace TenMinute {
 
         #region 임시 변수
         [Header (" - Player Settings")]
-        [SerializeField]
-        float FireRange;
-        [SerializeField]
-        float PlayerAttackAngle;
+        
         [SerializeField]
         float PlayerDashCoolDown = 0.5f;
         [SerializeField]
@@ -52,7 +49,7 @@ namespace TenMinute {
 
 
 
-        bool isAttack;
+        public bool isAttack { get; set; }
         bool dash;
         bool isDash;
         Vector3 DashVector;
@@ -78,7 +75,7 @@ namespace TenMinute {
             }
             
             playerInput.onActionTriggered += OnActionTriggered;
-            StartCoroutine(PlayerFire());
+            StartPlayerFire();
             StartCoroutine(PlayerDash());
         }
 
@@ -151,38 +148,11 @@ namespace TenMinute {
         }
 
         
-
-        IEnumerator PlayerFire()
+        void StartPlayerFire()
         {
-            while(true)
-            {
-                yield return new WaitUntil(() => fire == true);
-                isAttack = true;
-                Vector3 templook = look;
-
-
-                Collider2D[] inHitBox = Physics2D.OverlapCircleAll(transform.position, FireRange);
-
-                StartCoroutine(CreateCircle(FireRange, Mathf.Atan2(templook.y - transform.position.y, templook.x - transform.position.x) * Mathf.Rad2Deg, PlayerAttackAngle, transform.position));
-
-
-                foreach (Collider2D t in inHitBox)
-                {
-                    float angle = Vector2.Angle(templook - transform.position, t.transform.position - transform.position);
-                    if (angle < PlayerAttackAngle / 2 && t.CompareTag("Enemy"))
-                    {
-                        t.GetComponent<TestEnemy>().GetDamaged();
-                    }
-
-
-
-                }
-
-                yield return new WaitForSeconds(스텟ATKSpeed * (playerAttack.statATKSpeedPercent / 100));
-                isAttack = false;
-            }
-            
+            StartCoroutine(playerAttack.PlayerFire());
         }
+        
         IEnumerator PlayerDash()
         {
             while (true)
@@ -199,7 +169,7 @@ namespace TenMinute {
             }
 
         }
-        IEnumerator CreateCircle(float radius, float angle, float angleRange, Vector3 position)
+        public IEnumerator CreateCircle(float radius, float angle, float angleRange, Vector3 position)
         {
             float x, y;
             float Angle = angle - angleRange/2;

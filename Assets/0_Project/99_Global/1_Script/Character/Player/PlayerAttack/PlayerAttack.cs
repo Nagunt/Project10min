@@ -14,6 +14,11 @@ namespace TenMinute
         public float statATKPercent { get; set; }
 
         public float statATKSpeedPercent { get; set; }
+
+        public virtual IEnumerator PlayerFire()
+        {
+            yield return null;
+        }
     }
 
 }
