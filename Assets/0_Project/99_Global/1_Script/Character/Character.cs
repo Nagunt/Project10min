@@ -11,6 +11,15 @@ using UnityEngine.Events;
 
 namespace TenMinute {
     public class Character : MonoBehaviour {
+        private static Dictionary<Rigidbody2D, Character> rb2DData = new Dictionary<Rigidbody2D, Character>();
+
+        public static Character GetCharacter(Rigidbody2D rb2D) {
+            if (rb2DData.TryGetValue(rb2D, out Character value)) {
+                return value;
+            }
+            return null;
+        }
+
         [Header("- Base")]
         [SerializeField]
         protected CharacterID _id;
@@ -231,30 +240,17 @@ namespace TenMinute {
         }
         #endregion
 
-        #region Artifact, Effect
-        protected Dictionary<ArtifactID, Artifact> _artifacts;
         protected EffectList _effectList;
-        public virtual void AddArtifact(Artifact artifact) {
-            _artifacts.Add(artifact.ID, artifact);
-        }
-        public virtual void RemoveArtifact(ArtifactID artifact) {
-            _artifacts.Remove(artifact);
-        }
-        public virtual bool HasArtifact(ArtifactID artifact) {
-            return _artifacts.ContainsKey(artifact);
-        }
-        public virtual Artifact GetArtifact(ArtifactID artifact) {
-            if (_artifacts.TryGetValue(artifact, out Artifact value)) {
-                return value;
-            }
-            return null;
-        }
-        #endregion
+        protected ArtifactList _artifactList;
+
+        public EffectList Effect => _effectList;
+        public ArtifactList Artifact => _artifactList;
 
         public virtual void Init() {
             _effectList = new EffectList(this);
-            _artifacts = new Dictionary<ArtifactID, Artifact>();
+            _artifactList = new ArtifactList(this);
             HP = MaxHP;
+            rb2DData.Add(RB2D, this);
             IsInit = true;
         }
 
@@ -316,7 +312,6 @@ namespace TenMinute {
 
         public void Apply경직(Entity 경직Entity, int dataIndex) {
             DataEntity 경직Data = 경직Entity.GetData(dataIndex);
-
         }
 
         public void Apply넉백(Entity 넉백Entity, int dataIndex) {
@@ -395,6 +390,10 @@ namespace TenMinute {
         }
 
         #endregion
+
+        private void OnDestroy() {
+            rb2DData.Remove(RB2D);
+        }
     }
 }
 

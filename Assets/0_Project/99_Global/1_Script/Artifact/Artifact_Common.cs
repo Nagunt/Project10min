@@ -26,10 +26,19 @@ namespace TenMinute {
         private void OnDamage(Entity entity, int dataIndex) {
             if (entity.IsRoot &&
                 entity.주체캐릭터 == Owner) {
-                entity.Add서브엔티티(Entity.Create(
-                    source: this,
-                    target: entity.대상캐릭터).
-                    Add피해(10), dataIndex);
+                Collider2D[] cols = Physics2D.OverlapCircleAll(entity.대상캐릭터.transform.position, 5f);
+                if (cols.Length > 0) {
+                    for(int i = 0; i < cols.Length; ++i) {
+                        if (cols[i].CompareTag("Player")) {
+                            Character target = PhysicsCollider2D.GetData(cols[i]);
+                            if (target != entity.대상캐릭터) {
+                                entity.Add서브엔티티(Entity.Create(
+                                    target: target).
+                                    Add피해(10), dataIndex);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

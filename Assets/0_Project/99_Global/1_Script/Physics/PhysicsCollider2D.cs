@@ -7,16 +7,13 @@ namespace TenMinute.Physics
     [RequireComponent(typeof(Collider2D))]
     public class PhysicsCollider2D : MonoBehaviour
     {
-        private static Dictionary<Collider2D, Character> data = new Dictionary<Collider2D, Character>();
+        private static Dictionary<Collider2D, Character> colData = new Dictionary<Collider2D, Character>();
 
-        public static Character GetData(Collider2D key)
-        {
-            if (data == null)
-            {
-                data = new Dictionary<Collider2D, Character>();
+        public static Character GetData(Collider2D key) {
+            if (colData == null) {
+                colData = new Dictionary<Collider2D, Character>();
             }
-            if (data.TryGetValue(key, out Character value))
-            {
+            if (colData.TryGetValue(key, out Character value)) {
                 return value;
             }
             return null;
@@ -24,7 +21,7 @@ namespace TenMinute.Physics
 
         public static void Clear()
         {
-            data.Clear();
+            colData.Clear();
         }
 
         [SerializeField]
@@ -34,12 +31,12 @@ namespace TenMinute.Physics
 
         private void Awake()
         {
-            data.Add(col, character);
+            colData.Add(col, character);
         }
 
         private void OnDestroy()
         {
-            data.Remove(col);
+            colData.Remove(col);
         }
     }
 }

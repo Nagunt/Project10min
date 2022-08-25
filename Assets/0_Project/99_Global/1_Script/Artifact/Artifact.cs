@@ -9,6 +9,43 @@ namespace TenMinute {
     public enum ArtifactAttribute {
         None = 0,
     }
+    public class ArtifactList {
+
+        private Character _owner;
+        private Dictionary<ArtifactID, Artifact> _data;
+        public ArtifactList(Character owner) {
+            _owner = owner;
+            _data = new Dictionary<ArtifactID, Artifact>();
+        }
+
+        public bool Has¿Øπ∞(ArtifactID artifact) => _data.ContainsKey(artifact);
+        public Artifact GetArtifact(ArtifactID artifact) {
+            if (_data.TryGetValue(artifact, out Artifact target)) {
+                return target;
+            }
+            return null;
+        }
+        private void AddArtifact(Artifact artifact) {
+            _data.Add(artifact.ID, artifact);
+            artifact.OnObtain(_owner);
+            artifact.OnEnable();
+        }
+        private void RemoveArtifact(ArtifactID artifact) {
+            Artifact target = GetArtifact(artifact);
+            _data.Remove(artifact);
+            target.OnDisable();
+        }
+        public void Artifact√ﬂ∞°(ArtifactID artifact) {
+            if (Has¿Øπ∞(artifact)) return;
+            AddArtifact(Artifact.Create(artifact));
+        }
+        public void Artifact¡¶∞≈(ArtifactID artifact) {
+            if (Has¿Øπ∞(artifact)) {
+                RemoveArtifact(artifact);
+            }
+        }
+    }
+
     public partial class Artifact {
         private ArtifactID _id;
         private ArtifactAttribute _attribute;
@@ -25,11 +62,10 @@ namespace TenMinute {
             _id = id;
             _attribute = attribute;
         }
-        public Artifact SetOwner(Character owner) {
+        public virtual void OnObtain(Character owner) {
+            Debug.Log(owner + " æ∆∆º∆—∆Æ »πµÊ");
             _owner = owner;
-            return this;
         }
-        public virtual void OnObtain() { }
         public virtual void OnEnable() { }
         public virtual void OnDisable() { }
     }
