@@ -5,10 +5,13 @@ using UnityEngine;
 public class TestEnemy : MonoBehaviour
 {
     SpriteRenderer r;
+    Rigidbody2D rb;
 
     private void Start()
     {
         r = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
+        //rb.velocity = Vector2.up * 1.5f;
     }
 
     public void GetDamaged()
