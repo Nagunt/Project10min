@@ -297,6 +297,7 @@ namespace TenMinute {
             }   
 
             피해Data.SetResultData_HP(기존HP, HP);
+            onHPValueChanged?.Invoke(기존HP, HP);
 
             if (피해량 > 0) {
                 Global_EventSystem.Combat.CallOn피해입음(피해Entity, dataIndex);

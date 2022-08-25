@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TenMinute.Physics;
+using TenMinute.Combat;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -41,7 +42,11 @@ namespace TenMinute {
             Character target = PhysicsCollider2D.GetData(col.collider);
             if (target != null &&
                 target.CompareTag("Player")) {
-
+                Entity.Create(
+                    source: _owner,
+                    target: target).
+                    Add«««ÿ(_owner.ATK).
+                    Execute();
                 Destroy(projectile.gameObject);
             }
         }
