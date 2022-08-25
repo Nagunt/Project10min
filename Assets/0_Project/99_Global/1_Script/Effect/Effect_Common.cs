@@ -5,18 +5,18 @@ using TenMinute.Data;
 
 namespace TenMinute {
     public sealed class Effect_효과1 : Effect {
-        public Effect_효과1() :
-            base(EffectID.효과1) { }
+        public Effect_효과1(int value) : base(value,
+            EffectID.효과1) { }
 
-        public override void OnEnable() {
+        public override void Active(Character owner) {
+            base.Active(owner);
             Owner.onCalcDEF수치 += OnCalcDEF수치;
-            base.OnEnable();
         }
 
-        public override void OnDisable() {
+        public override void Dispose() {
+            base.Dispose();
             Owner.onCalcDEF수치 -= OnCalcDEF수치;
             Debug.Log("효과1해제");
-            base.OnDisable();
         }
 
         private int OnCalcDEF수치() {
@@ -25,17 +25,17 @@ namespace TenMinute {
     }
 
     public sealed class Effect_효과2 : Effect {
-        public Effect_효과2() :
-            base(EffectID.효과2) { }
+        public Effect_효과2(int value) : base(value,
+            EffectID.효과2) { }
 
-        public override void OnEnable() {
+        public override void Active(Character owner) {
+            base.Active(owner);
             Owner.onCalcATKSpeed수치 += OnCalcATKSpeed수치;
-            base.OnEnable();
         }
 
-        public override void OnDisable() {
+        public override void Dispose() {
+            base.Dispose();
             Owner.onCalcATKSpeed수치 -= OnCalcATKSpeed수치;
-            base.OnDisable();
         }
 
         private float OnCalcATKSpeed수치() {

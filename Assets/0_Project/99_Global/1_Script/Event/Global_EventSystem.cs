@@ -2,20 +2,33 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using TenMinute.UI;
+using TenMinute.Combat;
 using UnityEngine;
 
 namespace TenMinute.Event {
+
+    public delegate void VoidEvent();
+    public delegate void BoolEvent(bool state);
+    public delegate void IntEvent(int value);
+    public delegate void CharEvent(Character target);
+
+    public delegate void UIEvent_0차원();
+    public delegate void UIEvent_1차원<T>(T t);
+    public delegate void UIEvent_2차원<T, K>(T t, K k);
+    public delegate void UIEvent_3차원<T, K, L>(T t, K k, L l);
+
+    public delegate void OnCalc데이터_0차원(DataEntity data);
+    public delegate void OnCalc데이터_1차원(Character target, DataEntity data);
+    public delegate void OnCalc데이터_2차원(Character source, Character target, Combat.DataEntity data);
+
+    public delegate void OnExecute엔티티(Entity entity, int dataIndex);
+
     public static class Global_EventSystem {
 
         public static void Init() {
             UI.Init();
         }
         public static class UI {
-
-            public delegate void UIEvent_0차원();
-            public delegate void UIEvent_1차원<T>(T t);
-            public delegate void UIEvent_2차원<T, K>(T t, K k);
-            public delegate void UIEvent_3차원<T, K, L>(T t, K k, L l);
 
             private class UIEvent {
                 public UIEvent_0차원 callback;
@@ -187,11 +200,6 @@ namespace TenMinute.Event {
         }
 
         public static class Game {
-            public delegate void VoidEvent();
-            public delegate void BoolEvent(bool state);
-            public delegate void IntEvent(int value);
-            public delegate void CharEvent(Character target);
-
 
             public static IntEvent onRoomStarted;
             public static IntEvent onRoomCleared;
@@ -229,6 +237,73 @@ namespace TenMinute.Event {
             }
             public static void CallOnEnemyDisposed(Character target) {
                 onEnemyDisposed?.Invoke(target);
+            }
+        }
+
+        public static class Combat {
+
+            public static OnExecute엔티티 on피해입힐예정;
+            public static void CallOn피해입힐예정(Entity entity, int dataIndex) {
+                on피해입힐예정?.Invoke(entity, dataIndex);
+            }
+
+            public static OnExecute엔티티 on피해입을예정;
+            public static void CallOn피해입을예정(Entity entity, int dataIndex) {
+                on피해입을예정?.Invoke(entity, dataIndex);
+            }
+
+            public static OnExecute엔티티 on피해입음;
+            public static void CallOn피해입음(Entity entity, int dataIndex) {
+                on피해입음?.Invoke(entity, dataIndex);
+            }
+            public static OnExecute엔티티 on피해입고생존;
+            public static void CallOn피해입고생존(Entity entity, int dataIndex) {
+                on피해입고생존?.Invoke(entity, dataIndex);
+            }
+
+            public static OnExecute엔티티 on회복시킬예정;
+            public static void CallOn회복시킬예정(Entity entity, int dataIndex) {
+                on회복시킬예정?.Invoke(entity, dataIndex);
+            }
+            public static OnExecute엔티티 on회복받을예정;
+            public static void CallOn회복받을예정(Entity entity, int dataIndex) {
+                on회복받을예정?.Invoke(entity, dataIndex);
+            }
+            public static OnExecute엔티티 on회복;
+            public static void CallOn회복(Entity entity, int dataIndex) {
+                on회복?.Invoke(entity, dataIndex);
+            }
+
+            public static OnExecute엔티티 on효과부여예정_선처리;
+            public static OnExecute엔티티 on효과부여예정;
+            public static OnExecute엔티티 on효과부여예정_면역체크;
+            public static OnExecute엔티티 on효과부여예정_후처리;
+            public static void CallOn효과부여예정(Entity entity, int dataIndex) {
+                on효과부여예정_선처리?.Invoke(entity, dataIndex);
+                on효과부여예정_면역체크?.Invoke(entity, dataIndex);
+                on효과부여예정?.Invoke(entity, dataIndex);
+                on효과부여예정_후처리?.Invoke(entity, dataIndex);
+            }
+
+            public static OnExecute엔티티 on효과회수예정;
+            public static void CallOn효과회수예정(Entity entity, int dataIndex) {
+                on효과회수예정?.Invoke(entity, dataIndex);
+            }
+            public static OnExecute엔티티 on효과부여;
+            public static void CallOn효과부여(Entity entity, int dataIndex) {
+                on효과부여?.Invoke(entity, dataIndex);
+            }
+            public static OnExecute엔티티 on효과회수;
+            public static void CallOn효과회수(Entity entity, int dataIndex) {
+                on효과회수?.Invoke(entity, dataIndex);
+            }
+            public static OnExecute엔티티 on효과제거;
+            public static void CallOn효과제거(Entity entity, int dataIndex) {
+                on효과제거?.Invoke(entity, dataIndex);
+            }
+            public static OnExecute엔티티 on효과회수후제거;
+            public static void CallOn효과회수후제거(Entity entity, int dataIndex) {
+                on효과회수후제거?.Invoke(entity, dataIndex);
             }
         }
     }

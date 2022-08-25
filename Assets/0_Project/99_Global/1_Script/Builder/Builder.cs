@@ -24,20 +24,20 @@ namespace TenMinute {
     }
 
     public partial class Effect {
-        public static Effect Create(EffectID id) {
-            Effect value = null;
+        public static Effect Create(EffectID id, int value = 1) {
+            Effect target = null;
             try {
                 string name = $"TenMinute.Effect_{id}";
-                Type effectType = Type.GetType(name);
-                if (Activator.CreateInstance(effectType) is Effect newEffect) {
-                    value = newEffect;
+                Type effectType = System.Type.GetType(name);
+                if (Activator.CreateInstance(effectType, value) is Effect newEffect) {
+                    target = newEffect;
                 }
             }
             catch (Exception) {
                 Debug.Log($"{id} 에 해당하는 효과가 존재하지 않음.");
                 return null;
             }
-            return value;
+            return target;
         }
     }
 }
