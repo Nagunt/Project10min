@@ -8,24 +8,30 @@ namespace TenMinute.Graphics {
         [SerializeField]
         private Animator _animator;
 
+        private readonly string ID_ISMOVE = "IsMove";
+        private readonly string ID_ISATTACK = "IsAttack";
+        private readonly string ID_ISKNOCKDOWN = "IsKnockDown";
+        private readonly string ID_ISDEAD = "IsDead";
+        private readonly string ID_ATKSPEED = "AttackSpeed";
+
         public void SetState_Move(bool state) {
-            _animator.SetBool(0, state);
+            _animator.SetBool(ID_ISMOVE, state);
         }
 
         public void SetState_Attack(bool state) {
-            _animator.SetBool(1, state);
+            _animator.SetBool(ID_ISATTACK, state);
         }
 
         public void SetState_KnockDown(bool state) {
-            _animator.SetBool(2, state);
+            _animator.SetBool(ID_ISKNOCKDOWN, state);
         }
 
         public void SetState_Dead(bool state) {
-            _animator.SetBool(3, state);
+            _animator.SetBool(ID_ISDEAD, state);
         }
 
         public void SetMotionTime_Attack(float time) {
-            _animator.SetFloat(4, 1 / time);
+            _animator.SetFloat(ID_ATKSPEED, 1 / time);
         }
     }
 }

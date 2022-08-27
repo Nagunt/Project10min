@@ -329,7 +329,8 @@ namespace TenMinute {
         public void Apply피해(Entity 피해Entity, int dataIndex) {
             if (IsDead) return;
 
-            if (피해Entity.Has주체) {
+            if (피해Entity.Has주체 &&
+                피해Entity.주체캐릭터 != null) {
                 피해Entity.주체캐릭터.CallOn피해예정(피해Entity, dataIndex);
             }
 
@@ -356,7 +357,8 @@ namespace TenMinute {
             onHPValueChanged?.Invoke(기존HP, HP);
 
             if (피해량 > 0) {
-                if (피해Entity.Has주체) {
+                if (피해Entity.Has주체 &&
+                    피해Entity.주체캐릭터 != null) {
                     피해Entity.주체캐릭터.CallOn피해(피해Entity, dataIndex);
                 }
                 CallOn피해(피해Entity, dataIndex);

@@ -40,24 +40,25 @@ namespace TenMinute.Combat {
 
         // 주체가 유물 (파생 효과 등)
         public static Entity Create(Artifact source, Character target) {
-            return new Entity(EntityID.None, null, source, null, target, target.transform.position);
+            return new Entity(EntityID.None, source.Owner, source, null, target, target.transform.position);
         }
         public static Entity Create(EntityID id, Artifact source, Character target) {
-            return new Entity(id, null, source, null, target, target.transform.position);
+            return new Entity(id, source.Owner, source, null, target, target.transform.position);
         }
         public static Entity Create(EntityID id, Artifact source, Character target, Vector2 position) {
-            return new Entity(id, null, source, null, target, position);
+            return new Entity(id, source.Owner, source, null, target, position);
         }
 
         // 주체가 효과 (도트 피해 등)
-        public static Entity Create(Effect source, Character target) {
-            return new Entity(EntityID.None, null, null, source, target, target.transform.position);
+        // 근원주체 시스템 적용. 효과의 보유자 / 효과를 건 캐릭터를 구분해아되서..
+        public static Entity Create(Effect source, Character target, Character 근원주체 = null) {
+            return new Entity(EntityID.None, 근원주체, null, source, target, target.transform.position);
         }
-        public static Entity Create(EntityID id, Effect source, Character target) {
-            return new Entity(id, null, null, source, target, target.transform.position);
+        public static Entity Create(EntityID id, Effect source, Character target, Character 근원주체 = null) {
+            return new Entity(id, 근원주체, null, source, target, target.transform.position);
         }
-        public static Entity Create(EntityID id, Effect source, Character target, Vector2 position) {
-            return new Entity(id, null, null, source, target, position);
+        public static Entity Create(EntityID id, Effect source, Character target, Vector2 position, Character 근원주체 = null) {
+            return new Entity(id, 근원주체, null, source, target, position);
         }
     }
 }

@@ -9,6 +9,19 @@ namespace TenMinute.Combat {
 
     public enum EntityID {
         None = 0,
+
+
+
+
+
+
+        시간파편,
+
+
+
+
+
+        BowMan타격,
     }
 
     public sealed partial class Entity {
@@ -60,7 +73,7 @@ namespace TenMinute.Combat {
         }
 
         public void Execute() {
-            Graphic_Entity graphics = Global_GraphicManager.Instance.GetGraphic();
+            Graphic_Entity graphics = Global_GraphicManager.Instance.GetGraphic(ID);
             for (int i = 0; i < _data.Count; ++i) {
                 graphics.onEvent += ExecuteData;
             }

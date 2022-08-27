@@ -12,8 +12,15 @@ namespace TenMinute.Graphics {
 
         private Sequence _sequence;
 
+        public Action<Graphic_Text> onComplete;
+
         public Graphic_Text SetText(string text) {
             _textMesh.SetText(text);
+            return this;
+        }
+
+        public Graphic_Text SetActive(bool state) {
+            gameObject.SetActive(state);
             return this;
         }
 
@@ -27,16 +34,16 @@ namespace TenMinute.Graphics {
             return this;
         }
 
-        public Graphic_Text Play(Action onComplete = null) {
+        public Graphic_Text Play() {
             if (_sequence.IsActive()) {
                 _sequence.Kill();
             }
             _sequence = DOTween.Sequence();
             _sequence.
-                Append(transform.DOMoveY(-1f, 2f).SetRelative()).
+                Append(transform.DOMoveY(.5f, 1.75f).SetRelative()).
                 AppendInterval(0.25f).
                 SetAutoKill().
-                OnComplete(() => onComplete?.Invoke()).
+                OnComplete(() => onComplete?.Invoke(this)).
                 OnKill(() => _sequence = null).
                 Play();
             return this;

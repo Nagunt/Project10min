@@ -33,6 +33,8 @@ namespace TenMinute {
                             Character target = PhysicsCollider2D.GetData(cols[i]);
                             if (target != entity.대상캐릭터) {
                                 entity.Add서브엔티티(Entity.Create(
+                                    id: EntityID.시간파편,
+                                    source : this,
                                     target: target).
                                     Add피해(10), dataIndex);
                             }

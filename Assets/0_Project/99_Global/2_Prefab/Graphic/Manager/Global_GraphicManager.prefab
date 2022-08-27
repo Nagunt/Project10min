@@ -44,4 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefab_Text: {fileID: 4434895230877344320, guid: b400ba539d63b8a499adf3448874c770, type: 3}
-  _prefab_Entity: {fileID: 8649026414084710418, guid: 200887df1f0fe5546836988793784240, type: 3}
+  _prefab_Entity:
+    m_keys: 0000000001000000
+    m_values:
+    - {fileID: 8649026414084710418, guid: 200887df1f0fe5546836988793784240, type: 3}
+    - {fileID: 2097173557821036827, guid: d8f865ad5961e914b83b48c509046243, type: 3}
