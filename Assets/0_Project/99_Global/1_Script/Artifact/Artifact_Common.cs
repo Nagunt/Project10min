@@ -15,12 +15,12 @@ namespace TenMinute {
 
         public override void OnEnable() {
             base.OnEnable();
-            Global_EventSystem.Combat.on피해입음 += OnDamage;
+            Owner.on피해 += OnDamage;
         }
 
         public override void OnDisable() {
             base.OnDisable();
-            Global_EventSystem.Combat.on피해입음 -= OnDamage;
+            Owner.on피해 -= OnDamage;
         }
 
         private void OnDamage(Entity entity, int dataIndex) {
@@ -33,6 +33,8 @@ namespace TenMinute {
                             Character target = PhysicsCollider2D.GetData(cols[i]);
                             if (target != entity.대상캐릭터) {
                                 entity.Add서브엔티티(Entity.Create(
+                                    id: EntityID.시간파편,
+                                    source : this,
                                     target: target).
                                     Add피해(10), dataIndex);
                             }

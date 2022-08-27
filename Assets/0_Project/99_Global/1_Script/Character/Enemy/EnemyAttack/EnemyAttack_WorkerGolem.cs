@@ -29,8 +29,8 @@ namespace TenMinute {
 
             SetPosition(_target.transform.position);
 
-            _owner.Animator.SetFloat("AttackSpeed", 1 / (unitDelay * .4f));
-            _owner.Animator.SetBool("IsAttack", true);
+            _owner.Graphic.SetMotionTime_Attack(unitDelay * .4f);
+            _owner.Graphic.SetState_Attack(true);
 
             yield return waitForDelay;
 
@@ -52,7 +52,7 @@ namespace TenMinute {
 
             yield return waitForDelay;
 
-            _owner.Animator.SetBool("IsAttack", false);
+            _owner.Graphic.SetState_Attack(false);
 
             yield return waitForEndDelay;
 

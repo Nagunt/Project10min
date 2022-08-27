@@ -2,16 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using TenMinute.Data;
+using TenMinute.Graphics;
 using UnityEngine;
 
 namespace TenMinute.Combat {
 
     public enum EntityID {
         None = 0,
+
+
+
+
+
+
+        시간파편,
+
+
+
+
+
+        BowMan타격,
     }
 
     public sealed partial class Entity {
         private EntityID _id;
+        private Vector2 _position;
 
         private Character _주체캐릭터;
         private Artifact _주체유물;
@@ -23,6 +38,7 @@ namespace TenMinute.Combat {
         public bool Has대상 => _대상캐릭터 != null;
 
         public EntityID ID => _id;
+        public Vector2 발생위치 => _position;
         public Character 주체캐릭터 => _주체캐릭터;
         public Artifact 주체유물 => _주체유물;
         public Effect 주체효과 => _주체효과;
@@ -47,6 +63,8 @@ namespace TenMinute.Combat {
 
         public DataEntity GetData(int index) => _data[index];
 
+        public int EventCount => _data.Count;
+
         public ReadOnlyCollection<Entity> Get서브엔티티(int index) => _서브엔티티[index].AsReadOnly();
 
         private void SetRoot(Entity parent) {
@@ -55,19 +73,20 @@ namespace TenMinute.Combat {
         }
 
         public void Execute() {
-            ExecuteData();
+            Graphic_Entity graphics = Global_GraphicManager.Instance.GetGraphic(ID);
+            for (int i = 0; i < _data.Count; ++i) {
+                graphics.onEvent += ExecuteData;
+            }
+            graphics.Build(this);
         }
 
-        private void ExecuteData() {
-            for(int i = 0; i < _data.Count; ++i) {
-                if (_data[i] != null && Has대상) {
-                    ApplyData(i);
-                }
-
-                for(int j = 0; j < _서브엔티티[i].Count; ++j) {
-                    _서브엔티티[i][j].SetRoot(this);
-                    _서브엔티티[i][j].ExecuteData();
-                }
+        private void ExecuteData(int index) {
+            if (_data[index] != null && Has대상) {
+                ApplyData(index);
+            }
+            for (int i = 0; i < _서브엔티티[index].Count; ++i) {
+                _서브엔티티[index][i].SetRoot(this);
+                _서브엔티티[index][i].Execute();
             }
         }
 
@@ -92,6 +111,26 @@ namespace TenMinute.Combat {
                     break;
                 case EntityType.넉백:
                     대상캐릭터.Apply넉백(this, index);
+                    break;
+            }
+            BuildGraphic(index);
+        }
+
+        private void BuildGraphic(int index) {
+            switch (_data[index].Type) {
+                case EntityType.피해:
+                    Global_GraphicManager.Instance.GetText().
+                        SetText($"{_data[index].총피해량}").
+                        SetColor(Color.red).
+                        SetPosition(발생위치).
+                        Play();
+                    break;
+                case EntityType.HP회복:
+                    Global_GraphicManager.Instance.GetText().
+                        SetText($"{_data[index].총회복량}").
+                        SetColor(Color.green).
+                        SetPosition(발생위치).
+                        Play();
                     break;
             }
         }
@@ -134,6 +173,12 @@ namespace TenMinute.Combat {
             return this;
         }
 
+        public Entity Add추가피해(int 피해량) {
+            DataEntity data = DataEntity.추가피해(피해량);
+            AddData(data);
+            return this;
+        }
+
         public Entity Add효과부여(EffectID id, int 부여량 = 1, float 지속시간 = 0f) {
             DataEntity data = DataEntity.효과부여(id, 부여량, 지속시간);
             AddData(data);
@@ -161,6 +206,11 @@ namespace TenMinute.Combat {
         public Entity Add넉백(int 넉백도) {
             DataEntity data = DataEntity.넉백(넉백도);
             AddData(data);
+            return this;
+        }
+
+        public Entity Add추상이벤트() {
+            AddData(null);
             return this;
         }
 

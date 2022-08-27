@@ -23,6 +23,13 @@ namespace TenMinute.Combat {
             return new DataEntity(EntityType.피해, 데이터, property);
         }
 
+        public static DataEntity 추가피해(int 데이터, EntityProperty properties = EntityProperty.None) {
+            EntityProperty property =
+                (properties.HasFlag(EntityProperty.고정수치) ? EntityProperty.고정수치 : EntityProperty.None) |
+                (properties.HasFlag(EntityProperty.방어무시) ? EntityProperty.방어무시 : EntityProperty.None);
+            return new DataEntity(EntityType.추가피해, 데이터, property);
+        }
+
         public static DataEntity 경직(int 데이터) {
             return new DataEntity(EntityType.경직, 데이터);
         }
