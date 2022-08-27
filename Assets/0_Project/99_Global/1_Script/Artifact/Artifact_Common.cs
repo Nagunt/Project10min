@@ -15,12 +15,12 @@ namespace TenMinute {
 
         public override void OnEnable() {
             base.OnEnable();
-            Global_EventSystem.Combat.on피해입음 += OnDamage;
+            Owner.on피해 += OnDamage;
         }
 
         public override void OnDisable() {
             base.OnDisable();
-            Global_EventSystem.Combat.on피해입음 -= OnDamage;
+            Owner.on피해 -= OnDamage;
         }
 
         private void OnDamage(Entity entity, int dataIndex) {

@@ -31,8 +31,8 @@ namespace TenMinute {
             SetDirection((_target.transform.position - _owner.transform.position).normalized);
             transform.eulerAngles = new Vector3(0, 0, Vector2.Angle(Vector2.right, _dir) * (_dir.y > 0 ? 1f : -1f));
 
-            _owner.Animator.SetFloat("AttackSpeed", 1 / (unitDelay * .2f));
-            _owner.Animator.SetBool("IsAttack", true);
+            _owner.Graphic.SetMotionTime_Attack(unitDelay * .2f);
+            _owner.Graphic.SetState_Attack(true);
 
             yield return waitForDelay;
 
@@ -52,7 +52,7 @@ namespace TenMinute {
 
             yield return waitForDelay;
 
-            _owner.Animator.SetBool("IsAttack", false);
+            _owner.Graphic.SetState_Attack(false);
 
             yield return waitForEndDelay;
 

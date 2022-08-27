@@ -73,6 +73,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 4
   _animator: {fileID: 1454879885544028027}
+  _graphic: {fileID: 998653721098998209}
   _rb2D: {fileID: 296791154585901075}
   "\uC2A4\uD15FHP": 15
   "\uC2A4\uD15FATK": 13
@@ -499,6 +500,7 @@ GameObject:
   m_Component:
   - component: {fileID: 429165046037797298}
   - component: {fileID: 1454879885544028027}
+  - component: {fileID: 998653721098998209}
   m_Layer: 8
   m_Name: Graphic_Enemy
   m_TagString: Untagged
@@ -540,6 +542,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &998653721098998209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7305743742505412622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4dbbc020a6e40f43853d58c2db958e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 1454879885544028027}
 --- !u!1001 &1711919293336017427
 PrefabInstance:
   m_ObjectHideFlags: 0

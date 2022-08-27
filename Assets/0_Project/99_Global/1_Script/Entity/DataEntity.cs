@@ -9,6 +9,7 @@ namespace TenMinute.Combat {
         HP회복,
         HP지정,
         피해,
+        추가피해,
         경직,
         넉백,
         효과부여,           // 효과를 부여
@@ -79,7 +80,7 @@ namespace TenMinute.Combat {
 
         #endregion
 
-        #region 피해
+        #region 피해, 추가피해
 
         public void SetResultData_HP(int prev, int next) {
             Apply이전값_HP = prev;
