@@ -30,7 +30,7 @@ namespace TenMinute.Graphics {
         }
 
         public Graphic_Text SetPosition(Vector2 pos) {
-            transform.position = pos;
+            transform.position = new Vector2(pos.x + UnityEngine.Random.Range(-0.1f, 0.1f), pos.y);
             return this;
         }
 
