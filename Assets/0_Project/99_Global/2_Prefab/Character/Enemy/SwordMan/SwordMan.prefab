@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2405669835536805935}
-  m_LocalRotation: {x: -0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1.414, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3086916683266835078}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &842136687122714056
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -68,8 +68,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1961330475
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4e7f761f0ca07c747b9721475d60e172, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -128,7 +128,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3086916682209849656}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
@@ -154,7 +154,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 2
-  _animator: {fileID: 8872913765059714091}
   _graphic: {fileID: 6389782252014678488}
   _rb2D: {fileID: 3086916682209849661}
   "\uC2A4\uD15FHP": 10
@@ -284,7 +283,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3086916683825065009}
-  - component: {fileID: 3086916683825065021}
+  - component: {fileID: 2782782953036946724}
   - component: {fileID: 3163912047026465152}
   m_Layer: 8
   m_Name: PhysicsCollider
@@ -307,8 +306,8 @@ Transform:
   m_Father: {fileID: 3086916682209849658}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &3086916683825065021
-BoxCollider2D:
+--- !u!60 &2782782953036946724
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -330,9 +329,16 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.01}
-  m_EdgeRadius: 0.25
+  m_Points:
+    m_Paths:
+    - - {x: -0.1, y: 0.19}
+      - {x: 0.1, y: 0.19}
+      - {x: 0.385, y: 0.05}
+      - {x: 0.385, y: -0.05}
+      - {x: 0.1, y: -0.19}
+      - {x: -0.1, y: -0.19}
+      - {x: -0.385, y: -0.05}
+      - {x: -0.385, y: 0.05}
 --- !u!114 &3163912047026465152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,7 +351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff3a14dc8e4538a46bd6c7744b3353de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  col: {fileID: 3086916683825065021}
+  col: {fileID: 2782782953036946724}
   character: {fileID: 1892985310561480026}
 --- !u!1 &8343707887077469860
 GameObject:
@@ -498,8 +504,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8992920948381750944}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 3086916682209849658}
   m_RootOrder: 1
@@ -574,6 +580,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3168544161299221660, guid: 3c64a2cc1fe0bff4791abd527ef80ee3, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3168544161299221660, guid: 3c64a2cc1fe0bff4791abd527ef80ee3, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1961330475
+      objectReference: {fileID: 0}
     - target: {fileID: 3625186377688144479, guid: 3c64a2cc1fe0bff4791abd527ef80ee3, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -628,7 +642,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5666209384031878865, guid: 3c64a2cc1fe0bff4791abd527ef80ee3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6271147105407700403, guid: 3c64a2cc1fe0bff4791abd527ef80ee3, type: 3}
       propertyPath: _targetMask.m_Bits
