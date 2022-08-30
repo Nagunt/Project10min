@@ -9,9 +9,11 @@ using UnityEngine.Events;
 namespace TenMinute {
     public class EnemyAttack_SwordMan : EnemyAttack {
         [SerializeField]
-        private Area2D _collider;
+        private ExtraCollider2D _collider;
         [SerializeField]
-        private GameObject _graphic;
+        private Transform _graphic;
+        [SerializeField]
+        private Transform _mask;
 
         private Sequence moveSequence;
         private Sequence attackCheckSequence;
@@ -29,7 +31,17 @@ namespace TenMinute {
             WaitForSeconds waitForEndDelay = new WaitForSeconds(unitDelay * 0.75f);
 
             SetDirection((_target.transform.position - _owner.transform.position).normalized);
-            transform.eulerAngles = new Vector3(0, 0, Vector2.Angle(Vector2.right, _dir) * (_dir.y > 0 ? 1f : -1f));
+
+            _collider.
+                SetRadius(2f).
+                SetEllipse(true).
+                SetOtherRadius(1f).
+                SetArc(true).
+                SetAngle(75f).
+                SetCenterAngle(Vector2.Angle(Vector2.right, _dir) * (_dir.y > 0 ? 1f : -1f)).
+                MakeShape();
+
+            _mask.transform.localEulerAngles = new Vector3(0, 0, Vector2.Angle(Vector2.right, _dir) * (_dir.y > 0 ? 1f : -1f));
 
             _owner.Graphic.SetMotionTime_Attack(unitDelay * .25f);
             _owner.Graphic.SetState_Attack(true);
@@ -49,6 +61,7 @@ namespace TenMinute {
                 AppendCallback(() => {
                     _collider.gameObject.SetActive(true);
                     _graphic.gameObject.SetActive(true);
+                    
                 }).
                 AppendInterval(unitDelay * 0.125f).
                 AppendCallback(() => {
@@ -68,8 +81,8 @@ namespace TenMinute {
             onComplete?.Invoke();
         }
 
-        private void OnHit(Collider2D col) {
-            Character target = PhysicsCollider2D.GetData(col);
+        private void OnHit(ExtraCollider2D t, Collider2D col) {
+            Character target = Character.GetCharacter(col);
             if (target != null &&
                 target.CompareTag("Player")) {
                 Entity.Create(

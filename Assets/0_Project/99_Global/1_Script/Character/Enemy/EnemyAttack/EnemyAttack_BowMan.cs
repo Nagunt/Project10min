@@ -39,7 +39,7 @@ namespace TenMinute {
         }
 
         private void OnHit(Projectile2D projectile, Collision2D col) {
-            Character target = PhysicsCollider2D.GetData(col.collider);
+            Character target = Character.GetCharacter(col.collider);
             if (target != null &&
                 target.CompareTag("Player")) {
                 Entity.Create(
