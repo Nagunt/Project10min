@@ -31,6 +31,7 @@ namespace TenMinute {
         }
 
         public void Run(UnityAction onComplete) {
+            gameObject.SetActive(true);
             StartCoroutine(Routine(onComplete));
         }
 

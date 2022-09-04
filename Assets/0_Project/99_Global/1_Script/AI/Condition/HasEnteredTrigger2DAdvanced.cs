@@ -31,7 +31,7 @@ namespace TenMinute.AI
                 resultContainer = resultContainer.Where(c => c.CompareTag(tag.Value)).ToList();
                 if (resultContainer.Count > 0)
                 {
-                    otherCharacter.SetValue(PhysicsCollider2D.GetData(resultContainer[0]));
+                    otherCharacter.SetValue(Character.GetCharacter(resultContainer[0]));
                     return TaskStatus.Success;
                 }
             }

@@ -30,7 +30,7 @@ namespace TenMinute {
                 if (cols.Length > 0) {
                     for(int i = 0; i < cols.Length; ++i) {
                         if (cols[i].CompareTag("Player")) {
-                            Character target = PhysicsCollider2D.GetData(cols[i]);
+                            Character target = Character.GetCharacter(cols[i]);
                             if (target != entity.대상캐릭터) {
                                 entity.Add서브엔티티(Entity.Create(
                                     id: EntityID.시간파편,

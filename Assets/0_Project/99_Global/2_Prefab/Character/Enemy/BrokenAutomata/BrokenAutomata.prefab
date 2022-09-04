@@ -345,9 +345,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 6
-  _animator: {fileID: 1485487025962954187}
   _graphic: {fileID: 3019076413715856736}
   _rb2D: {fileID: 8087658497325906531}
+  _col2D: {fileID: 8087658498923521891}
   "\uC2A4\uD15FHP": 1
   "\uC2A4\uD15FATK": 1
   "\uC2A4\uD15FDEF": 1
@@ -493,7 +493,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8087658498923521903}
   - component: {fileID: 8087658498923521891}
-  - component: {fileID: 8143552584150983390}
   m_Layer: 8
   m_Name: PhysicsCollider
   m_TagString: Enemy
@@ -541,20 +540,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.01}
   m_EdgeRadius: 0.25
---- !u!114 &8143552584150983390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8087658498923521888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff3a14dc8e4538a46bd6c7744b3353de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  col: {fileID: 8087658498923521891}
-  character: {fileID: 2980014545240922763}
 --- !u!1001 &8264560018083928552
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,9 +13,16 @@ using TenMinute.Graphics;
 namespace TenMinute {
     public class Character : MonoBehaviour {
         private static Dictionary<Rigidbody2D, Character> rb2DData = new Dictionary<Rigidbody2D, Character>();
+        private static Dictionary<Collider2D, Character> colData = new Dictionary<Collider2D, Character>();
 
         public static Character GetCharacter(Rigidbody2D rb2D) {
             if (rb2DData.TryGetValue(rb2D, out Character value)) {
+                return value;
+            }
+            return null;
+        }
+        public static Character GetCharacter(Collider2D col2D) {
+            if(colData.TryGetValue(col2D, out Character value)) {
                 return value;
             }
             return null;
@@ -28,6 +35,8 @@ namespace TenMinute {
         protected Graphic_Character _graphic;
         [SerializeField]
         protected Rigidbody2D _rb2D;
+        [SerializeField]
+        protected Collider2D _col2D;
 
         #region Status
 
@@ -218,6 +227,7 @@ namespace TenMinute {
         public CharacterID ID => _id;
         public Graphic_Character Graphic => _graphic;
         public Rigidbody2D RB2D => _rb2D;
+        public Collider2D Col2D => _col2D;
         public bool IsAlive => IsInit && IsDead == false && IsDispose == false;
         public bool IsNPC => _isNPC;
         public bool IsInit { get; protected set; } = false;
@@ -233,6 +243,7 @@ namespace TenMinute {
         #region Physics
         public virtual void Move(Vector2 dir) {
             RB2D.velocity = dir.normalized * Speed;
+            RB2D.velocity = new Vector2(RB2D.velocity.x, RB2D.velocity.y * .5f);
             Graphic.SetState_Move(true);
         }
         public virtual void Stop() {
@@ -251,6 +262,7 @@ namespace TenMinute {
             _effectList = new EffectList(this);
             _artifactList = new ArtifactList(this);
             HP = MaxHP;
+            colData.Add(Col2D, this);
             rb2DData.Add(RB2D, this);
             IsInit = true;
         }
@@ -478,6 +490,7 @@ namespace TenMinute {
         #endregion
 
         private void OnDestroy() {
+            colData.Remove(Col2D);
             rb2DData.Remove(RB2D);
         }
     }
