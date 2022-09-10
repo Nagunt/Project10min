@@ -101,6 +101,9 @@ namespace TenMinute.Combat {
                 case EntityType.피해:
                     대상캐릭터.Apply피해(this, index);
                     break;
+                case EntityType.추가피해:
+                    대상캐릭터.Apply추가피해(this, index);
+                    break;
                 case EntityType.효과부여:
                 case EntityType.효과회수:
                 case EntityType.효과제거:

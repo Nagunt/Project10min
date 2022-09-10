@@ -293,6 +293,14 @@ namespace TenMinute {
         public void CallOn피해입고생존(Entity entity, int dataIndex) {
             on피해입고생존?.Invoke(entity, dataIndex);
         }
+        public OnExecute엔티티 on추가피해예정;
+        public void CallOn추가피해예정(Entity entity, int dataIndex) {
+            on추가피해예정?.Invoke(entity, dataIndex);
+        }
+        public OnExecute엔티티 on추가피해;
+        public void CallOn추가피해(Entity entity, int dataIndex) {
+            on추가피해?.Invoke(entity, dataIndex);
+        }
 
         public OnExecute엔티티 on회복예정;
         public void CallOn회복예정(Entity entity, int dataIndex) {
@@ -380,6 +388,54 @@ namespace TenMinute {
                 Dead();
                 if (IsDead) return;
             }
+        }
+
+        public void Apply추가피해(Entity 피해Entity, int dataIndex) {
+            if (IsDead) return;
+
+
+            if (피해Entity.Has주체 &&
+                피해Entity.주체캐릭터 != null) {
+                피해Entity.주체캐릭터.CallOn추가피해예정(피해Entity, dataIndex);
+            }
+
+            DataEntity 피해Data = 피해Entity.GetData(dataIndex);
+
+            if (피해Data.Property.HasFlag(EntityProperty.방어무시) == false) {
+                피해Data.Add추가량(-DEF);
+            }
+
+            CallOn추가피해예정(피해Entity, dataIndex);
+
+            int 피해량 = 피해Data.데이터;
+            if (피해량 < 0) 피해량 = 0;
+
+            int 기존HP = HP;
+
+            HP -= 피해량;
+
+            if (HP < 0) {
+                HP = 0;
+            }
+
+            피해Data.SetResultData_HP(기존HP, HP);
+            onHPValueChanged?.Invoke(기존HP, HP);
+
+            if (피해량 > 0) {
+                if (피해Entity.Has주체 &&
+                    피해Entity.주체캐릭터 != null) {
+                    피해Entity.주체캐릭터.CallOn추가피해(피해Entity, dataIndex);
+                }
+                CallOn추가피해(피해Entity, dataIndex);
+            }
+
+            if (HP <= 0 && 피해량 > 0) {
+                Dead();
+                if (IsDead) return;
+            }
+
+
+
         }
 
         public void Apply경직(Entity 경직Entity, int dataIndex) {
