@@ -14,12 +14,10 @@ namespace TenMinute {
             base(ArtifactID.시간파편) { }
 
         public override void OnEnable() {
-            base.OnEnable();
             Owner.on피해 += OnDamage;
         }
 
         public override void OnDisable() {
-            base.OnDisable();
             Owner.on피해 -= OnDamage;
         }
 
@@ -45,4 +43,49 @@ namespace TenMinute {
         }
     }
 
+    public sealed class Artifact_검술연마 : Artifact {
+
+        public Artifact_검술연마() :
+            base(ArtifactID.검술연마) { }
+
+        public override void OnEnable() {
+
+        }
+
+        public override void OnDisable() {
+
+        }
+    }
+
+    public sealed class Artifact_칼날돌진 : Artifact {
+
+        public Artifact_칼날돌진() :
+            base(ArtifactID.칼날돌진) { }
+
+        public override void OnEnable() {
+
+        }
+
+        public override void OnDisable() {
+
+        }
+    }
+
+    public sealed class Artifact_공격강화 : Artifact {
+
+        public Artifact_공격강화() :
+            base(ArtifactID.공격강화) { }
+
+        public override void OnEnable() {
+            Owner.onCalcATK비율 += OnCalcATK배율;
+        }
+
+        public override void OnDisable() {
+            Owner.onCalcATK비율 -= OnCalcATK배율;
+        }
+
+        private float OnCalcATK배율() {
+            return 1.1f;
+        }
+    }
 }
