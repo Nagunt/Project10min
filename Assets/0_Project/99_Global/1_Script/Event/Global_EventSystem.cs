@@ -22,6 +22,8 @@ namespace TenMinute.Event {
     public delegate void OnCalc데이터_2차원(Character source, Character target, Combat.DataEntity data);
 
     public delegate void OnExecute엔티티(Entity entity, int dataIndex);
+    public delegate void OnExecute엔티티_Affect(Character target, Entity entity, int dataIndex);
+    public delegate void OnExecute엔티티_AffectData(Character target, Entity entity, int dataIndex, DataEntity dataEntity);
 
     public static class Global_EventSystem {
 
