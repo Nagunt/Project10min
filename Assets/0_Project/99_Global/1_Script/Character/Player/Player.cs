@@ -17,8 +17,10 @@ namespace TenMinute {
         
         [field: SerializeField]
         public Vector2 move { get; set; }
+        private Vector2 postMove;
         [field: SerializeField]
         public Vector2 look { get; set; }
+        
         [field: SerializeField]
         public bool fire { get; set; }
 
@@ -88,11 +90,13 @@ namespace TenMinute {
             {
                 case ActionType.Move:
                     move = obj.ReadValue<Vector2>();
-                    
+                    postMove = move != Vector2.zero ? move : postMove;
+
                     break;
                 case ActionType.Look:
                     
                     look = Camera.main.ScreenToWorldPoint( obj.ReadValue<Vector2>());
+                    
                     
 
                     break;
@@ -159,9 +163,17 @@ namespace TenMinute {
             {
                 yield return new WaitUntil(() => dash == true);
                 isDash = true;
-                DashVector = move * PlayerDashDistance / PlayerDashTime;
-
-
+                //여기서부터
+                int layerMask = 1 << LayerMask.NameToLayer("Terrain");
+                RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, look,Mathf.Infinity,layerMask);
+                if(hit.Length != 0)
+                {
+                    Debug.Log(hit[0].transform.gameObject);
+                }
+                
+                DashVector = postMove * PlayerDashDistance / PlayerDashTime;
+                
+                //
                 yield return new WaitForSeconds(PlayerDashTime);
                 isDash = false;
                 yield return new WaitForSeconds(PlayerDashCoolDown);
