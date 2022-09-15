@@ -165,12 +165,25 @@ namespace TenMinute {
                 isDash = true;
                 //여기서부터
                 int layerMask = 1 << LayerMask.NameToLayer("Terrain");
-                RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, look,Mathf.Infinity,layerMask);
-                if(hit.Length != 0)
+                RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, postMove, PlayerDashDistance * 1.5f,layerMask);
+                RaycastHit2D[] hit2 = Physics2D.RaycastAll(transform.position + (Vector3)(postMove * PlayerDashDistance * 1.5f), -postMove, PlayerDashDistance * 1.5f, layerMask);
+
+                if(hit.Length > hit2.Length)
                 {
-                    Debug.Log(hit[0].transform.gameObject);
+                    //벽 통과 불가능
                 }
-                
+
+                if (hit.Length != 0)
+                {
+                    Debug.Log(hit[0].point);
+                    
+                }
+                if (hit2.Length != 0)
+                {
+                    Debug.Log(hit2[0].point);
+
+                }
+
                 DashVector = postMove * PlayerDashDistance / PlayerDashTime;
                 
                 //
