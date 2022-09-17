@@ -244,6 +244,7 @@ namespace TenMinute {
         public virtual void Move(Vector2 dir) {
             RB2D.velocity = dir.normalized * Speed;
             RB2D.velocity = new Vector2(RB2D.velocity.x, RB2D.velocity.y * .5f);
+            Graphic.SetDirection(new Vector2(dir.x > 0 ? 1f : -1f, 0));
             Graphic.SetState_Move(true);
         }
         public virtual void Stop() {
