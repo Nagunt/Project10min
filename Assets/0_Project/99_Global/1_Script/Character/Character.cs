@@ -265,6 +265,11 @@ namespace TenMinute {
             HP = MaxHP;
             colData.Add(Col2D, this);
             rb2DData.Add(RB2D, this);
+
+            if (IsNPC) {
+                _behaviorTree.Start();
+            }
+
             IsInit = true;
         }
 
