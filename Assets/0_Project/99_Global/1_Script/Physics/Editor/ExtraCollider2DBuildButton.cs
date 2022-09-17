@@ -11,7 +11,7 @@ namespace TenMinute {
             base.OnInspectorGUI();
             ExtraCollider2D builder = (ExtraCollider2D)target;
             if (GUILayout.Button("Build")) {
-                builder.Build();
+                builder.MakeShape(true);
             }
         }
     }

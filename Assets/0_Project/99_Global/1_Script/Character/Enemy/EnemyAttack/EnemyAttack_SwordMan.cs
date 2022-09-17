@@ -33,10 +33,7 @@ namespace TenMinute {
             SetDirection((_target.transform.position - _owner.transform.position).normalized);
 
             _collider.
-                SetRadius(2f).
-                SetEllipse(true).
-                SetOtherRadius(1f).
-                SetArc(true).
+                SetRadius(2f, 1f).
                 SetAngle(75f).
                 SetCenterAngle(Vector2.Angle(Vector2.right, _dir) * (_dir.y > 0 ? 1f : -1f)).
                 MakeShape();

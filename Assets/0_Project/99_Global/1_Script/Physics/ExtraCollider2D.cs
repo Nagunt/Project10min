@@ -28,7 +28,7 @@ namespace TenMinute.Physics {
 
         private List<Vector2> _pathInfo;
         private float _unitAngle;
-        private bool _needUpdate = false;
+        private bool _needInfoUpdate = false;
 
         public Action<ExtraCollider2D, Collider2D> onTriggerEnter2D;
         public Action<ExtraCollider2D, Collider2D> onTriggerStay2D;
@@ -38,7 +38,9 @@ namespace TenMinute.Physics {
         public Action<ExtraCollider2D, Collision2D> onCollisionStay2D;
         public Action<ExtraCollider2D, Collision2D> onCollisionExit2D;
 
-        public void Build() {
+        public Collider2D Col2D => _col2D;
+
+        private void Build() {
             _pathInfo = new List<Vector2>();
             _unitAngle = 360f / Count;
             float unitRadian = _unitAngle * Mathf.Deg2Rad;
@@ -49,12 +51,19 @@ namespace TenMinute.Physics {
             if (_col2D == null) {
                 _col2D = GetComponent<PolygonCollider2D>();
             }
-            _needUpdate = false;
-            MakeShape();
         }
+
         public ExtraCollider2D SetRadius(float radius) {
             Radius = radius;
-            _needUpdate = true;
+            _needInfoUpdate = true;
+            return this;
+        }
+
+        public ExtraCollider2D SetRadius(float radius, float other) {
+            Radius = radius;
+            OtherRadius = other;
+            _needInfoUpdate = true;
+            IsEllipse = true;
             return this;
         }
 
@@ -64,11 +73,21 @@ namespace TenMinute.Physics {
         }
 
         public ExtraCollider2D SetAngle(float angle) {
+            IsArc = true;
             Angle = angle;
             return this;
         }
 
+        public ExtraCollider2D SetAngle(float angle, float center) {
+            Angle = angle;
+            CenterAngle = center;
+            if (CenterAngle < 0) CenterAngle += 360f;
+            IsArc = true;
+            return this;
+        }
+
         public ExtraCollider2D SetCenterAngle(float centerAngle) {
+            IsArc = true;
             CenterAngle = centerAngle;
             if (CenterAngle < 0) CenterAngle += 360f;
             return this;
@@ -76,21 +95,36 @@ namespace TenMinute.Physics {
 
         public ExtraCollider2D SetEllipse(bool state) {
             IsEllipse = state;
-            _needUpdate = true;
+            _needInfoUpdate = true;
+            return this;
+        }
+
+        public ExtraCollider2D SetPosition(Vector2 pos) {
+            transform.position = pos;
             return this;
         }
 
         public ExtraCollider2D SetOtherRadius(float radius) {
+            IsEllipse = true;
+            _needInfoUpdate = true;
             OtherRadius = radius;
-            if (IsEllipse) {
-                _needUpdate = true;
-            }
             return this;
         }
 
-        public ExtraCollider2D MakeShape() {
-            if (_needUpdate) {
+        public ExtraCollider2D MakeShape(bool isUpdate = false) {
+            if (_pathInfo == null) {
                 Build();
+            }
+            else {
+                if (isUpdate) {
+                    Build();
+                }
+                else {
+                    if (_needInfoUpdate) {
+                        _needInfoUpdate = false;
+                        Build();
+                    }
+                }
             }
 
             if (IsArc) {
@@ -143,6 +177,8 @@ namespace TenMinute.Physics {
             else {
                 _col2D.SetPath(0, _pathInfo);
             }
+
+            
             return this;
         }
 

@@ -41,6 +41,7 @@ namespace TenMinute.Graphics {
                 for (int j = 0; j < _default_entity_count; ++j) {
                     queue.Enqueue(CreateEntity(kv.Key));
                 }
+                
                 _entityData.Add(kv.Key, queue);
             }
         }
