@@ -195,7 +195,7 @@ MonoBehaviour:
       parentIndex: 
       startIndex: 
       variableStartIndex: 
-      JSONSerialization: '{"Variables":[{"Type":"TenMinute.AI.SharedVariables.SharedCharacter","Name":"Owner","IsShared":true,"CharactermValue":0},{"Type":"TenMinute.AI.SharedVariables.SharedCharacter","Name":"Target","IsShared":true},{"Type":"BehaviorDesigner.Runtime.SharedString","Name":"TargetTag","IsShared":true,"StringmValue":"Player"},{"Type":"TenMinute.AI.SharedVariables.SharedCollider2D","Name":"Checker_Attack","IsShared":true,"Collider2DmValue":1},{"Type":"TenMinute.AI.SharedVariables.SharedCollider2D","Name":"Checker_Target","IsShared":true,"Collider2DmValue":2}]}'
+      JSONSerialization: '{"Variables":[{"Type":"TenMinute.AI.SharedVariables.SharedCharacter","Name":"Owner","IsShared":true,"CharactermValue":0},{"Type":"TenMinute.AI.SharedVariables.SharedCharacter","Name":"Target","IsShared":true},{"Type":"BehaviorDesigner.Runtime.SharedString","Name":"TargetTag","IsShared":true,"StringmValue":"Player"},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"BattleTime","IsShared":true,"SinglemValue":0},{"Type":"TenMinute.AI.SharedVariables.SharedCollider2D","Name":"Checker_Attack","IsShared":true,"Collider2DmValue":1},{"Type":"TenMinute.AI.SharedVariables.SharedCollider2D","Name":"CheckArea_Search","IsShared":true},{"Type":"TenMinute.AI.SharedVariables.SharedCollider2D","Name":"CheckArea_Battle","IsShared":true}]}'
       fieldSerializationData:
         typeName: []
         fieldNameHash: 
@@ -204,7 +204,6 @@ MonoBehaviour:
         unityObjects:
         - {fileID: 1892985310561480026}
         - {fileID: 8236956018285771743}
-        - {fileID: 9208682154276292298}
         byteData: 
         byteDataArray: 
       Version: 1.7.3

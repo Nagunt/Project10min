@@ -44,6 +44,7 @@ namespace TenMinute.Combat {
         private int _증가량 = 0;           // 증가량.     (데미지 10 '증가' 식으로)
         private float _배수 = 1f;          // 최종 배수. (데미지 20% '증가' 식으로)
         private int _추가량 = 0;           // 배수 등에 영향받지 않는 순수 추가량. (데미지 10 '추가' 식으로)
+
         public void Add기본배수(float value) => _기본배수 += value - 1f;
         public void Add증가량(int value) => _증가량 += value;
         public void Add배수(float value) => _배수 += value - 1f;
@@ -55,7 +56,30 @@ namespace TenMinute.Combat {
             _배수 = 1f;
             _추가량 = 0;
         }
+
         public int 데이터 => Mathf.FloorToInt((_데이터 * _기본배수 + _증가량) * _배수 + _추가량);             // 무조건 버린다.
+
+        private float _실수데이터 = 0f;       // 실수 데이터.
+        private float _실수기본배수 = 1f;
+        private float _실수증가량 = 0f;
+        private float _실수배수 = 1f;
+        private float _실수추가량 = 0f;
+
+        public void Add실수기본배수(float value) => _실수기본배수 += value - 1f;
+        public void Add실수증가량(float value) => _실수증가량 += value;
+        public void Add실수배수(float value) => _실수배수 += value - 1f;
+        public void Add실수추가량(float value) => _실수추가량 += value;
+        public void 실수수치초기화(float 데이터) {
+            _실수데이터 = 데이터;
+            _실수기본배수 = 1f;
+            _실수증가량 = 0f;
+            _실수배수 = 1f;
+            _실수추가량 = 0f;
+        }
+
+        public float 실수데이터 => (_실수데이터 * _실수기본배수 + _실수증가량) * _실수배수 + _실수추가량;
+
+
         #endregion
 
         #region 효과

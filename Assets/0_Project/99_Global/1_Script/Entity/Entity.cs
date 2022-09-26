@@ -200,14 +200,14 @@ namespace TenMinute.Combat {
             return this;
         }
 
-        public Entity Add경직(int 경직도) {
-            DataEntity data = DataEntity.경직(경직도);
+        public Entity Add경직(int 경직도, float 경직시간) {
+            DataEntity data = DataEntity.경직(경직도, 경직시간);
             AddData(data);
             return this;
         }
 
-        public Entity Add넉백(int 넉백도) {
-            DataEntity data = DataEntity.넉백(넉백도);
+        public Entity Add넉백(int 넉백도, float 넉백힘) {
+            DataEntity data = DataEntity.넉백(넉백도, 넉백힘);
             AddData(data);
             return this;
         }

@@ -9,6 +9,7 @@ using TenMinute.Combat;
 using UnityEngine;
 using UnityEngine.Events;
 using TenMinute.Graphics;
+using DG.Tweening;
 
 namespace TenMinute {
     public class Character : MonoBehaviour {
@@ -232,7 +233,15 @@ namespace TenMinute {
         public bool IsNPC => _isNPC;
         public bool IsInit { get; protected set; } = false;
         public bool IsDead { get; protected set; }
+        public bool IsKnockDown { get; protected set; } = false;
+        private float _knockdownTime = 0f;
+        private Coroutine _knockdownRoutine;
+
+        public bool IsKnockBack { get; protected set; } = false;
+        private Sequence _knockbackSequence;
         public bool IsDispose { get; protected set; }
+
+        public Vector2 LookDir { get; protected set; }
 
         private void Start() {
             if (IsInit == false) {
@@ -244,12 +253,31 @@ namespace TenMinute {
         public virtual void Move(Vector2 dir) {
             RB2D.velocity = dir.normalized * Speed;
             RB2D.velocity = new Vector2(RB2D.velocity.x, RB2D.velocity.y * .5f);
-            Graphic.SetDirection(new Vector2(dir.x > 0 ? 1f : -1f, 0));
+            Look(dir);
             Graphic.SetState_Move(true);
+        }
+        public virtual void Look(Vector2 dir) {
+            LookDir = new Vector2(dir.x > 0 ? 1f : -1f, dir.y > 0 ? 1f : -1f);
+            Graphic.SetDirection(LookDir);
         }
         public virtual void Stop() {
             RB2D.velocity = Vector2.zero;
             Graphic.SetState_Move(false);
+        }
+        public virtual void KnockBack(Vector2 dir, float force) {
+            if (IsKnockBack &&
+                _knockbackSequence.IsActive()) {
+                _knockbackSequence.Kill();
+            }
+
+            Vector2 distance = dir * force;
+
+            _knockbackSequence = DOTween.Sequence(this);
+            _knockbackSequence.
+                Append(RB2D.DOMove(transform.position + new Vector3(distance.x, distance.y * .5f, transform.position.z), 0.5f).SetEase(Ease.OutQuad)).
+                OnComplete(() => IsKnockBack = false).
+                OnKill(() => _knockbackSequence = null).
+                Play();
         }
         #endregion
 
@@ -267,7 +295,7 @@ namespace TenMinute {
             rb2DData.Add(RB2D, this);
 
             if (IsNPC) {
-                _behaviorTree.Start();
+                _behaviorTree.EnableBehavior();
             }
 
             IsInit = true;
@@ -277,12 +305,51 @@ namespace TenMinute {
             IsDead = true;
         }
 
+        public virtual void Dispose() {
+            IsDispose = true;
+        }
+
         public virtual void AttackToTarget(Character target, UnityAction onComplete) {
             onComplete?.Invoke();
         }
 
-        public virtual void Dispose() {
-            IsDispose = true;
+        public virtual void Deadly(Entity 원인Entity, int dataIndex) {
+            DataEntity 사망체크 = DataEntity.고유데이터(1);
+            CallOn사망예정(this, 원인Entity, dataIndex, 사망체크);
+            if (HP <= 0 && 사망체크.데이터 == 1) {
+                HP = 0;
+                Dead();
+                Dispose();          // 언데드일경우 Dispose는 하지 않지만, 일단은 보류
+                CallOn사망(this, 원인Entity, dataIndex);
+            }
+        }
+
+        public virtual void KnockDown(float time) {
+            if (IsKnockDown &&
+                _knockdownTime > time) {
+                return;
+            }
+
+            if (IsKnockDown) {
+                StopCoroutine(_knockdownRoutine);
+                _knockdownRoutine = null;
+            }
+
+            IsKnockDown = true;
+            Graphic.SetState_KnockDown(IsKnockDown);
+            _knockdownRoutine = StartCoroutine(KnockDownRoutine(time));
+
+            IEnumerator KnockDownRoutine(float time) {
+                _knockdownTime = time;
+                while (_knockdownTime > 0) {
+                    _knockdownTime -= Time.deltaTime;
+                    yield return null;
+                }
+                _knockdownTime = 0;
+                IsKnockDown = false;
+                Graphic.SetState_KnockDown(IsKnockDown);
+                _knockdownRoutine = null;
+            }
         }
 
         #region Entity 콜백
@@ -317,6 +384,26 @@ namespace TenMinute {
             on회복?.Invoke(entity, dataIndex);
         }
 
+        public OnExecute엔티티 on경직예정;
+        public void CallOn경직예정(Entity entity, int dataIndex) {
+            on경직예정?.Invoke(entity, dataIndex);
+        }
+
+        public OnExecute엔티티 on경직;
+        public void CallOn경직(Entity entity, int dataIndex) {
+            on경직?.Invoke(entity, dataIndex);
+        }
+
+        public OnExecute엔티티 on넉백예정;
+        public void CallOn넉백예정(Entity entity, int dataIndex) {
+            on넉백예정?.Invoke(entity, dataIndex);
+        }
+
+        public OnExecute엔티티 on넉백;
+        public void CallOn넉백(Entity entity, int dataIndex) {
+            on넉백?.Invoke(entity, dataIndex);
+        }
+
         public OnExecute엔티티 on효과부여예정_선처리;
         public OnExecute엔티티 on효과부여예정;
         public OnExecute엔티티 on효과부여예정_면역체크;
@@ -346,6 +433,17 @@ namespace TenMinute {
         public OnExecute엔티티 on효과회수후제거;
         public void CallOn효과회수후제거(Entity entity, int dataIndex) {
             on효과회수후제거?.Invoke(entity, dataIndex);
+        }
+
+        public OnExecute엔티티_AffectData on사망예정;
+
+        public void CallOn사망예정(Character target, Entity entity, int dataIndex, DataEntity data) {
+            on사망예정?.Invoke(target, entity, dataIndex, data);
+        }
+
+        public OnExecute엔티티_Affect on사망;
+        public void CallOn사망(Character target, Entity entity, int dataIndex) {
+            on사망?.Invoke(target, entity, dataIndex);
         }
 
         #endregion
@@ -391,14 +489,13 @@ namespace TenMinute {
             }
 
             if (HP <= 0 && 피해량 > 0) {
-                Dead();
+                Deadly(피해Entity, dataIndex);
                 if (IsDead) return;
             }
         }
 
         public void Apply추가피해(Entity 피해Entity, int dataIndex) {
             if (IsDead) return;
-
 
             if (피해Entity.Has주체 &&
                 피해Entity.주체캐릭터 != null) {
@@ -436,20 +533,61 @@ namespace TenMinute {
             }
 
             if (HP <= 0 && 피해량 > 0) {
-                Dead();
+                Deadly(피해Entity, dataIndex);
                 if (IsDead) return;
             }
-
-
-
         }
 
         public void Apply경직(Entity 경직Entity, int dataIndex) {
+            if (IsDead) return;
+
+            if (경직Entity.Has주체 &&
+                경직Entity.주체캐릭터 != null) {
+                경직Entity.주체캐릭터.CallOn경직예정(경직Entity, dataIndex);
+            }
+
             DataEntity 경직Data = 경직Entity.GetData(dataIndex);
+            경직Data.Add추가량((int)-Poise);
+
+            CallOn경직예정(경직Entity, dataIndex);
+
+            int 경직도 = 경직Data.데이터;
+
+            if (경직도 > 0) {
+                KnockDown(경직Data.실수데이터);
+                if (경직Entity.Has주체 &&
+                    경직Entity.주체캐릭터 != null) {
+                    경직Entity.주체캐릭터.CallOn경직(경직Entity, dataIndex);
+                }
+                CallOn경직(경직Entity, dataIndex);
+            }
         }
 
         public void Apply넉백(Entity 넉백Entity, int dataIndex) {
+            if (IsDead) return;
+
+            if (넉백Entity.Has주체 &&
+                넉백Entity.주체캐릭터 != null) {
+                넉백Entity.주체캐릭터.CallOn넉백예정(넉백Entity, dataIndex);
+            }
+
             DataEntity 넉백Data = 넉백Entity.GetData(dataIndex);
+            넉백Data.Add실수추가량(-Weight);
+
+            CallOn넉백예정(넉백Entity, dataIndex);
+
+            float 넉백힘 = 넉백Data.실수데이터;
+
+            if (넉백힘 > 0) {
+                KnockBack(
+                    new Vector2(넉백Entity.발생위치.x - transform.position.x, 넉백Entity.발생위치.y - transform.position.y),
+                    넉백힘);
+                if (넉백Entity.Has주체 &&
+                    넉백Entity.주체캐릭터 != null) {
+                    넉백Entity.주체캐릭터.CallOn넉백(넉백Entity, dataIndex);
+                }
+                CallOn넉백(넉백Entity, dataIndex);
+            }
         }
 
         public void Apply효과(Entity 효과Entity, int dataIndex) {

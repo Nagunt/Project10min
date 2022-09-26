@@ -10,6 +10,12 @@ namespace TenMinute.Combat {
             _type = type;
             _효과 = effect;
         }
+
+        private DataEntity(EntityType type, int 데이터, float 실수데이터) {
+            _type = type;
+            _데이터 = 데이터;
+            _실수데이터 = 실수데이터;
+        }
         private DataEntity(EntityType type, int 데이터, EntityProperty properties = EntityProperty.None) {
             _type = type;
             _데이터 = 데이터;
@@ -30,11 +36,11 @@ namespace TenMinute.Combat {
             return new DataEntity(EntityType.추가피해, 데이터, property);
         }
 
-        public static DataEntity 경직(int 데이터) {
-            return new DataEntity(EntityType.경직, 데이터);
+        public static DataEntity 경직(int 데이터, float 경직시간) {
+            return new DataEntity(EntityType.경직, 데이터, 경직시간);
         }
-        public static DataEntity 넉백(int 데이터) {
-            return new DataEntity(EntityType.넉백, 데이터);
+        public static DataEntity 넉백(int 데이터, float 넉백힘) {
+            return new DataEntity(EntityType.넉백, 데이터, 넉백힘);
         }
 
         public static DataEntity 효과부여(EffectID id, int 부여량 = 1, float 지속시간 = 0f) {
