@@ -7,6 +7,8 @@ namespace TenMinute.Physics {
         public static Global_PhysicsManager Instance { get; private set; } = null;
 
         [SerializeField]
+        private Camera _camera;
+        [SerializeField]
         private ExtraCollider2D _exCol2D;
 
         public ExtraCollider2D Col2D => _exCol2D;
@@ -26,6 +28,10 @@ namespace TenMinute.Physics {
             int data = Physics2D.OverlapCollider(Col2D.Col2D, filter, col);
             Col2D.gameObject.SetActive(false);
             return data;
+        }
+
+        public Vector2 ScreenToWorldPosition(Vector2 pos) {
+            return _camera.ScreenToWorldPoint(pos);
         }
 
     }
