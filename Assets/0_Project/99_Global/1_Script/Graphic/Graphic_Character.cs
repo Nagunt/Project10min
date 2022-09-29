@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TenMinute.Data;
 using UnityEngine;
 
 namespace TenMinute.Graphics {
 
     public class Graphic_Character : MonoBehaviour {
         [SerializeField]
-        private Animator _animator;
+        protected Animator _animator;
 
         private readonly int ID_ISMOVE = Animator.StringToHash("IsMove");
         private readonly int ID_ISATTACK = Animator.StringToHash("IsAttack");
@@ -15,7 +16,8 @@ namespace TenMinute.Graphics {
         private readonly int ID_ATKSPEED = Animator.StringToHash("AttackSpeed");
         private readonly int ID_DIRX = Animator.StringToHash("dirX");
         private readonly int ID_DIRY = Animator.StringToHash("dirY");
-
+        private readonly int ID_WEAPON = Animator.StringToHash("Weapon");
+        
         public void SetDirection(Vector2 dir) {
             _animator.SetFloat(ID_DIRX, dir.x);
             _animator.SetFloat(ID_DIRY, dir.y);
@@ -39,6 +41,9 @@ namespace TenMinute.Graphics {
 
         public void SetMotionTime_Attack(float time) {
             _animator.SetFloat(ID_ATKSPEED, 1 / time);
+        }
+        public void SetWeaponID(WeaponID id) {
+            _animator.SetInteger(ID_WEAPON, (int)id);
         }
     }
 }

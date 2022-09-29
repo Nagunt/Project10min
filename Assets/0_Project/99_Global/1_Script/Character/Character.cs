@@ -233,12 +233,15 @@ namespace TenMinute {
         public bool IsNPC => _isNPC;
         public bool IsInit { get; protected set; } = false;
         public bool IsDead { get; protected set; }
+        public bool IsAttack { get; protected set; } = false;
+        protected Coroutine _attackRoutine;
+
         public bool IsKnockDown { get; protected set; } = false;
-        private float _knockdownTime = 0f;
-        private Coroutine _knockdownRoutine;
+        protected float _knockdownTime = 0f;
+        protected Coroutine _knockdownRoutine;
 
         public bool IsKnockBack { get; protected set; } = false;
-        private Sequence _knockbackSequence;
+        protected Sequence _knockbackSequence;
         public bool IsDispose { get; protected set; }
 
         public Vector2 LookDir { get; protected set; }

@@ -12,8 +12,9 @@ namespace TenMinute {
         public bool IsDash { get; private set; } = false;
         private Sequence _dashSequence;
 
-        [Header("- Player")]
-        public int WeaponIndex;
+        public bool CanAction => IsAlive && IsDash == false && IsAttack == false && IsKnockDown == false;
+
+        public Weapon weapon;
 
         #region 입력
 
@@ -31,13 +32,34 @@ namespace TenMinute {
 
         public void OnAttack(InputAction.CallbackContext context) {
             if (context.performed) {
-                
+                if (CanAction == false) return;
+                if (_attackRoutine != null) {
+                    StopCoroutine(_attackRoutine);
+                    _attackRoutine = null;
+                    weapon.AddCombo();
+                }
+                IsAttack = true;
+                _attackRoutine = StartCoroutine(AttackRoutine());
+            }
+
+            IEnumerator AttackRoutine() {
+                weapon.Execute(() => IsAttack = false);
+                yield return new WaitUntil(() => IsAttack == false);
+                float inputTime = 0.5f;
+                while (inputTime >= 0) {
+                    inputTime -= Time.deltaTime;
+                    yield return null;
+                }
+                weapon.Clear();
+                _attackRoutine = null;
             }
         }
 
         public void OnDash(InputAction.CallbackContext context) {
             if (context.performed) {
-                if (IsDash || _dashSequence.IsActive()) return;
+                if (CanAction == false || _dashSequence.IsActive()) return;
+
+                weapon.Cancel();
 
                 Vector2 distance = _lookDir * 4f;
 
@@ -54,14 +76,23 @@ namespace TenMinute {
 
         #endregion
 
+        public override void KnockDown(float time) {
+            weapon.Cancel();
+            base.KnockDown(time);
+        }
+
         public override void Init() {
             base.Init();
             tag = "Player";
+            weapon = Weapon.Create(Data.WeaponID.단검);
+            weapon.OnObtain(this);
         }
 
         private void Update() {
             if (_moveDir == Vector2.zero) Stop();
-            else Move(_moveDir);
+            else {
+                if (CanAction) Move(_moveDir);
+            }
         }
     }
 }
